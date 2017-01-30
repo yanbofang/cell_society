@@ -33,7 +33,7 @@
 	2. Image of Relationship between classes
 		<img src="https://coursework.cs.duke.edu/CompSci308_2017Spring/cellsociety_team16/blob/master/Relationship.png" width="500" height="400">
 	3. Image of Inheritance structure between classes
-		![Inheritance Structure between classes](https://coursework.cs.duke.edu/CompSci308_2017Spring/cellsociety_team16/blob/master/Relationship.png)
+		![Inheritance Structure between classes](Files/Relationship.png)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
 		1. Call Grid().startNewRoundSimulation()
 		2. for-loop visits all the containers in priority orders
