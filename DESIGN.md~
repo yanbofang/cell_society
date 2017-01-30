@@ -27,7 +27,7 @@ Errors will be reported to the user through pop-up window detailing the problem,
 	3. Play, Pause, Reset or Step a simulation using buttons
 
 
-![UI Design](images/CellSocietyUIDesign.JPG)
+![UI Design](images/CellSocietyUIDesign.JPG =100x20)
 
 - Design Considerations
 There may be some overlap in the way cells interact with one another in their respective simulations. For instance, both the predator/shark type and the fire type can find preys and trees, respectively, amongst their neighbors and replace their types. This may lead to some duplicate code in the predator/shark and fire subclasses depending on the generality. Previously we discussed how we could create subclasses of Cell based on their behaviour. For example, the fire and the shark can both be incorporated in a Predator class. However, we thought that there would be many different rules regarding shark and fire, and putting them in one class would result in a very large and messy class. Furthermore, there was overlap between subclasses that made it difficult to figure out how to divide them up: both the fish and the shark types can change an empty cell to their current type, i.e. “move”, although fire cannot; but both the fire and shark types can change a tree or fish cell, respectively, to their current type, i.e. “burning” or “eating” their neighbors. It was difficult to decide whether to group fish and shark or shark and fire into an overarching class due to their overlapping abilities since Java does not allow multiple inheritances.
@@ -78,9 +78,9 @@ In order to create a functional game that models the four types of simulation, w
 		- Empty Cell: A class that can only be edited passively.
 			1. If the empty cell's future hasn't been set yet, set the empty cell's container's future to contain an empty cell.
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
-		![Relationship between classes](images/Relationship.png)
+		![Relationship between classes](images/Relationship.png =500x400)
 	3. Image of Inheritance structure between classes
-		![Inheritance Structure between classes](images/Inheritance.png)
+		![Inheritance Structure between classes](images/Inheritance.png =500x400)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its number of neighbors using the Game of Life rules for a cell in the middle:
 		1. Call Grid().startNewRoundSimulation()
 		2. for-loop visits all the containers in priority orders
