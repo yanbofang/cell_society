@@ -2,14 +2,11 @@
 This program provides users the ability to perform a variety of Cellular Automata (CA) simulations including Conway’s Game of Life, Schelling's model of segregation, Wa-Tor World model of predator-prey relationships, Spreading of Fire and so on. The primary design goal is to create a flexible simulation tool that can handle different CA models without the need to make significant changes in our program. Extensions can be made to model new simulations and interactions without modifying how the game updates or the user interface. The subclasses are open and more can be added/extended from the abstract class, while the superclass, general backend, and user interface setup are closed.
 
 - Overview
-	![Relationship between classes](images/Relationship.png)
 	![Connection between classes](images/Connection.png)
-
-
-
+	![Relationship between classes](images/Relationship.png)
 	The program includes these classes:
 	- CellSocietyMain - Controls UI and display
-	- Simulation - Coordinates the next following class and return the status of next round
+	- Simulation - Coordinates the next following class and return the status of next round to UI display
 	- Grid - Contains a list of Container. Iterates through each Container and updates the cell within.
 	- Cell - Abstract Class
 	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation.
@@ -20,7 +17,7 @@ This program provides users the ability to perform a variety of Cellular Automat
 	2. Simulation Class create a new Grid to hold the status of next round, connect the current Grid to the new Grid and connect each container of the current Grid to each container of the next Grid. Then call Grid.startNewRoundSimulation()
 	3. Grid Class will iterate through each Container which belongs to the Grid in the high-to-low priority order. Call Container.containCell().ruleCheck() and let each cell handles the rule check and update.
 	4. Each cell will update the future state of itself and modify the future state of other containers if needed and permitted. (Each cell will be assigned with a priority. High priority can modify low priority cell).
-	5. Each cell will lock the future state. So if the future state of the current container has been set, we are not allowed to do any change to it and we will skip it in the iteration.
+	5. Each cell will lock the future state. So if the future state of the current container has already been set, we are not allowed to do any change to it and we will skip this container in the current iteration.
 
 - User Interface
 The user will be able to interact with the program in several ways:  
@@ -32,6 +29,7 @@ Errors will be reported to the user through pop-up window detailing the problem,
 
 - Design Details
 	1. Reillustration of all Classes:
+		- CellSocietyMain: A class controls the UI and GUI display. It will pass in the information needed to begin to the Simulation class. In  its step() method, it will call Simulation to get the result of next round.
 		- Simulation: A class between the UI and the backend, coordinate the UI input information with the Grid. It will generate new Grid() each time and call Grid to update the new Grid according to the cell within the containers.
 		- Grid: A class contains an ArrayList of Containers. Current Grid is linked to the Grid of next round by method .next(). It will check each cell in the order of Priority.(Priority is an Instance Variable of Cell class). 
 			1. Specifically, all cells that can eat or destroy other cells (which we call Active) are considered as Priority 1, e.g. Shark, Fire. This kind of cell needs to be checked first because they can change the status of other cell before other cell's action.	
