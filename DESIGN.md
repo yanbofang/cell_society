@@ -30,8 +30,10 @@
 			2. Set the future of the current cell's container to contain an Empty cell
 		- Empty Cell: A class that can only be edited passibely.
 			1. If the empty cell's future hasn't been set yet, set the empty cell's container's future to contain an empty cell.
-	2. Image of Relationship between classe
-		![Relationship between classes](/relationship.png)
+	2. Image of Relationship between classes
+		![Relationship between classes](Relationship.png =500x400)
+	3. Image of Inheritance structure between classes
+		![Inheritance Structure between classes](Inheritance.png =200x100)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
 		1. Call Grid().startNewRoundSimulation()
 		2. for-loop visits all the containers in priority orders
