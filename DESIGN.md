@@ -19,8 +19,19 @@
 			1. if it has survived for a time and there is empty space nearby, then multiply 
 			2. if there is empty space nearby, then move.
 		- Shark: A class that can move, multiply, die and eat.
+			Its .ruleCheck() checks():
+			1. it there is a fish nearby, eat it 
+			2. if it has survived for a time and there is empty space nearby, then multiply 
+			3. if there is empty space nearby, then move.
 		- People: A class that can move.
+			1. If the neighbors nearby are not satisfying, move to a random empty block.
 		- Fire: A class that can move, eat and die.
+			1. If the neighbors near it has a tree, under certain probability, fire it. 
+			2. Set the future of the current cell's container to contain an Empty cell
+		- Empty Cell: A class that can only be edited passibely.
+			1. If the empty cell's future hasn't been set yet, set the empty cell's container's future to contain an empty cell.
+	2. Image of Relationship between classe
+		![Relationship between classes](/relationship.png)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
 		1. Call Grid().startNewRoundSimulation()
 		2. for-loop visits all the containers in priority orders
