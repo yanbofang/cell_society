@@ -8,8 +8,8 @@ This program provides users the ability to perform a variety of Cellular Automat
 	- CellSocietyMain - Controls UI and display
 	- Simulation - Coordinates the next following class and return the status of next round to UI display
 	- Grid - Contains a list of Container. Iterates through each Container and updates the cell within.
-	- Cell - Abstract Class
-	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation.
+	- Cell - Abstract Class: Has an abstract method .ruleCheck() which modifies others according to the rule.
+	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation. They will have different rules and different .ruleCheck() method within. They will determine the future cell within the container.
 	
 	Running Procedure:	
 	1. In the program, we have a main class, which controls all the scene control and User Interface. This main class passes parameters to the Simulation class and call Simulation class each time UI needs to update.
