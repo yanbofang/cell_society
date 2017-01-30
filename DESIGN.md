@@ -25,22 +25,7 @@ The user will be able to interact with the program in several ways:
 Errors will be reported to the user through pop-up window detailing the problem, for example if they enter a wrong type of input. Default values will be assigned for unmodified fields.
 	3. Play, Pause, Reset or Step a simulation using buttons
 
-
 ![UI Design](images/CellSocietyUIDesign.JPG)
-
-- Design Considerations
-There may be some overlap in the way cells interact with one another in their respective simulations. For instance, both the predator/shark type and the fire type can find preys and trees, respectively, amongst their neighbors and replace their types. This may lead to some duplicate code in the predator/shark and fire subclasses depending on the generality. Previously we discussed how we could create subclasses of Cell based on their behaviour. For example, the fire and the shark can both be incorporated in a Predator class. However, we thought that there would be many different rules regarding shark and fire, and putting them in one class would result in a very large and messy class. Furthermore, there was overlap between subclasses that made it difficult to figure out how to divide them up: both the fish and the shark types can change an empty cell to their current type, i.e. “move”, although fire cannot; but both the fire and shark types can change a tree or fish cell, respectively, to their current type, i.e. “burning” or “eating” their neighbors. It was difficult to decide whether to group fish and shark or shark and fire into an overarching class due to their overlapping abilities since Java does not allow multiple inheritances.
-
-
-- Team Responsibilities
-Primary responsibilities of each team member:
-Xingyu Chen: Work on backend classes, and implement the model of segregation.
-Kris Elbert: Implement the Wa-Tor World model of predator-prey relationships, and work on the user interface, interactions, etc.
-Yanbo Fang: Implement the Conway’s Game of Life and the Spreading of Fire simulations, and work on the user interface, interactions, etc.
-
-A High Level Plan: 
-In order to create a functional game that models the four types of simulation, we will structure our work over the course of the week so that it is finished by Monday, the 6th.  We will first simultaneously work on the backend data structures for the grid and general container superclass in addition to the User Interface so that we can visualize our work. After that we will work on implementing specific simulations.
-
 
 - Design Details
 	1. Reillustration of all Classes:
@@ -105,7 +90,7 @@ In order to create a functional game that models the four types of simulation, w
 		4. In step(), it should call Grid.startNewRoundSimulation() and keeps going.
 
 - Design Considerations
-There may be some overlap in the way cells interact with one another in their respective simulations. For instance, both the predator/shark type and the fire type can find preys and trees, respectively, amongst their neighbors and replace their types. This may lead to some duplicate code in the predator/shark and fire subclasses depending on the generality. Previously we discussed how we could create subclasses of Cell based on their behavior. For example, the fire and the shark can both be incorporated in a Predator class. However, we thought that there would be many different rules regarding shark and fire, and putting them in one class would result in a very large and messy class. Furthermore, there was overlap between subclasses that made it difficult to figure out how to divide them up: both the fish and the shark types can change an empty cell to their current type, i.e. “move”, although fire cannot; but both the fire and shark types can change a tree or fish cell, respectively, to their current type, i.e. “burning” or “eating” their neighbors. It was difficult to decide whether to group fish and shark or shark and fire into an overarching class due to their overlapping abilities.
+There may be some overlap in the way cells interact with one another in their respective simulations. For instance, both the predator/shark type and the fire type can find preys and trees, respectively, amongst their neighbors and replace their types. This may lead to some duplicate code in the predator/shark and fire subclasses depending on the generality. Previously we discussed how we could create subclasses of Cell based on their behaviour. For example, the fire and the shark can both be incorporated in a Predator class. However, we thought that there would be many different rules regarding shark and fire, and putting them in one class would result in a very large and messy class. Furthermore, there was overlap between subclasses that made it difficult to figure out how to divide them up: both the fish and the shark types can change an empty cell to their current type, i.e. “move”, although fire cannot; but both the fire and shark types can change a tree or fish cell, respectively, to their current type, i.e. “burning” or “eating” their neighbors. It was difficult to decide whether to group fish and shark or shark and fire into an overarching class due to their overlapping abilities since Java does not allow multiple inheritances.
 
 ![UI Design](images/CellSocietyUIDesign.JPG)
 
@@ -116,4 +101,5 @@ Kris Elbert: Implement the Wa-Tor World model of predator-prey relationships, an
 Yanbo Fang: Implement the Conway’s Game of Life and the Spreading of Fire simulations, and work on the user interface, interactions, etc.
 
 A High Level Plan: 
+In order to create a functional game that models the four types of simulation, we will structure our work over the course of the week so that it is finished by Monday, the 6th.  We will first simultaneously work on the backend data structures for the grid and general container superclass in addition to the User Interface so that we can visualize our work. After that, we will work on implementing specific simulations.
 
