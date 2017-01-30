@@ -14,9 +14,9 @@ This program provides users the ability to perform a variety of Cellular Automat
 	Running Procedure:	
 	1. In the program, we have a main class, which controls all the scene control and User Interface. This main class passes parameters to the Simulation class and call Simulation class each time UI needs to update.
 	2. Simulation Class create a new Grid to hold the status of next round, connect the current Grid to the new Grid and connect each container of the current Grid to each container of the next Grid. Then call Grid.startNewRoundSimulation()
-	3. Grid Class will iterate through each Container which belongs to the Grid in the high-to-low priority order. Call Container.containCell().ruleCheck() and let each cell handles the rule check and update.
+	3. Grid Class will iterate through each Container which belongs to the Grid in the high-to-low priority order. Call Container.containCell().ruleCheck() and let each cell handle the rule check and update.
 	4. Each cell will update the future state of itself and modify the future state of other containers if needed and permitted. (Each cell will be assigned with a priority. High priority can modify low priority cell).
-	5. Each cell will lock the future state. So if the future state of the current container has already been set, we are not allowed to do any change to it and we will skip this container in the current iteration.
+	5. Each cell will lock the future state. So if the future state of the current container has already been set, we are not allowed to do any change to it and we will skip this container in this round of simulation.
 
 - User Interface
 The user will be able to interact with the program in several ways:  
