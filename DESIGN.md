@@ -6,7 +6,7 @@ This program provides users the ability to perform a variety of Cellular Automat
 	![Relationship between classes](images/Relationship.png)
 	The program includes these classes:
 	- CellSocietyMain - Controls UI and display
-	- Simulation - Coordinates the next following class and return the status of next round to UI display
+	- Simulation - Coordinates the next following classes and return the status of next round to UI display
 	- Grid - Contains a list of Container. Iterates through each Container and updates the cell within.
 	- Cell - Abstract Class: Has an abstract method .ruleCheck() which modifies others according to the rule.
 	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation. They will have different rules and different .ruleCheck() method within. They will determine the future cell within the container.
