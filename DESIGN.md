@@ -1,6 +1,24 @@
-<<<<<<< HEAD
 - Introduction
 This program provides users the ability to perform a variety of Cellular Automata (CA) simulations including Conway’s Game of Life, Schelling's model of segregation, Wa-Tor World model of predator-prey relationships, Spreading of Fire and so on. The primary design goal is to create a flexible simulation tool that can handle different CA models without the need to make significant changes in our program. Extensions can be made to model new simulations and interactions without modifying how the game updates or the user interface. The subclasses are open and more can be added/extended from the abstract class, while the superclass, general backend, and user interface setup are closed.
+
+- Overview
+
+
+
+	The program includes these classes:
+	- CellSocietyMain - Controls UI and display
+	- Simulation - Coordinates the next following class and return the status of next round
+	- Grid - Contains a list of Container. Iterates through each Container and updates the cell within.
+	- Cell - Abstract Class
+	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation.
+
+	Running Procedure:
+	
+	1. In the program, we have a main class, which controls all the scene control and User Interface. This main class passes parameters to the Simulation class and call Simulation class each time UI needs to update.
+	2. Simulation Class create a new Grid to hold the status of next round, connect the current Grid to the new Grid and connect each container of the current Grid to each container of the next Grid. Then call Grid.startNewRoundSimulation()
+	3. Grid Class will iterate through each Container which belongs to the Grid in the high-to-low priority order. Call Container.containCell().ruleCheck() and let each cell handles the rule check and update.
+	4. Each cell will update the future state of itself and modify the future state of other containers if needed and permitted. (Each cell will be assigned with a priority. High prioirty can modify low priority cell).
+	5. Each cell will lock the future state. So if the future state of the current container has been set, we are not allowed to do any change to it and we will skip it in the iteration.
 
 - User Interface
 The user will be able to interact with the program in several ways:  
@@ -25,6 +43,7 @@ A High Level Plan:
 In order to create a functional game that models the four types of simulation, we will structure our work over the course of the week so that it is finished by Monday, the 6th.  We will first simultaneously work on the backend data structures for the grid and general container superclass in addition to the User Interface so that we can visualize our work. After that we will work on implementing specific simulations.
 
 
+=======
 =======
 - Design Details
 	1. Reillustration of all Classes:
@@ -59,9 +78,9 @@ In order to create a functional game that models the four types of simulation, w
 		- Empty Cell: A class that can only be edited passibely.
 			1. If the empty cell's future hasn't been set yet, set the empty cell's container's future to contain an empty cell.
 	2. Image of Relationship between classes
-		![Inheritance Structure between classes](images/Relationship.png)
+		![Inheritance Structure between classes](images/Relationship.png =500*400)
 	3. Image of Inheritance structure between classes
-		![Inheritance Structure between classes](images/Inheritance.png)
+		![Inheritance Structure between classes](images/Inheritance.png =500*400)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
 		1. Call Grid().startNewRoundSimulation()
 		2. for-loop visits all the containers in priority orders
@@ -85,4 +104,17 @@ In order to create a functional game that models the four types of simulation, w
 		2. In the Scene setup() method, it should create a new scene with the parameters given by the user. Then read from preset Constant which class will we be using. 
 		3. Fill the first Grid with random classes and display them. 
 		4. In step(), it should call Grid.startNewRoundSimulation() and keeps going.
->>>>>>> 3bcbff25cc190248889c49582f83d55a1ea91910
+
+- Design Considerations
+There may be some overlap in the way cells interact with one another in their respective simulations. For instance, both the predator/shark type and the fire type can find preys and trees, respectively, amongst their neighbors and replace their types. This may lead to some duplicate code in the predator/shark and fire subclasses depending on the generality. Previously we discussed how we could create subclasses of Cell based on their behaviour. For example, the fire and the shark can both be incorporated in a Predator class. However, we thought that there would be many different rules regarding shark and fire, and putting them in one class would result in a very large and messy class. Furthermore, there was overlap between subclasses that made it difficult to figure out how to divide them up: both the fish and the shark types can change an empty cell to their current type, i.e. “move”, although fire cannot; but both the fire and shark types can change a tree or fish cell, respectively, to their current type, i.e. “burning” or “eating” their neighbors. It was difficult to decide whether to group fish and shark or shark and fire into an overarching class due to their overlapping abilities.
+
+![UI Design](images/CellSocietyUIDesign.JPG)
+
+- Team Responsibilities
+Primary responsibilities of each team member:
+Xingyu Chen: Work on backend classes, and implement the model of segregation.
+Kris Elbert: Implement the Wa-Tor World model of predator-prey relationships, and work on the user interface, interactions, etc.
+Yanbo Fang: Implement the Conway’s Game of Life and the Spreading of Fire simulations, and work on the user interface, interactions, etc.
+
+A High Level Plan: 
+
