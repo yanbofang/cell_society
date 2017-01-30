@@ -1,3 +1,26 @@
+- Overview
+
+
+
+	The program includes these classes:
+	- CellSocietyMain - Controls UI and display
+	- Simulation - Coordinates the next following class and return the status of next round
+	- Grid - Contains a list of Container. Iterates through each Container and updates the cell within.
+	- Cell - Abstract Class
+	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation.
+
+	Running Procedure:
+	
+	1. In the program, we have a main class, which controls all the scene control and User Interface. This main class passes parameters to the Simulation class and call Simulation class each time UI needs to update.
+	2. Simulation Class create a new Grid to hold the status of next round, connect the current Grid to the new Grid and connect each container of the current Grid to each container of the next Grid. Then call Grid.startNewRoundSimulation()
+	3. Grid Class will iterate through each Container which belongs to the Grid in the high-to-low priority order. Call Container.containCell().ruleCheck() and let each cell handles the rule check and update.
+	4. Each cell will update the future state of itself and modify the future state of other containers if needed and permitted. (Each cell will be assigned with a priority. High prioirty can modify low priority cell).
+	5. Each cell will lock the future state. So if the future state of the current container has been set, we are not allowed to do any change to it and we will skip it in the iteration.
+	
+
+
+
+
 - Design Details
 	1. Reillustration of all Classes:
 		- Grid: A class contains an ArrayList of Containers. Current Grid is linked to the Grid of next round by method .next(). It will check each cell in the order of Priority.(Priority is an Instance Variable of Cell class). 
@@ -31,9 +54,9 @@
 		- Empty Cell: A class that can only be edited passibely.
 			1. If the empty cell's future hasn't been set yet, set the empty cell's container's future to contain an empty cell.
 	2. Image of Relationship between classes
-		<img src="https://coursework.cs.duke.edu/CompSci308_2017Spring/cellsociety_team16/blob/master/Relationship.png" width="500" height="400">
+		<img src="https://coursework.cs.duke.edu/CompSci308_2017Spring/cellsociety_team16/blob/3bcbff25cc190248889c49582f83d55a1ea91910/Relationship.png" width="500" height="400">
 	3. Image of Inheritance structure between classes
-		![Inheritance Structure between classes](files/Relationship.png)
+		![Inheritance Structure between classes](https://coursework.cs.duke.edu/CompSci308_2017Spring/cellsociety_team16/blob/3bcbff25cc190248889c49582f83d55a1ea91910/Relationship.png)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
 		1. Call Grid().startNewRoundSimulation()
 		2. for-loop visits all the containers in priority orders
