@@ -10,9 +10,8 @@ This program provides users the ability to perform a variety of Cellular Automat
 	- Grid - Contains a list of Container. Iterates through each Container and updates the cell within.
 	- Cell - Abstract Class
 	- Fish, Shark, Tree, etc. Inherit Cell. They are added specifically according to each simulation.
-
-	Running Procedure:
 	
+	Running Procedure:	
 	1. In the program, we have a main class, which controls all the scene control and User Interface. This main class passes parameters to the Simulation class and call Simulation class each time UI needs to update.
 	2. Simulation Class create a new Grid to hold the status of next round, connect the current Grid to the new Grid and connect each container of the current Grid to each container of the next Grid. Then call Grid.startNewRoundSimulation()
 	3. Grid Class will iterate through each Container which belongs to the Grid in the high-to-low priority order. Call Container.containCell().ruleCheck() and let each cell handles the rule check and update.
