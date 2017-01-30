@@ -20,7 +20,7 @@
 			2. if there is empty space nearby, then move.
 		- Shark: A class that can move, multiply, die and eat.
 			Its .ruleCheck() checks():
-			1. it there is a fish nearby, eat it 
+			1. if there is a fish nearby, eat it 
 			2. if it has survived for a time and there is empty space nearby, then multiply 
 			3. if there is empty space nearby, then move.
 		- People: A class that can move.
@@ -31,7 +31,7 @@
 		- Empty Cell: A class that can only be edited passibely.
 			1. If the empty cell's future hasn't been set yet, set the empty cell's container's future to contain an empty cell.
 	2. Image of Relationship between classes
-		![Relationship between classes](Relationship.png =500x400)
+		<img src="https://coursework.cs.duke.edu/CompSci308_2017Spring/cellsociety_team16/blob/master/Relationship.png" width="500" height="400">
 	3. Image of Inheritance structure between classes
 		![Inheritance Structure between classes](Inheritance.png =200x100)
 	2. Apply the rules to a middle cell: set the next state of a cell to dead by counting its numver of neighbors using the Game of Life rules for a cell in the middle:
