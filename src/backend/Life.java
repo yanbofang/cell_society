@@ -8,23 +8,7 @@ public class Life extends Cell {
 	
 	public Life() {
 	}
-	
-	@Override
-	public String ruleCheck() {
-		// TODO Auto-generated method stub
-		ArrayList<Container> myNeighbor = this.myContainer.getMyNeighbors();
-		int cnt = 0;
-		for (int i=0;i<myNeighbor.size();i++) {
-			Container curNeighbor = myNeighbor.get(i);
-			if (curNeighbor.getMyCell() instanceof Life) cnt++;
-		}
-		if (cnt==2 || cnt==3) {
-			return "Live";
-		} else {
-			return "Dead";
-		}
-	}
-	
+		
 	public String toString() {
 		return "1";
 	}

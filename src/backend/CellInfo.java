@@ -1,21 +1,21 @@
 package backend;
 
 public class CellInfo {
-	private String cellType;
+	private Cell cellType;
 	private int posX;
 	private int posY;
 	
 	
-	public CellInfo(String cellType, int posX, int posY) {
+	public CellInfo(Cell cellType, int posX, int posY) {
 		this.cellType=cellType;
 		this.posX=posX;
 		this.posY=posY;
 	}
 	
-	public String getCellType() {
+	public Cell getCellType() {
 		return cellType;
 	}
-	public void setCellType(String cellType) {
+	public void setCellType(Cell cellType) {
 		this.cellType = cellType;
 	}
 	public int getPosX() {

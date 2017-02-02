@@ -22,6 +22,8 @@ public class Grid {
 			Container tempContainer = this.containerlist.get(i);
 			int x=i / n;
 			int y=i % m;
+			tempContainer.setPosX(x);
+			tempContainer.setPosY(y);
 			for (int k=0;k<POSX.length;k++) {
 				int xx=x+POSX[k];
 				int yy=y+POSY[k];

@@ -4,19 +4,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GameOfLifeHandler extends Handler {
-	private static final Map<String, Integer> myMap = new HashMap<String, Integer>();
-	static {
-		myMap.put("Live",0);
-		myMap.put("Dead",1);
-	}
-	
-	@Override
-	public Cell createNewCell(String cellFuture) {
-		if (myMap.get(cellFuture)==0) {
-			return new Life();
-		} else {
-			return new EmptyCell();
+public class GameOfLifeHandler extends Handler {	
+
+	public void solve(Container curContainer) {
+		ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
+		if (curContainer.getMyCell() instanceof Life) {
+			int cnt = this.numberLiveNeighbor(myNeighbor);
+			if (cnt==2 || cnt==3) {
+				curContainer.getNext().setCell(new Life());
+			} else {
+				curContainer.getNext().setCell(new EmptyCell());
+			}
+		}
+
+		if (curContainer.getMyCell() instanceof EmptyCell) {
+			int cnt = this.numberLiveNeighbor(myNeighbor);
+			if (cnt==3) {
+				curContainer.getNext().setCell(new Life());
+			} else { 
+				curContainer.getNext().setCell(new EmptyCell());
+			}
 		}
 	}
+
+	@Override
+	public boolean check(Cell cell) {
+		// TODO Auto-generated method stub
+		return cell instanceof Life;
+	}
+	
 }
