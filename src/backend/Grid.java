@@ -52,4 +52,12 @@ public class Grid {
 	public void setSize(int size) {
 		this.size = size;
 	}
+
+	public ArrayList<Container> getContainerlist() {
+		return containerlist;
+	}
+
+	public void setContainerlist(ArrayList<Container> containerlist) {
+		this.containerlist = containerlist;
+	}
 }
