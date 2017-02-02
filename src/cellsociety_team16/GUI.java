@@ -74,8 +74,8 @@ public class GUI extends Application{
 	private GridPane setUpGrid(){
 		mySimulation = new Simulation();
 		GridPane grid = new GridPane();
-		myGridRows = rows;
-		myGridColumns = columns;
+		myGridRows = mySimulation.rows;
+		myGridColumns = mySimulation.columns;
 		grid.setPadding(new Insets(padding));
 		int sideSize = SCREENWIDTH/myGridRows - padding;
 		
