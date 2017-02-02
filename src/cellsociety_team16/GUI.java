@@ -8,7 +8,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
 /**
  * Loads the UI for Cell Society interface
  * @author Elbert
@@ -23,10 +25,16 @@ public class GUI extends Application{
 
 	private Scene myScene;
 	// Sets the padding for the grid
-	private int padding = 5;
+	private int padding = SCREENWIDTH/10;
 	private int myGridRows, myGridColumns;
 	private String mySimType;
-	private Simulation mySimulation;
+	private int bottomPadding = SCREENWIDTH/4;
+	//private Simulation mySimulation;
+	public void GUI(){
+		Stage newStage = new Stage();
+		this.start(newStage);
+	}
+	
 	/**
 	 * Initialize the display and updates
 	 */
@@ -62,34 +70,48 @@ public class GUI extends Application{
 		// Sets default slider location
 		speedSlider.setValue(50);
 		speedSlider.setBlockIncrement(10);
-		Grid myGrid = setUpGrid();
+		Group myGrid = setUpGrid();
+		root.getChildren().add(myGrid);
 		return myScene;
 	}
 	/**
 	 * Draws and colors and grid of squares
-	 * @param rows is the number of rows in the grid
-	 * @param columns is the number of columns
 	 * @return a new grid object
 	 */
-	private GridPane setUpGrid(){
-		mySimulation = new Simulation();
-		GridPane grid = new GridPane();
-		myGridRows = mySimulation.rows;
-		myGridColumns = mySimulation.columns;
-		grid.setPadding(new Insets(padding));
-		int sideSize = SCREENWIDTH/myGridRows - padding;
+	private Group setUpGrid(){
+		//mySimulation = new getSimulation(dataFile);
+		//GridPane grid = new GridPane();
+		Group grid = new Group();
+		//myGridRows = mySimulation.getRows();
+		myGridRows = 15;
+		myGridColumns = 3;
+		//myGridColumns = mySimulation.getColumns();
+		
+		int sideSize = Math.min((SCREENWIDTH-padding*2)/myGridColumns, (SCREENHEIGHT - bottomPadding - padding)/myGridRows);
+		
+		for(int row_iter = 0; row_iter < myGridRows; row_iter++){
+			//determines place on the screen
+			int rowLoc = row_iter*sideSize + padding;
+		for(int col_iter = 0; col_iter < myGridColumns; col_iter++){
+	//if not empty
+						Rectangle r = new Rectangle( col_iter*sideSize + padding, rowLoc, sideSize, sideSize);
+			//r.setFill(mySimulation.getTypeColor);	
+						r.setFill(Color.rgb(15*row_iter, 15*col_iter, 0));
+			grid.getChildren().add(r);
+			}
+		}
 		
 		return grid;
 	}
 	/**
 	 * Figures out starting positions
 	 */
-	private int[] initLocs(){
-		
-	}
-	
+//	private int[] initLocs(){
+//		
+//	}
+//	
 	/**
-	 * Runs the program
+	 * Runs the program, for testing this individual segment
 	 */
 	public static void main(String[] args){
 		launch(args);
