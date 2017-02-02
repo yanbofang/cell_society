@@ -83,7 +83,7 @@ public class GUI extends Application{
 		//GridPane grid = new GridPane();
 		Group grid = new Group();
 		//myGridRows = mySimulation.getRows();
-		myGridRows = 15;
+		myGridRows = 5;
 		myGridColumns = 3;
 		//myGridColumns = mySimulation.getColumns();
 		
@@ -110,10 +110,4 @@ public class GUI extends Application{
 //		
 //	}
 //	
-	/**
-	 * Runs the program, for testing this individual segment
-	 */
-	public static void main(String[] args){
-		launch(args);
-	}
 }
