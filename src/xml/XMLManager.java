@@ -16,14 +16,15 @@ public class XMLManager extends Application{
 
     // it is generally accepted behavior that the chooser remembers where user left it last
     private FileChooser myChooser = makeChooser(DATA_FILE_EXTENSION);
+    private File dataFile;
 
 
     @Override
     public void start (Stage primaryStage) throws Exception {
-        File dataFile = myChooser.showOpenDialog(primaryStage);
+        dataFile = myChooser.showOpenDialog(primaryStage);
         if (dataFile != null) {
             try {
-                System.out.println(new XMLParser().getSimulation(dataFile));
+	            System.out.println(new XMLParser().getSimulation(dataFile));
             }
             catch (XMLException e) {
                 Alert a = new Alert(AlertType.ERROR);
@@ -38,6 +39,10 @@ public class XMLManager extends Application{
             Platform.exit();
         }
     }
+    
+    public Simulation getSimulation(){
+    	return new XMLParser().getSimulation(dataFile);
+    }
 
     // set some sensible defaults when the FileChooser is created
     private FileChooser makeChooser (String extensionAccepted) {
@@ -47,10 +52,5 @@ public class XMLManager extends Application{
         result.setInitialDirectory(new File(System.getProperty("user.dir")));
         result.getExtensionFilters().setAll(new ExtensionFilter("Text Files", extensionAccepted));
         return result;
-    }
-
-
-    public static void main (String[] args) {
-        launch(args);
     }
 }
