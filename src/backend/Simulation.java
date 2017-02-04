@@ -16,7 +16,7 @@ public class Simulation {
 		}
 		Grid nextRoundGrid = new Grid(n,m);
 		thisRoundGrid.connectWith(nextRoundGrid);
-		WaTorHandler a = new WaTorHandler();
+		SpreadingFireHandler a = new SpreadingFireHandler();
 		a.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
 		System.out.println();
@@ -33,9 +33,9 @@ public class Simulation {
 				for (int k=0; k<a.size();k++) {
 					if (i*m+j==a.get(k)) {
 						if (i % 2==0) 
-							this.thisRoundGrid.getContainer(i*m+j).setCell(new Fish());
+							this.thisRoundGrid.getContainer(i*m+j).setCell(new Tree());
 						else 
-							this.thisRoundGrid.getContainer(i*m+j).setCell(new Shark());
+							this.thisRoundGrid.getContainer(i*m+j).setCell(new Fire());
 						flag=true;
 						break;
 					}

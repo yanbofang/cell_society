@@ -38,7 +38,7 @@ public abstract class Handler {
 		int cnt=0;
 		for (int i=0;i<myNeighbor.size();i++) {
 			Container curNeighbor = myNeighbor.get(i);
-			if (!curNeighbor.getNext().isLocked() && this.check(predicate, curNeighbor.getMyCell() )) cnt++;
+			if (this.check(predicate, curNeighbor.getMyCell() )) cnt++;
 		}
 		return cnt;
 	}
