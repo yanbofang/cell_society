@@ -14,8 +14,8 @@ public class Main extends Application{
 		// TODO Auto-generated method stub
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
-		Simulation simulation = xml.getSimulation();
-		GUI gui = new GUI(simulation);
+		SimulationModel mySimulation = new SimulationModel(xml.getSimulation());
+		GUI gui = new GUI(mySimulation);
 		gui.start(primaryStage);
 		
 		

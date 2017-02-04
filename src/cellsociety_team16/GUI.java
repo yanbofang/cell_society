@@ -1,5 +1,7 @@
 package cellsociety_team16;
 
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -32,10 +34,11 @@ public class GUI extends Application {
 	private String mySimType;
 	private int bottomPadding = SCREENWIDTH / 4;
 	
-	private Simulation mySimulation;
+	private SimulationModel mySimulation;
+	private List<Color> myColors;
 
 	// private Simulation mySimulation;
-	public GUI(Simulation simulation) {
+	public GUI(SimulationModel simulation) {
 		mySimulation = simulation;
 		Stage newStage = new Stage();
 		this.start(newStage);
@@ -82,6 +85,7 @@ public class GUI extends Application {
 		// Sets default slider location
 		speedSlider.setValue(50);
 		speedSlider.setBlockIncrement(10);
+		mySimulation.setRandomPositions();
 		Group myGrid = setUpGrid();
 		root.getChildren().add(myGrid);
 		return myScene;
@@ -101,6 +105,10 @@ public class GUI extends Application {
 		//myGridRows = 15;
 		//myGridColumns = 3;
 		myGridColumns = mySimulation.getCols();
+		
+		myColors = mySimulation.getColors();
+		
+		int index = 0;
 
 		int sideSize = Math.min((SCREENWIDTH - padding * 2) / myGridColumns,
 				(SCREENHEIGHT - bottomPadding - padding) / myGridRows);
@@ -111,9 +119,10 @@ public class GUI extends Application {
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				// if not empty
 				Rectangle r = new Rectangle(col_iter * sideSize + padding, rowLoc, sideSize, sideSize);
-				// r.setFill(mySimulation.getTypeColor);
-				r.setFill(Color.rgb(15 * row_iter, 15 * col_iter, 0));
+				r.setFill(myColors.get(index));
+				//r.setFill(Color.rgb(15 * row_iter, 15 * col_iter, 0));
 				cells.getChildren().add(r);
+				index ++;
 			}
 		}
 		return cells;

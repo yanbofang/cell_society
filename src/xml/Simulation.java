@@ -18,7 +18,7 @@ public class Simulation {
 	// object
 	// simple way to create an immutable list
 	public static final List<String> DATA_FIELDS = Arrays
-			.asList(new String[] { "name", "author", "rows", "cols", "activeX", "activeY" });
+			.asList(new String[] { "name", "author", "rows", "cols", "activePercentage", "inactivePercentage", "emptyPercentage", "activeX", "activeY" });
 
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
@@ -44,13 +44,25 @@ public class Simulation {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(3)));
 	}
 	
+	public double getActivePercentage(){
+		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(4)));
+	}
+	
+	public double getInactivePercentage(){
+		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(5)));
+	}
+	
+	public double getEmptyPercentage(){
+		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(6)));
+	}
+	
 	public ArrayList<Integer> getActiveX(){
-		String ints = myDataValues.get(DATA_FIELDS.get(4));
-		ArrayList<Integer> xPos = new ArrayList<Integer>();
-		for(int i = 0; i < ints.length(); i++){
-			xPos.add(Integer.parseInt(ints.substring(i, i+1)));
-		}
-		return xPos;
+			String ints = myDataValues.get(DATA_FIELDS.get(4));
+			ArrayList<Integer> xPos = new ArrayList<Integer>();
+			for(int i = 0; i < ints.length(); i++){
+				xPos.add(Integer.parseInt(ints.substring(i, i+1)));
+			}
+			return xPos;
 	}
 
 	public ArrayList<Integer> getActiveY(){
