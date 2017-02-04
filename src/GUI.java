@@ -248,6 +248,7 @@ public class GUI extends Application {
 	/**
 	 * Runs the program, for testing this individual segment
 	 */
+	// for testing
 	public static void main(String[] args) {
 		launch(args);
 	}
