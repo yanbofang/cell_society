@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import xml.*;
 import cellsociety_team16.*;
+import cellsociety_team16.GUI;
 public class Main extends Application{
 	
 	
