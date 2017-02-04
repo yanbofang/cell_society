@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import xml.*;
 import cellsociety_team16.*;
+import cellsociety_team16.GUI;
 public class Main extends Application{
 	
 	
@@ -14,8 +15,8 @@ public class Main extends Application{
 		// TODO Auto-generated method stub
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
-		Simulation simulation = xml.getSimulation();
-		GUI gui = new GUI(simulation);
+		SimulationModel mySimulation = new SimulationModel(xml.getSimulation());
+		GUI gui = new GUI(mySimulation);
 		gui.start(primaryStage);
 		
 		

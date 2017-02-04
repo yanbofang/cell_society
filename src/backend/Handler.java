@@ -1,8 +1,10 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public abstract class Handler {
+	
 	
 	private Grid thisRoundGrid;
 	private Grid nextRoundGrid;
@@ -32,15 +34,18 @@ public abstract class Handler {
 		return emptyNeighborList;
 	}
 	
-	public int numberLiveNeighbor(ArrayList<Container> myNeighbor) {
+	public int numberLiveNeighbor(ArrayList<Container> myNeighbor, Predicate<String> predicate) {
 		int cnt=0;
 		for (int i=0;i<myNeighbor.size();i++) {
 			Container curNeighbor = myNeighbor.get(i);
-			if (this.check(curNeighbor.getMyCell())) cnt++;
+			if (!curNeighbor.getNext().isLocked() && this.check(predicate, curNeighbor.getMyCell() )) cnt++;
 		}
 		return cnt;
 	}
 
 	public abstract void solve(Container curContainer);
-	public abstract boolean check(Cell cell);
+	
+	public boolean check(Predicate<String> predicate, Cell cell) {
+		return predicate.test(cell.getIdentity());
+	}
 }
