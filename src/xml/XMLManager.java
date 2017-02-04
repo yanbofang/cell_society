@@ -31,8 +31,6 @@ public class XMLManager extends Application{
                 a.setContentText(String.format("ERROR reading file %s", dataFile.getPath()));
                 a.showAndWait();
             }
-            // silly trick to select data file multiple times for this demo
-            start(primaryStage);
         }
         else {
             // nothing selected, so quit the application

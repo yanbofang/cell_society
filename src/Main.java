@@ -3,6 +3,8 @@ import javafx.stage.Stage;
 import xml.*;
 import cellsociety_team16.*;
 public class Main extends Application{
+	
+	
 	public static void main (String[] args){
 		launch(args);
 	}
@@ -13,7 +15,7 @@ public class Main extends Application{
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
 		Simulation simulation = xml.getSimulation();
-		GUI gui = new GUI();
+		GUI gui = new GUI(simulation);
 		gui.start(primaryStage);
 		
 		

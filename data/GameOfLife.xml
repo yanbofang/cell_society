@@ -2,8 +2,9 @@
 <data type="Simulation">
     <name>Game of Life</name>
     <author>Xingyu Chen</author>
-    <rows>10</rows>
-    <cols>10</cols>
+    <rows>5</rows>
+    <cols>5</cols>
+
     <activeX>
 	    <x>1</x>
 	    <x>2</x>
