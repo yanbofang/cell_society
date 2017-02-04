@@ -1,5 +1,6 @@
 
 import java.util.ResourceBundle;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -52,14 +53,15 @@ public class GUI extends Application {
 	private int gridSideSize;
 	//TODO may make a visualizationWindow class
 	private Node myGrid;
+	private List<Color> myColors;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
 	// get data on cell
 	// TODO go from Simulation to SimulationModel
-	private Simulation mySimulationModel;
+	private SimulationModel mySimulationModel;
 
-	public void GUI(Simulation simulation, String language) {
+	public void GUI(SimulationModel simulation, String language) {
 		mySimulationModel = simulation;
 		//TODO figure out why it is not seeing resources as accessible
 		//for testing:
@@ -84,7 +86,7 @@ public class GUI extends Application {
 
 	/**
 	 * Sets up and arranges the window
-	 * 
+	 * Calls once
 	 * @param width
 	 *            sets window width
 	 * @param height
@@ -108,6 +110,7 @@ public class GUI extends Application {
 		//TODO figure out why the two lines below are such a problem
 		//root.getCenter().prefHeight(gridSideSize);
 		//root.getCenter().prefWidth(gridSideSize);
+mySimulationModel.setRandomPositions();
 		myGrid = setUpGrid(gridSideSize);
 		root.setCenter(myGrid);
 
@@ -128,11 +131,15 @@ public class GUI extends Application {
 		// mySimulation = new getSimulation(dataFile);
 		// GridPane grid = new GridPane();
 		Group cells = new Group();
-		//myGridRows = mySimulationModel.getRows();
-		//myGridColumns = mySimulationModel.getCols();
+		myGridRows = mySimulationModel.getRows();
+		myGridColumns = mySimulationModel.getCols();
+		myColors = mySimulationModel.getColors();
 		//for testing:
-		myGridRows = 5;
-		myGridColumns = 5;
+		//myGridRows = 5;
+		//myGridColumns = 5;
+		
+		int index = 0;
+		
 		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
@@ -140,10 +147,11 @@ public class GUI extends Application {
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				// if not empty
 				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
-				// r.setFill(mySimulationModel.getTypeColor);
+				 r.setFill(myColors.get(index));
 				// for testing:
-				r.setFill(Color.rgb(15 * row_iter, 15 * col_iter, 0));
+				//r.setFill(Color.rgb(15 * row_iter, 15 * col_iter, 0));
 				cells.getChildren().add(r);
+				index ++;
 			}
 		}
 		return cells;
