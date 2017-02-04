@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import xml.Simulation;
 
 /**
  * Loads the UI for Cell Society interface
@@ -30,9 +31,12 @@ public class GUI extends Application {
 	private int myGridRows, myGridColumns;
 	private String mySimType;
 	private int bottomPadding = SCREENWIDTH / 4;
+	
+	private Simulation mySimulation;
 
 	// private Simulation mySimulation;
-	public void GUI() {
+	public GUI(Simulation simulation) {
+		mySimulation = simulation;
 		Stage newStage = new Stage();
 		this.start(newStage);
 	}
@@ -88,14 +92,15 @@ public class GUI extends Application {
 	 * 
 	 * @return a new grid object
 	 */
+
 	private Group setUpGrid() {
 		// mySimulation = new getSimulation(dataFile);
 		// GridPane grid = new GridPane();
 		Group cells = new Group();
-		// myGridRows = mySimulation.getRows();
-		myGridRows = 15;
-		myGridColumns = 3;
-		// myGridColumns = mySimulation.getColumns();
+		myGridRows = mySimulation.getRows();
+		//myGridRows = 15;
+		//myGridColumns = 3;
+		myGridColumns = mySimulation.getCols();
 
 		int sideSize = Math.min((SCREENWIDTH - padding * 2) / myGridColumns,
 				(SCREENHEIGHT - bottomPadding - padding) / myGridRows);
