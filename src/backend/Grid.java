@@ -12,6 +12,8 @@ public class Grid {
 	public static final int[] POSX={-1,0,1,0,-1,1,-1,1};
 	public static final int[] POSY={0,-1,0,1,-1,-1,1,1};
 	
+	private int neighborDefn=4;
+	
 	public Grid(int n, int m) {
 		this.size = n*m;
 		for (int i=0;i<size;i++) {
@@ -24,7 +26,7 @@ public class Grid {
 			int y=i % m;
 			tempContainer.setPosX(x);
 			tempContainer.setPosY(y);
-			for (int k=0;k<POSX.length;k++) {
+			for (int k=0;k<this.neighborDefn;k++) {
 				int xx=x+POSX[k];
 				int yy=y+POSY[k];
 				if (xx>=n || xx<0 || yy<0 || yy>=m) continue;
@@ -59,5 +61,13 @@ public class Grid {
 
 	public void setContainerlist(ArrayList<Container> containerlist) {
 		this.containerlist = containerlist;
+	}
+
+	public int getNeighborDefn() {
+		return neighborDefn;
+	}
+
+	public void setNeighborDefn(int neighborDefn) {
+		this.neighborDefn = neighborDefn;
 	}
 }

@@ -16,12 +16,13 @@ public class Simulation {
 		}
 		Grid nextRoundGrid = new Grid(n,m);
 		thisRoundGrid.connectWith(nextRoundGrid);
-		SegregationHandler a = new SegregationHandler();
-		a.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 2);
+		WaTorHandler a = new WaTorHandler();
+		a.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
 		System.out.println();
 		return thisRoundGrid.getContainerlist();
 	}
+	
 	public void setInitialGrid(ArrayList<Integer> a, int n, int m) {
 		this.thisRoundGrid = new Grid(n,m);
 		this.n=n;
@@ -31,7 +32,10 @@ public class Simulation {
 				boolean flag = false;
 				for (int k=0; k<a.size();k++) {
 					if (i*m+j==a.get(k)) {
-						this.thisRoundGrid.getContainer(i*m+j).setCell(new People());
+						if (i % 2==0) 
+							this.thisRoundGrid.getContainer(i*m+j).setCell(new Fish());
+						else 
+							this.thisRoundGrid.getContainer(i*m+j).setCell(new Shark());
 						flag=true;
 						break;
 					}
