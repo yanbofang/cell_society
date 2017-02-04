@@ -27,7 +27,7 @@ public abstract class Handler {
 		ArrayList<Container> emptyNeighborList = new ArrayList<>();
 		for (int i=0;i<thisRoundGrid.getSize();i++) {
 			Container curContainer = thisRoundGrid.getContainer(i);
-			if (curContainer.getMyCell() instanceof EmptyCell && !curContainer.getNext().isLocked()) {
+			if (curContainer.getMyCell().is("EmptyCell") && !curContainer.getNext().isLocked()) {
 				emptyNeighborList.add(curContainer);
 			}
 		}
@@ -38,7 +38,7 @@ public abstract class Handler {
 		int cnt=0;
 		for (int i=0;i<myNeighbor.size();i++) {
 			Container curNeighbor = myNeighbor.get(i);
-			if (!curNeighbor.getNext().isLocked() && this.check(predicate, curNeighbor.getMyCell() )) cnt++;
+			if (this.check(predicate, curNeighbor.getMyCell() )) cnt++;
 		}
 		return cnt;
 	}

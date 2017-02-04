@@ -9,7 +9,7 @@ public class SegregationHandler extends Handler {
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub
 		ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
-		if (curContainer.getMyCell() instanceof People) {
+		if (curContainer.getMyCell().is("People")) {
 			Predicate<String> function = s-> s.compareTo("People")==0;
 			int cnt = this.numberLiveNeighbor(myNeighbor, function);
 
@@ -30,7 +30,7 @@ public class SegregationHandler extends Handler {
 			}
 		}
 
-		if (curContainer.getMyCell() instanceof EmptyCell) {
+		if (curContainer.getMyCell().is("EmptyCell") ) {
 			curContainer.getNext().setCell(new EmptyCell());
 			curContainer.getNext().setLocked(true);
 		}
