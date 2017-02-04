@@ -1,15 +1,15 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.function.Predicate;
 
 public class GameOfLifeHandler extends Handler {	
 
 	public void solve(Container curContainer) {
 		ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
 		if (curContainer.getMyCell() instanceof Life) {
-			int cnt = this.numberLiveNeighbor(myNeighbor);
+			Predicate<String> function = s-> s.compareTo("Life")==0;
+			int cnt = this.numberLiveNeighbor(myNeighbor, function);
 			if (cnt==2 || cnt==3) {
 				curContainer.getNext().setCell(new Life());
 			} else {
@@ -18,7 +18,8 @@ public class GameOfLifeHandler extends Handler {
 		}
 
 		if (curContainer.getMyCell() instanceof EmptyCell) {
-			int cnt = this.numberLiveNeighbor(myNeighbor);
+			Predicate<String> function = s-> s.compareTo("Life")==0;
+			int cnt = this.numberLiveNeighbor(myNeighbor, function);
 			if (cnt==3) {
 				curContainer.getNext().setCell(new Life());
 			} else { 
@@ -26,11 +27,4 @@ public class GameOfLifeHandler extends Handler {
 			}
 		}
 	}
-
-	@Override
-	public boolean check(Cell cell) {
-		// TODO Auto-generated method stub
-		return cell instanceof Life;
-	}
-	
 }

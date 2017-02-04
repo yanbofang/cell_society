@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.function.Predicate;
 
 public class SegregationHandler extends Handler {
 	private double percent=0.3;
@@ -9,7 +10,9 @@ public class SegregationHandler extends Handler {
 		// TODO Auto-generated method stub
 		ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
 		if (curContainer.getMyCell() instanceof People) {
-			int cnt = this.numberLiveNeighbor(myNeighbor);
+			Predicate<String> function = s-> s.compareTo("People")==0;
+			int cnt = this.numberLiveNeighbor(myNeighbor, function);
+
 			if (((double)cnt)/8>=percent) {
 				System.out.println(curContainer.getPosX()+" "+curContainer.getPosY()+" "+cnt);
 				curContainer.getNext().setCell(curContainer.getMyCell());
@@ -31,12 +34,6 @@ public class SegregationHandler extends Handler {
 			curContainer.getNext().setCell(new EmptyCell());
 			curContainer.getNext().setLocked(true);
 		}
-	}
-
-	@Override
-	public boolean check(Cell cell) {
-		// TODO Auto-generated method stub
-		return (cell instanceof People);
 	}
 
 }

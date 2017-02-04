@@ -48,7 +48,7 @@ public class Container {
 
 	public void setMyCell(Cell myCell) {
 		this.myCell = myCell;
-		myCell.setContainer(this);
+		myCell.setMyContainer(this);
 	}
 
 	public boolean isLocked() {
