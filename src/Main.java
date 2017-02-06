@@ -16,9 +16,7 @@ public class Main extends Application{
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
 		SimulationModel mySimulation = new SimulationModel(xml.getSimulation());
-		GUI gui = new GUI(mySimulation);
+		GUI gui = new GUI(mySimulation, "English");
 		gui.start(primaryStage);
-		
-		
 	}
 }
