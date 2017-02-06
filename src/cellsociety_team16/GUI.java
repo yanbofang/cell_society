@@ -62,7 +62,7 @@ public class GUI extends Application {
 	// TODO go from Simulation to SimulationModel
 	private SimulationModel mySimulationModel;
 
-	public void GUI(SimulationModel simulation, String language) {
+	public GUI(SimulationModel simulation, String language) {
 		mySimulationModel = simulation;
 		//TODO figure out why it is not seeing resources as accessible
 		//for testing:

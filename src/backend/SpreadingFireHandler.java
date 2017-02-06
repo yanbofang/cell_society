@@ -7,6 +7,11 @@ public class SpreadingFireHandler extends Handler {
 	private double fireProb=0.8;
 	private double treeProb=0.2;
 	
+	public SpreadingFireHandler(double fireProb, double treeProb) {
+		this.fireProb=fireProb;
+		this.treeProb=treeProb;
+	}
+	
 	@Override
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub
@@ -18,14 +23,11 @@ public class SpreadingFireHandler extends Handler {
 			ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
 			Predicate<String> function = s -> s.compareTo("Fire") == 0;
 			int fireCnt = this.numberLiveNeighbor(myNeighbor, function);
-			//System.out.println(curContainer.getPosX()+" "+curContainer.getPosY()+" "+fireCnt);
 			boolean fired=false;
 			if (fireCnt>0) {
 				for (int i = 0; i < myNeighbor.size(); i++) {
 					Container curNeighbor=myNeighbor.get(i);
-					//System.out.println(curNeighbor.getPosX()+" "+curNeighbor.getPosY()+" "+curNeighbor.getMyCell().getIdentity());
 					if (curNeighbor.getMyCell().is("Fire")) {
-						//System.out.println((Math.random() * 1.0)>fireProb);
 						boolean fireHappened = (Math.random() * 1.0)<fireProb;
 						if (fireHappened) {
 							curContainer.getNext().setCell(new Fire());
