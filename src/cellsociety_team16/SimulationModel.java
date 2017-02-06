@@ -8,9 +8,15 @@ import java.util.Random;
 
 import javafx.scene.paint.Color;
 
-import xml.Simulation;
+import xml.XMLSimulation;
 
-public class SimulationModel {
+/**
+ * Simulation Model
+ * 
+ * @author Yanbo Fang
+ *
+ */
+public abstract class SimulationModel {
 
 	public static final Color ACTIVE_COLOR = Color.RED;
 	public static final Color INACTIVE_COLOR = Color.GREEN;
@@ -25,7 +31,7 @@ public class SimulationModel {
 	private List<Integer> positions;
 	private List<Color> colors;
 
-	public SimulationModel(Simulation simulation) {
+	public SimulationModel(XMLSimulation simulation) {
 		name = simulation.getName();
 		rows = simulation.getRows();
 		cols = simulation.getCols();
@@ -51,7 +57,7 @@ public class SimulationModel {
 	 * 
 	 * @param percentage
 	 */
-	public void setActivePercentage(double percentage) {
+	void setActivePercentage(double percentage) {
 		this.activePercentage = percentage;
 	}
 
@@ -74,7 +80,9 @@ public class SimulationModel {
 	}
 
 	/**
-	 * Get the state of each cell in the grid
+	 * Get the state of each cell in the grid, the value at a specific index
+	 * signifies the state of that cell: 0 is empty, 1 is inactive, and 2 is
+	 * active
 	 * 
 	 * @return
 	 */
@@ -102,7 +110,7 @@ public class SimulationModel {
 	}
 
 	private List<Color> setColors() {
-		Color[] arry = new Color[rows*cols];
+		Color[] arry = new Color[rows * cols];
 		for (int i = 0; i < positions.size(); i++) {
 			if (positions.get(i) == 0) {
 				arry[i] = EMPTY_COLOR;
@@ -121,7 +129,7 @@ public class SimulationModel {
 	 * @return
 	 */
 	public void setRandomPositions() {
-		Integer[] arry = new Integer[rows*cols];
+		Integer[] arry = new Integer[rows * cols];
 		Arrays.fill(arry, -1);
 		positions = Arrays.asList(arry);
 		randomize(activePercentage, 2, positions);
@@ -142,8 +150,8 @@ public class SimulationModel {
 				count++;
 			}
 		}
-		for(int i = 0; i<numofCells; i++){
-			if(arry[i] != -1){
+		for (int i = 0; i < numofCells; i++) {
+			if (arry[i] != -1) {
 				lst.set(i, arry[i]);
 			}
 		}

@@ -2,6 +2,7 @@ package xml;
 
 import java.io.File;
 
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -9,6 +10,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+
+import cellsociety_team16.*;
 
 public class XMLManager extends Application{
 	 // kind of data files to look for
@@ -38,10 +41,29 @@ public class XMLManager extends Application{
         }
     }
     
-    public Simulation getSimulation(){
+    public XMLSimulation getSimulation(){
     	return new XMLParser().getSimulation(dataFile);
     }
 
+    
+    public SimulationModel getSimulationModel(){
+    	XMLSimulation xml = this.getSimulation();
+    	if(xml.getName().equals("GameOfLife")){
+    		return new GameOfLifeModel(xml);
+    	}
+    	else if(xml.getName().equals("SpreadingFire")){
+    		return new SpreadingFireModel(xml);
+    	}
+    	else if(xml.getName().equals("Segregation")){
+    		return new SegregationModel(xml);
+    	}
+    	else if(xml.getName().equals("WaTor")){
+    		return new WaTorModel(xml);
+    	}
+    	return null;
+    }
+    
+    
     // set some sensible defaults when the FileChooser is created
     private FileChooser makeChooser (String extensionAccepted) {
         FileChooser result = new FileChooser();

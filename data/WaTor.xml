@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="Simulation">
-    <name>GameOfLife</name>
+    <name>WaTor</name>
     <author>Xingyu Chen</author>
     <rows>5</rows>
     <cols>5</cols>
     <activePercentage>0.2</activePercentage>
 	<inactivePercentage>0.4</inactivePercentage>
 	<emptyPercentage>0.4</emptyPercentage>
+	<fishBreed>3</fishBreed>
+	<sharkBreed>4</sharkBreed>
 </data>

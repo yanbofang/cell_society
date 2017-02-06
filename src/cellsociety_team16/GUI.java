@@ -22,7 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import xml.Simulation;
+import xml.XMLSimulation;
 
 /**
  * Loads the UI for Cell Society interface
@@ -111,7 +111,7 @@ public class GUI extends Application {
 		//TODO figure out why the two lines below are such a problem
 		//root.getCenter().prefHeight(gridSideSize);
 		//root.getCenter().prefWidth(gridSideSize);
-mySimulationModel.setRandomPositions();
+		mySimulationModel.setRandomPositions();
 		myGrid = setUpGrid(gridSideSize);
 		root.setCenter(myGrid);
 
