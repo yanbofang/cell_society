@@ -2,6 +2,9 @@ package cellsociety_team16;
 
 import java.util.ResourceBundle;
 import java.util.List;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import xml.XMLManager;
 
 /**
@@ -37,7 +41,7 @@ public class GUI {
 	public static final int SCREENWIDTH = 500;
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
-	public static final Paint BACKGROUND = Color.WHITE;
+	public static final Paint BACKGROUND = Color.ALICEBLUE;
 	public static final String XML_GAME_OF_LIFE = "GameofLife";
 	public static final String XML_SEGREGATION = "Segregation";
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
@@ -48,14 +52,14 @@ public class GUI {
 	//
 
 	private int myGridRows, myGridColumns;
-	private String mySimType;
+	private String mySimulationType;
 	// user input fields
 	private Button myPlayButton;
 	private Button myPauseButton;
 	private Button myStepButton;
 	private Button myResetButton;
 	private Slider mySpeedSlider;
-	private ComboBox<String> chooseSimulation;
+	private ComboBox<String> mySimulationChooser;
 	private ObservableList<String> mySimulationTypes = FXCollections.observableArrayList(XML_GAME_OF_LIFE,
 			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD);
 	private int gridSideSize;
@@ -122,7 +126,7 @@ public class GUI {
 		// root.getCenter().prefWidth(gridSideSize);
 
 		// set up space for user input and buttons
-		// must do before initiate the grid so chooseSimulation combBox is
+		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
 		root.setBottom(setUpUserInput(width));
 		// resets grid - TODO may be redundant
@@ -170,10 +174,10 @@ public class GUI {
 	private Node setUpUserInput(int width) {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
-		chooseSimulation = new ComboBox<String>(mySimulationTypes);
+		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aesthetic purposes
-		chooseSimulation.setVisibleRowCount(4);
-		chooseSimulation.valueProperty().addListener(new ChangeListener<String>() {
+		mySimulationChooser.setVisibleRowCount(4);
+		mySimulationChooser.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
@@ -181,7 +185,7 @@ public class GUI {
 			}
 		});
 		// default simulation is game of life
-		chooseSimulation.setValue(XML_GAME_OF_LIFE);
+		mySimulationChooser.setValue(XML_GAME_OF_LIFE);
 		myResetButton = makeButton("ResetCommand", event -> resetGrid());
 		// creates the play/pause toggle button
 		// myPlayButton = makeButton("PlayCommand", event -> play());
@@ -206,7 +210,7 @@ public class GUI {
 		mySpeedSlider.setBlockIncrement(.1);
 		mySpeedSlider.setSnapToTicks(true);
 
-		buttonLine.getChildren().add(chooseSimulation);
+		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
 		buttonLine.getChildren().add(myStepButton);
@@ -263,6 +267,29 @@ public class GUI {
 		return newButton;
 	}
 
+	/**
+	 * Sets the speed the animation runs at
+	 */
+	// private void resetSpeed(Slider slider){
+	// final Timeline timer = new Timeline();
+	// timer.setCycleCount(Timeline.INDEFINITE);
+	//
+	// slider.valueChangingProperty().addListener(new ChangeListener<Double>(){
+	// @Override
+	// public void changed(ObservableValue<? extends double> observed, Double
+	// oldValue, Double newValue){
+	// resetDuration(timer, newValue);
+	// }
+	// });
+	// }
+	/**
+	 * Resets duration of keyframes
+	 */
+//	private void resetDuration(Timeline timer, double interval){
+//		KeyFrame keyframe = new Keyframe(
+//Duration.seconds(MAX_SPEED * interval);
+//);
+//	}
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
 	 */
@@ -330,6 +357,6 @@ public class GUI {
 	 * May or may not use to tell SimulationModel which simulation to run
 	 */
 	public String setSimulationType() {
-		return chooseSimulation.getValue();
+		return mySimulationChooser.getValue();
 	}
 }
