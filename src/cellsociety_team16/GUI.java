@@ -2,7 +2,11 @@ package cellsociety_team16;
 
 import java.util.ResourceBundle;
 import java.util.List;
-
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Worker.State;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,20 +17,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import xml.Simulation;
+import xml.XMLManager;
 
 /**
  * Loads the UI for Cell Society interface
  * 
- * @author ris Elbert
+ * @author Kris Elbert
  *
  */
 // TODO do not extend application if unnecessary
@@ -36,6 +38,10 @@ public class GUI {
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	public static final Paint BACKGROUND = Color.WHITE;
+	public static final String XML_GAME_OF_LIFE = "GameofLife";
+	public static final String XML_SEGREGATION = "Segregation";
+	public static final String XML_SPREADING_FIRE = "SpreadingFire";
+	public static final String XML_WATOR_WORLD = "WaTor";
 
 	// scene to report back to Application
 	private Scene myScene;
@@ -49,7 +55,9 @@ public class GUI {
 	private Button myStepButton;
 	private Button myResetButton;
 	private Slider mySpeedSlider;
-	private ComboBox<String> mySimulationTypes;
+	private ComboBox<String> chooseSimulation;
+	private ObservableList<String> mySimulationTypes = FXCollections.observableArrayList(XML_GAME_OF_LIFE,
+			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD);
 	private int gridSideSize;
 	// TODO may make a visualizationWindow class
 	private Node myGrid;
@@ -62,9 +70,11 @@ public class GUI {
 	private SimulationModel mySimulationModel;
 	private boolean isPaused;
 	// default speed value is in the middle
-	private int mySpeed = 50;
+	private double mySpeed = 50;
+	private XMLManager myXMLManager;
 
 	public GUI(SimulationModel simulation, String language) {
+		// TODO call based on simulation chosen
 		mySimulationModel = simulation;
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		Stage newStage = new Stage();
@@ -74,7 +84,6 @@ public class GUI {
 	/**
 	 * Initialize the display and updates
 	 */
-	// TODO may change to display() to be more descriptive
 	public void display(Stage primaryStage) {
 		Scene scene = setUp(SCREENWIDTH, SCREENHEIGHT, BACKGROUND);
 		primaryStage.setScene(scene);
@@ -105,17 +114,19 @@ public class GUI {
 
 		// set up space for visualization window
 		// set grid extents to a of whichever is smaller, width or height
+		// .75 is arbitrary value for aesthetic purposes
 		gridSideSize = (int) Math.min(height * .75, width * .75);
 		// TODO figure out why the two lines below are such a problem
 		// root.getCenter().prefHeight(gridSideSize);
 		// root.getCenter().prefWidth(gridSideSize);
-		// resets grid - TODO may be redundant
-		mySimulationModel.setRandomPositions();
-		myGrid = setUpGrid(gridSideSize);
-		root.setCenter(myGrid);
 
 		// set up space for user input and buttons
+		// must do before initiate the grid so chooseSimulation combBox is
+		// initiated
 		root.setBottom(setUpUserInput(width));
+		// resets grid - TODO may be redundant
+		myGrid = setUpGrid(gridSideSize);
+		root.setCenter(myGrid);
 
 		return new Scene(root, width, height, color);
 	}
@@ -129,6 +140,10 @@ public class GUI {
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
+
+		String selectedSimulation = chooseSimulation.getValue();
+		mySimulationModel.getSimulationModel(selectedSimulation);
+		mySimulationModel.setRandomPositions();
 		// make sure getting original starting colors
 		myColors = mySimulationModel.getColors();
 
@@ -156,10 +171,14 @@ public class GUI {
 	private Node setUpUserInput(int width) {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
-		// mySimulationTypes;
+		chooseSimulation = new ComboBox<String>(mySimulationTypes);
+		// 4 is an arbitrary value for aesthetic purposes
+		chooseSimulation.setVisibleRowCount(4);
+		// default simulation is game of life
+		chooseSimulation.setValue(XML_GAME_OF_LIFE);
 		myResetButton = makeButton("ResetCommand", event -> resetGrid());
 		// creates the play/pause toggle button
-		myPlayButton = makeButton("PlayCommand", event -> play());
+		// myPlayButton = makeButton("PlayCommand", event -> play());
 		// ToggleGroup playPauseGroup = createToggleButton(myPlayButton,
 		// myPauseButton, "PlayCommand", "PauseCommand");
 
@@ -172,6 +191,9 @@ public class GUI {
 		// Sets default slider location
 		mySpeedSlider.setValue(mySpeed);
 		mySpeedSlider.setBlockIncrement(10);
+		mySpeedSlider.setSnapToTicks(true);
+		
+		buttonLine.getChildren().add(chooseSimulation);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
 		buttonLine.getChildren().add(myStepButton);
@@ -211,7 +233,7 @@ public class GUI {
 	// //myResetButton.setDisable(value);
 	// myPlayButton.setSelected(true);
 	// }
-	//
+
 	/**
 	 * Creates a button
 	 * 
@@ -250,16 +272,51 @@ public class GUI {
 	/**
 	 * Pauses, plays, or resumes the simulation Triggered by a button
 	 */
-	 private void play() {
-	isPaused = false;
-	myPauseButton.display();
-	for(duration % mySpeed == 0){
-		step();
+	private void play() {
+		isPaused = !isPaused;
+		if (isPaused) {
+			myPlayButton.setText(myResources.getString("PlayCommand"));
+			// showAndWait();
+		} else {
+			myPlayButton.setText(myResources.getString("PauseCommand"));
+			mySpeed = mySpeedSlider.getValue();
+			// for(duration % mySpeed == 0){
+			step();
+			// }
+		}
 	}
+
+	private void pause() {
+		isPaused = true;
+		// myPauseButton.getContentDisplay();
+
 	}
-	 private void pause(){
-		 isPaused = true;
-		 myPauseButton.getContentDisplay();
-		 
-	 }
+
+	/**
+	 * Inner class deals with clicks based on
+	 * http://blogs.kiyut.com/tonny/2013/07/30/javafx-webview-addhyperlinklistener/
+	 * and BrowserView by
+	 * 
+	 * @author Owen Astrachan
+	 * @author Marcin Dobosz
+	 * @author Yuzhang Han
+	 * @author Edwin Ward
+	 * @author Robert C. Duvall
+	 */
+	private class PlayListener implements ChangeListener<State> {
+		public static final String EVENT_CLICK = "click";
+
+		@Override
+		public void changed(ObservableValue<? extends State> observed, State oldState, State newState) {
+			// TODO Auto-generated method stub
+			isPaused = !isPaused;
+		}
+	}
+
+	/**
+	 * May or may not use to tell SimulationModel which simulation to run
+	 */
+	public String setSimulationType() {
+		return chooseSimulation.getValue();
+	}
 }
