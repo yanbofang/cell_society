@@ -70,7 +70,8 @@ public class GUI {
 	private SimulationModel mySimulationModel;
 	private boolean isPaused;
 	// default speed value is in the middle
-	private double mySpeed = 50;
+	private double mySpeedMultiplier = .5;
+	//TODO may not need depending on how SimulationModel is handling things
 	private XMLManager myXMLManager;
 
 	public GUI(SimulationModel simulation, String language) {
@@ -141,8 +142,6 @@ public class GUI {
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
 
-		String selectedSimulation = chooseSimulation.getValue();
-		mySimulationModel.getSimulationModel(selectedSimulation);
 		mySimulationModel.setRandomPositions();
 		// make sure getting original starting colors
 		myColors = mySimulationModel.getColors();
@@ -174,6 +173,13 @@ public class GUI {
 		chooseSimulation = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aesthetic purposes
 		chooseSimulation.setVisibleRowCount(4);
+		chooseSimulation.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
+				// resets the simulation type that will be displayed
+				mySimulationModel.getSimulationModel(newValue);
+			}
+		});
 		// default simulation is game of life
 		chooseSimulation.setValue(XML_GAME_OF_LIFE);
 		myResetButton = makeButton("ResetCommand", event -> resetGrid());
@@ -184,15 +190,22 @@ public class GUI {
 
 		myStepButton = makeButton("StepCommand", event -> step());
 		mySpeedSlider = new Slider();
-		// slider is based on percentages, hence the 0 to 100 and default value
-		// of 50%
+		// slider is based on percentages, hence the 0 to 10 and default value
+		// which then multiplies by duration
 		mySpeedSlider.setMin(0);
-		mySpeedSlider.setMax(100);
+		mySpeedSlider.setMax(1);
 		// Sets default slider location
-		mySpeedSlider.setValue(mySpeed);
-		mySpeedSlider.setBlockIncrement(10);
+		mySpeedSlider.setValue(mySpeedMultiplier);
+		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
+				mySpeedMultiplier = newValue.doubleValue();
+			}
+
+		});
+		mySpeedSlider.setBlockIncrement(.1);
 		mySpeedSlider.setSnapToTicks(true);
-		
+
 		buttonLine.getChildren().add(chooseSimulation);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
@@ -279,7 +292,7 @@ public class GUI {
 			// showAndWait();
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-			mySpeed = mySpeedSlider.getValue();
+
 			// for(duration % mySpeed == 0){
 			step();
 			// }
