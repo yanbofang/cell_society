@@ -7,6 +7,6 @@
     <activePercentage>0.2</activePercentage>
 	<inactivePercentage>0.4</inactivePercentage>
 	<emptyPercentage>0.4</emptyPercentage>
-	<fireProbability>0.3</fireProbability>
+	<fireProbability>0.9</fireProbability>
 	<treeProbability>0.1</treeProbability>
 </data>
