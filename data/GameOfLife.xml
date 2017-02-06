@@ -4,7 +4,7 @@
     <author>Xingyu Chen</author>
     <rows>5</rows>
     <cols>5</cols>
-    <activePercentage>0.2</activePercentage>
+    <activePercentage>0</activePercentage>
 	<inactivePercentage>0.4</inactivePercentage>
-	<emptyPercentage>0.4</emptyPercentage>
+	<emptyPercentage>0.6</emptyPercentage>
 </data>

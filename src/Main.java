@@ -3,6 +3,8 @@ import javafx.stage.Stage;
 import xml.*;
 import cellsociety_team16.*;
 import cellsociety_team16.GUI;
+
+import backend.Simulation;
 /**
  * Run a simulation here
  * @author Yanbo Fang
@@ -19,10 +21,18 @@ public class Main extends Application{
 		// TODO Auto-generated method stub
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
-		SimulationModel mySimulation = xml.getSimulationModel();
-		GUI gui = new GUI(mySimulation, "English");
-		gui.start(primaryStage);
 		
+		SimulationModel mySimulation = xml.getSimulationModel();
+		mySimulation.setRandomPositions();
+		Simulation simTest = new Simulation();
+		simTest.setInitialGrid(mySimulation);
+		for (int i=0;i<100;i++) {
+			simTest.startNewRoundSimulation();
+		}
+		
+		GUI gui = new GUI(mySimulation, "English");
+
+		gui.start(primaryStage);
 		
 	}
 }
