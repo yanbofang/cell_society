@@ -10,8 +10,6 @@ public class Simulation {
 	public Grid thisRoundGrid;
 	private int n=0;
 	private int m=0;
-	//private double fireProb=0;
-	//private double treeProb=0;
 	
 	private Handler myHandler;
 	
