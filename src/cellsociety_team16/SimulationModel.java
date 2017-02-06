@@ -31,6 +31,11 @@ public abstract class SimulationModel {
 	private List<Integer> positions;
 	private List<Color> colors;
 
+	/**
+	 * Constructor for SimulationModel
+	 * 
+	 * @param simulation
+	 */
 	public SimulationModel(XMLSimulation simulation) {
 		name = simulation.getName();
 		rows = simulation.getRows();
@@ -40,14 +45,29 @@ public abstract class SimulationModel {
 		emptyPercentage = simulation.getEmptyPercentage();
 	}
 
+	/**
+	 * Get the name of the Simulation
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Get the number of rows
+	 * 
+	 * @return
+	 */
 	public int getRows() {
 		return this.rows;
 	}
 
+	/**
+	 * Get the number of columns
+	 * 
+	 * @return
+	 */
 	public int getCols() {
 		return this.cols;
 	}
