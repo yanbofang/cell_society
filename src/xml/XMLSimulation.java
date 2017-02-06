@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Yanbo Fang
  * @author Robert C. Duvall
  */
-public class Simulation {
+public class XMLSimulation {
 	// name in data file that will indicate it represents data for this type of
 	// object
 	public static final String DATA_TYPE = "Simulation";
@@ -18,12 +18,12 @@ public class Simulation {
 	// object
 	// simple way to create an immutable list
 	public static final List<String> DATA_FIELDS = Arrays
-			.asList(new String[] { "name", "author", "rows", "cols", "activePercentage", "inactivePercentage", "emptyPercentage", "activeX", "activeY" });
+			.asList(new String[] { "name", "author", "rows", "cols", "activePercentage", "inactivePercentage", "emptyPercentage", "fireProbability", "treeProbability", "satisfactionRate", "fishBreed", "sharkBreed" });
 
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
 
-	public Simulation(Map<String, String> dataValues) {
+	public XMLSimulation(Map<String, String> dataValues) {
 		myDataValues = dataValues;
 	}
 
@@ -56,23 +56,42 @@ public class Simulation {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(6)));
 	}
 	
-	public ArrayList<Integer> getActiveX(){
-			String ints = myDataValues.get(DATA_FIELDS.get(4));
-			ArrayList<Integer> xPos = new ArrayList<Integer>();
-			for(int i = 0; i < ints.length(); i++){
-				xPos.add(Integer.parseInt(ints.substring(i, i+1)));
-			}
-			return xPos;
+	public double getFireProbability(){
+		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(7)));
 	}
-
-	public ArrayList<Integer> getActiveY(){
-		String ints = myDataValues.get(DATA_FIELDS.get(5));
-		ArrayList<Integer> yPos = new ArrayList<Integer>();
-		for(int i = 0; i < ints.length(); i++){
-			yPos.add(Integer.parseInt(ints.substring(i, i+1)));
-		}
-		return yPos;
+	
+	public double getTreeProbability(){
+		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(8)));
 	}
+	
+	public double getSatisfactionRate(){
+		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(9)));
+	}
+	
+	public Integer getFishBreed(){
+		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(10)));
+	}
+	
+	public Integer getSharkBreed(){
+		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
+	}
+//	public ArrayList<Integer> getActiveX(){
+//			String ints = myDataValues.get(DATA_FIELDS.get(4));
+//			ArrayList<Integer> xPos = new ArrayList<Integer>();
+//			for(int i = 0; i < ints.length(); i++){
+//				xPos.add(Integer.parseInt(ints.substring(i, i+1)));
+//			}
+//			return xPos;
+//	}
+//
+//	public ArrayList<Integer> getActiveY(){
+//		String ints = myDataValues.get(DATA_FIELDS.get(5));
+//		ArrayList<Integer> yPos = new ArrayList<Integer>();
+//		for(int i = 0; i < ints.length(); i++){
+//			yPos.add(Integer.parseInt(ints.substring(i, i+1)));
+//		}
+//		return yPos;
+//	}
 	
 	
 	@Override
