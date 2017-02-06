@@ -5,6 +5,10 @@ import java.util.function.Predicate;
 
 public class SegregationHandler extends Handler {
 	private double percent=0.3;
+	
+	public SegregationHandler(double percent) {
+		this.percent=percent;
+	}
 	@Override
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub

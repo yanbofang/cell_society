@@ -7,6 +7,11 @@ public class WaTorHandler extends Handler {
 	private int fishCnt=0;	
 	private int emptyCnt=0;
 	private int sharkCnt=0;
+	private int breedTime=4;
+	
+	public WaTorHandler(int breedTime) {
+		this.breedTime=breedTime;
+	}
 	
 	@Override
 	public void solve(Container curContainer) {
@@ -140,7 +145,7 @@ public class WaTorHandler extends Handler {
 	}
 
 	private boolean readyForBreed(Container a) {
-		return (a.isLocked() && (a.getMyCell().is("Fish") || a.getMyCell().is("Shark")) && a.getMyCell().getLifeSpan() > 4);
+		return (a.isLocked() && (a.getMyCell().is("Fish") || a.getMyCell().is("Shark")) && a.getMyCell().getLifeSpan() > breedTime);
 	}
 
 }

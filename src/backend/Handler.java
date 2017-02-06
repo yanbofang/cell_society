@@ -10,6 +10,7 @@ public abstract class Handler {
 	private Grid nextRoundGrid;
 	
 	public void startNewRoundSimulation(Grid thisRoundGrid, Grid nextRoundGrid, int numPriority) {
+		//System.out.println("I'm Here");
 		this.thisRoundGrid=thisRoundGrid;
 		this.nextRoundGrid=nextRoundGrid;
 		

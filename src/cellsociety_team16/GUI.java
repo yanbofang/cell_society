@@ -26,8 +26,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+
 import javafx.util.Duration;
 import xml.XMLManager;
+import xml.XMLSimulation;
+
 
 /**
  * Loads the UI for Cell Society interface
@@ -121,9 +124,12 @@ public class GUI {
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		gridSideSize = (int) Math.min(height * .75, width * .75);
-		// TODO figure out why the two lines below are such a problem
-		// root.getCenter().prefHeight(gridSideSize);
-		// root.getCenter().prefWidth(gridSideSize);
+		//TODO figure out why the two lines below are such a problem
+		//root.getCenter().prefHeight(gridSideSize);
+		//root.getCenter().prefWidth(gridSideSize);
+		mySimulationModel.setRandomPositions();
+		myGrid = setUpGrid(gridSideSize);
+		root.setCenter(myGrid);
 
 		// set up space for user input and buttons
 		// must do before initiate the grid so mySimulationChooser combBox is
@@ -181,7 +187,8 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
-				mySimulationModel.getSimulationModel(newValue);
+				// TODO see if can take a string or sml file
+				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 			}
 		});
 		// default simulation is game of life
