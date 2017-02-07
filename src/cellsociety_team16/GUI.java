@@ -176,19 +176,19 @@ public class GUI {
 				mySimulationModel.setRandomPositions();
 				mySimulation.setInitialGrid(mySimulationModel);
 				// System.out.println(mySimulationModel.getName());
-				resetGrid();
+				myRoot.setCenter(resetGrid());
 				play();
 			}
 		});
-		myResetButton = makeButton("ResetCommand", event -> resetGrid());
+		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(resetGrid()));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
 		mySpeedSlider = new Slider();
 		// slider is based on percentages, hence the 0 to 10 and default value
 		// which then multiplies by duration
-		mySpeedSlider.setMin(0);
-		mySpeedSlider.setMax(1);
+		mySpeedSlider.setMin(.1);
+		mySpeedSlider.setMax(2);
 		// Sets default slider location
 		mySpeedSlider.setValue(mySpeedMultiplier);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -243,14 +243,14 @@ public class GUI {
 		newButton.setPrefWidth(SCREENWIDTH / 5);
 		newButton.setPrefHeight(SCREENWIDTH / 10);
 		newButton.setOnAction(handler);
-		
+
 		return newButton;
 	}
 
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
 	 * 
-	 * @return a random grid of the SimulationModel type
+	 * @return a new grid of the mySimulationType
 	 */
 	private Node resetGrid() {
 		mySimulationModel.setRandomPositions();
@@ -273,12 +273,13 @@ public class GUI {
 	 * Pauses, plays, or resumes the simulation Triggered by a button
 	 */
 	private void play() {
+		myStepButton.setDisable(isPaused);
+		myResetButton.setDisable(isPaused);
+		
 		isPaused = !isPaused;
-
 		if (isPaused) {
 			myPlayButton.setText(myResources.getString("PlayCommand"));
 			timer.pause();
-			System.out.println(isPaused);
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
 			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED * mySpeedMultiplier), e -> step());
