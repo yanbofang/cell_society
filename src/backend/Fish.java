@@ -1,5 +1,12 @@
 package backend;
 
+/**
+ * This class is an extension of Cell. 
+ * This class is used for WaTor Simulation. Fish's priority is 1.
+ * @author chenxingyu
+ *
+ */
+
 public class Fish extends Cell {
 	
 	public Fish() {

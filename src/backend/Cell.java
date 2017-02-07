@@ -1,7 +1,14 @@
 package backend;
 
 import java.util.ArrayList;
-
+/**
+ * This class is an abstract class which contains the basic function of a cell.
+ * Including: Finding the container it's currently in, understand its own identity, finding
+ * the priority of its identity.
+ * 
+ * @author chenxingyu
+ *
+ */
 public abstract class Cell {
 	private int lifeSpan=0;
 	private String identity;

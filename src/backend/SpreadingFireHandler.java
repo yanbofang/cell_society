@@ -2,7 +2,12 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
-
+/**
+ * A specific class for Fire Spreading Simulation
+ * 
+ * @author chenxingyu
+ *
+ */
 public class SpreadingFireHandler extends Handler {
 	private double fireProb=0.8;
 	private double treeProb=0.2;
@@ -11,6 +16,10 @@ public class SpreadingFireHandler extends Handler {
 		this.fireProb=fireProb;
 		this.treeProb=treeProb;
 	}
+	
+	/**
+	 * The required method to determine the future status of the current grid
+	 */
 	
 	@Override
 	public void solve(Container curContainer) {
