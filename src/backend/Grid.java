@@ -1,7 +1,14 @@
 package backend;
 
 import java.util.ArrayList;
-
+/**
+ * This class is a n*m Grid containing n*m containers. Its main duty is to 
+ * set up the neighbors near a container as well as connect the container at
+ * time t to the same container at time (t+1)
+ * 
+ * @author chenxingyu
+ *
+ */
 public class Grid {
 	private ArrayList<Container> containerlist=new ArrayList<Container>();
 	private int n=0;
@@ -13,7 +20,11 @@ public class Grid {
 	public static final int[] POSY={0,-1,0,1,-1,-1,1,1};
 	
 	private int neighborDefn=4;
-	
+	/**
+	 * Constructor to construct an n*m Grid and set up the neighbors of each container.
+	 * @param n
+	 * @param m
+	 */
 	public Grid(int n, int m) {
 		this.size = n*m;
 		for (int i=0;i<size;i++) {
@@ -35,7 +46,10 @@ public class Grid {
 			}
 		}
 	}
-	
+	/**
+	 * Connect the Grid at time t to the Grid at time (t+1)
+	 * @param nextRoundGrid
+	 */
 	public void connectWith(Grid nextRoundGrid) {
 		this.next=nextRoundGrid;
 		for (int i=0;i<size;i++) {
@@ -43,6 +57,7 @@ public class Grid {
 		}
 	}
 	
+	//Getters and Setters
 	public Container getContainer(int num) {
 		return this.containerlist.get(num);
 	}

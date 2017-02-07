@@ -1,5 +1,12 @@
 package backend;
 
+/**
+ * This class is an extension of Cell. 
+ * This class is used for WaTor Simulation. Shark's priority is 0.
+ * @author chenxingyu
+ *
+ */
+
 public class Shark extends Fish {
 	public Shark() {
 		this.setPriority(0);

@@ -3,6 +3,12 @@ package backend;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
+/**
+ * A specific class for WaTor Simulation
+ * 
+ * @author chenxingyu
+ *
+ */
 public class WaTorHandler extends Handler {
 	private int fishCnt=0;	
 	private int emptyCnt=0;
@@ -13,6 +19,12 @@ public class WaTorHandler extends Handler {
 		this.breedTime=breedTime;
 	}
 	
+	/**
+	 * The required method to determine the future status of the current grid.
+	 * Let three helper method solveForFish, solveForShark, solveForEmptyCell to do the processing 
+	 * 
+	 * @param curContainer-the Container we are going to look at
+	 */
 	@Override
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub

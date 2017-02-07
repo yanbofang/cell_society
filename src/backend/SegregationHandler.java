@@ -3,12 +3,24 @@ package backend;
 import java.util.ArrayList;
 import java.util.function.Predicate;
 
+/**
+ * A specific class for Game of Segregation Simulation
+ * @author chenxingyu
+ *
+ */
 public class SegregationHandler extends Handler {
 	private double percent=0.3;
-	
+	/**
+	 * The constructor to construct a handler for the segregation model with [percent] satisfactory rate
+	 * 
+	 * @param percent
+	 */
 	public SegregationHandler(double percent) {
 		this.percent=percent;
 	}
+	/**
+	 * The required method to determine the future status of the current cell
+	 */
 	@Override
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub

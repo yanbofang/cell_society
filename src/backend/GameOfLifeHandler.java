@@ -2,9 +2,16 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
-
+/**
+ * A specific class for Game of Life Simulation
+ * 
+ * @author chenxingyu
+ *
+ */
 public class GameOfLifeHandler extends Handler {	
-
+	/**
+	 * The required method to determine the future status of the current cell
+	 */
 	public void solve(Container curContainer) {
 		ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
 		if (curContainer.getMyCell().is("Life")) {
