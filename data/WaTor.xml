@@ -2,8 +2,8 @@
 <data type="Simulation">
     <name>WaTor</name>
     <author>Xingyu Chen</author>
-    <rows>5</rows>
-    <cols>5</cols>
+    <rows>15</rows>
+    <cols>15</cols>
     <activePercentage>0.2</activePercentage>
 	<inactivePercentage>0.4</inactivePercentage>
 	<emptyPercentage>0.4</emptyPercentage>
