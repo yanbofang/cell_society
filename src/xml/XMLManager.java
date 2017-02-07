@@ -17,11 +17,12 @@ public class XMLManager extends Application {
 	public static final String DATA_FILE_EXTENSION = "*.xml";
 	public static final String dir = System.getProperty("user.dir");
 
-	// it is generally accepted behavior that the chooser remembers where
-	// user
+
+	// it is generally accepted behavior that the chooser remembers where user
 	// left it last
 	private FileChooser myChooser = makeChooser(DATA_FILE_EXTENSION);
 	private File dataFile;
+	
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -59,7 +60,8 @@ public class XMLManager extends Application {
 	}
 
 	/**
-	 * Get a new SimulationModel based on the input String String
+	 * Get a new SimulationModel based on the input String
+	 * String
 	 * 
 	 * @param newSimulation
 	 * @return

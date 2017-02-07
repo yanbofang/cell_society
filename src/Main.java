@@ -5,7 +5,6 @@ import cellsociety_team16.*;
 import cellsociety_team16.GUI;
 
 import backend.Simulation;
-
 /**
  * Run a simulation here
  * @author Yanbo Fang
