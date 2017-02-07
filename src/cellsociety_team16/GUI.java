@@ -90,8 +90,6 @@ public class GUI {
 		mySimulationModel = simulation;
 		mySimulation = new Simulation();
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
-		Stage newStage = new Stage();
-		this.init(newStage);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
 	}
