@@ -5,6 +5,16 @@ import java.util.List;
 
 import cellsociety_team16.SimulationModel;
 import cellsociety_team16.*;
+/**
+ * This class is in charge of the simulation and the connection with the front end.
+ * After set up with the initial grid, the class will call Handler to handle the next
+ * round of simulation. 
+ * 
+ * 2 public methods are given. setIntialGrid() and startNewRoundSimulation().
+ * 
+ * @author chenxingyu
+ *
+ */
 
 public class Simulation {
 	public Grid thisRoundGrid;
@@ -13,8 +23,13 @@ public class Simulation {
 	
 	private Handler myHandler;
 	
-	
-	public ArrayList<Container> startNewRoundSimulation() {
+	/**
+	 * This function is the interface with the GUI. Each time GUI needs an update over the 
+	 * status of the cell, this method will be called and return a list of Integer, which
+	 * represents the status of the cell.
+	 * @return List<Integer>
+	 */
+	public List<Integer> startNewRoundSimulation() {
 		for (int i=0;i<this.n;i++) {
 			for (int j=0;j<this.m;j++) {
 				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
@@ -26,9 +41,16 @@ public class Simulation {
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
 		System.out.println();
-		return thisRoundGrid.getContainerlist();
+		List<Integer> result=new ArrayList<Integer>();
+		for (int i=0; i<thisRoundGrid.getSize();i++) {
+			result.add(Integer.parseInt(thisRoundGrid.getContainer(i).getMyCell().toString()));
+		}
+		return result;
 	}
-	
+	/**
+	 * This function is the interface with the GUI. At the start of each simulation, the 
+	 * @param modelGeneral
+	 */
 	public void setInitialGrid(SimulationModel modelGeneral) {
 		this.myHandler = this.setupHandler(modelGeneral);
 		List<Integer> initialStatus=modelGeneral.getPositions();
@@ -44,6 +66,15 @@ public class Simulation {
 		}
 	}
 	
+	/**
+	 * This method is a helper method in charge of creating a new cell based on the current simulation
+	 * type. For different simulation, it will interpret the states into different kinds of cell and return
+	 * a cell of that specific type accordingly.
+	 * 
+	 * @param modelName
+	 * @param curPosStats
+	 * @return Cell according to the current simulation we are supposed to run
+	 */
 	private Cell createNewCell(String modelName, int curPosStats) {
 		if (modelName.compareTo("GameOfLife")==0) {
 			if (curPosStats==0) return new EmptyCell();
