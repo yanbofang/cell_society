@@ -196,8 +196,9 @@ public class GUI {
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 				mySimulationModel.setRandomPositions();
 				mySimulation.setInitialGrid(mySimulationModel);
-				System.out.println(mySimulationModel.getName());
+				//System.out.println(mySimulationModel.getName());
 				resetGrid();
+				play();
 			}
 		});
 
@@ -216,7 +217,7 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySpeedMultiplier = newValue.doubleValue();
-				System.out.println(mySpeedMultiplier);
+				timer.setRate(mySpeedMultiplier);
 			}
 		});
 		mySpeedSlider.setBlockIncrement(.1);
@@ -259,7 +260,7 @@ public class GUI {
 		newButton.setText(myResources.getString(name));
 
 		newButton.setShape(new Circle(SCREENWIDTH / 10));
-		newButton.setPrefWidth(SCREENWIDTH / 10);
+		newButton.setPrefWidth(SCREENWIDTH / 5);
 		newButton.setPrefHeight(SCREENWIDTH / 10);
 
 		newButton.setOnAction(handler);
