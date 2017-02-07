@@ -1,6 +1,9 @@
 package cellsociety_team16;
 
 import java.util.ResourceBundle;
+
+import backend.Simulation;
+
 import java.util.List;
 
 import javafx.animation.KeyFrame;
@@ -45,11 +48,11 @@ public class GUI {
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	public static final Paint BACKGROUND = Color.ALICEBLUE;
-	public static final String XML_GAME_OF_LIFE = "GameofLife";
+	public static final String XML_GAME_OF_LIFE = "GameOfLife";
 	public static final String XML_SEGREGATION = "Segregation";
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
 	public static final String XML_WATOR_WORLD = "WaTor";
-
+	public static final double MAX_SPEED = 1000; // in ms
 	// scene to report back to Application
 	private Scene myScene;
 	//
@@ -58,7 +61,6 @@ public class GUI {
 	private String mySimulationType;
 	// user input fields
 	private Button myPlayButton;
-	private Button myPauseButton;
 	private Button myStepButton;
 	private Button myResetButton;
 	private Slider mySpeedSlider;
@@ -69,6 +71,7 @@ public class GUI {
 	// TODO may make a visualizationWindow class
 	private Node myGrid;
 	private List<Color> myColors;
+	private Simulation mySimulation;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
@@ -80,20 +83,26 @@ public class GUI {
 	private double mySpeedMultiplier = .5;
 	// TODO may not need depending on how SimulationModel is handling things
 	private XMLManager myXMLManager;
+	private Timeline timer;
+	private BorderPane myRoot;
 
 	public GUI(SimulationModel simulation, String language) {
 		mySimulationModel = simulation;
+		mySimulation = new Simulation();
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		Stage newStage = new Stage();
-		this.display(newStage);
+		this.init(newStage);
+		timer = new Timeline();
+		myXMLManager = new XMLManager();
 	}
 
 	/**
 	 * Initialize the display and updates
 	 */
-	public void display(Stage primaryStage) {
+	public void init(Stage primaryStage) {
 		Scene scene = setUp(SCREENWIDTH, SCREENHEIGHT, BACKGROUND);
 		primaryStage.setScene(scene);
+		mySimulation.setInitialGrid(mySimulationModel);
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
@@ -113,32 +122,30 @@ public class GUI {
 		// The size of the visualization window will not change
 		// Select a file
 		// will automatically parse
-		BorderPane root = new BorderPane();
+		myRoot = new BorderPane();
 		// sets padding in order of top, right, bottom, and left
 		// 20 is based on whatever looked nice, arbitrary
 		int padding = 10;
-		root.setPadding(new Insets(height / padding, width / padding, width / padding, height / padding));
+		myRoot.setPadding(new Insets(height / padding, width / padding, width / padding, height / padding));
 
 		// set up space for visualization window
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		gridSideSize = (int) Math.min(height * .75, width * .75);
-		// TODO figure out why the two lines below are such a problem
-		// root.getCenter().prefHeight(gridSideSize);
-		// root.getCenter().prefWidth(gridSideSize);
+		// TODO replace
 		mySimulationModel.setRandomPositions();
 		myGrid = setUpGrid(gridSideSize);
-		root.setCenter(myGrid);
+		myRoot.setCenter(myGrid);
 
 		// set up space for user input and buttons
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
-		root.setBottom(setUpUserInput(width));
+		myRoot.setBottom(setUpUserInput(width));
 		// resets grid - TODO may be redundant
 		myGrid = setUpGrid(gridSideSize);
-		root.setCenter(myGrid);
+		myRoot.setCenter(myGrid);
 
-		return new Scene(root, width, height, color);
+		return new Scene(myRoot, width, height, color);
 	}
 
 	/**
@@ -151,7 +158,6 @@ public class GUI {
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
 
-		mySimulationModel.setRandomPositions();
 		// make sure getting original starting colors
 		myColors = mySimulationModel.getColors();
 
@@ -164,8 +170,6 @@ public class GUI {
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
 				r.setFill(myColors.get(index));
-				// for testing:
-				// r.setFill(Color.rgb(15 * row_iter, 15 * col_iter, 0));
 				cells.getChildren().add(r);
 				index++;
 			}
@@ -182,16 +186,20 @@ public class GUI {
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aesthetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
-		// mySimulationChooser.valueProperty().addListener(new
-		// ChangeListener<String>() {
-		// @Override
-		// public void changed(ObservableValue<? extends String> observed,
-		// String prevValue, String newValue) {
-		// // resets the simulation type that will be displayed
-		// // TODO see if can take a string or sml file
-		// mySimulationModel = myXMLManager.getSimulationModel();
-		// }
-		// });
+		// sets to display which simulation the user originally chose
+		mySimulationChooser.setValue(mySimulationType);
+		mySimulationChooser.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
+				// resets the simulation type that will be displayed
+				// TODO see if can take a string or sml file
+				mySimulationModel = myXMLManager.getSimulationModel(newValue);
+				mySimulationModel.setRandomPositions();
+				mySimulation.setInitialGrid(mySimulationModel);
+				System.out.println(mySimulationModel.getName());
+				resetGrid();
+			}
+		});
 
 		myResetButton = makeButton("ResetCommand", event -> resetGrid());
 		// creates the play/pause toggle button
@@ -208,11 +216,11 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySpeedMultiplier = newValue.doubleValue();
+				System.out.println(mySpeedMultiplier);
 			}
-
 		});
 		mySpeedSlider.setBlockIncrement(.1);
-		mySpeedSlider.setSnapToTicks(true);
+		//mySpeedSlider.setSnapToTicks(true);
 
 		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
@@ -231,14 +239,29 @@ public class GUI {
 	 * @param handler
 	 *            corresponds to the action that the button calls
 	 * @return a new button
+	 * 
+	 *         Based on makeButton in BrowserView by
+	 * @author Owen Astrachan
+	 * @author Marcin Dobosz
+	 * @author Yuzhang Han
+	 * @author Edwin Ward
+	 * @author Robert C. Duvall
 	 */
 	private Button makeButton(String name, EventHandler<ActionEvent> handler) {
+		// final String IMAGEFILE_SUFFIXES =
+		// String.format(".*\\.(%s)", String.join("|",
+		// ImageIO.getReaderFileSuffixes()));
 		Button newButton = new Button();
+		String label = myResources.getString(name);
+		// if(label.matches(IMAGEFILE_SUFFIXES))
+
 		newButton.setWrapText(true);
-		newButton.setShape(new Circle(SCREENWIDTH/10));
-		newButton.setPrefWidth(SCREENWIDTH/10);
-		newButton.setPrefHeight(SCREENWIDTH/10);
 		newButton.setText(myResources.getString(name));
+
+		newButton.setShape(new Circle(SCREENWIDTH / 10));
+		newButton.setPrefWidth(SCREENWIDTH / 10);
+		newButton.setPrefHeight(SCREENWIDTH / 10);
+
 		newButton.setOnAction(handler);
 		return newButton;
 	}
@@ -272,55 +295,38 @@ public class GUI {
 	 */
 	private void resetGrid() {
 		mySimulationModel.setRandomPositions();
+		//mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myGrid = setUpGrid(gridSideSize);
+		myRoot.setCenter(myGrid);
 	}
 
-	// /**
-	// * Updates the simulation by one advancement Triggered by a button or
-	// usual
-	// * run calls
-	// */
+	/**
+	 * Updates the simulation by one advancement Triggered by a button or usual
+	 * run calls
+	 */
 	private void step() {
 		// TODO using new colors as determined by simulation backend
+		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myGrid = setUpGrid(gridSideSize);
+		myRoot.setCenter(myGrid);
 	}
 
-	//
 	/**
 	 * Pauses, plays, or resumes the simulation Triggered by a button
 	 */
 	private void play() {
 		isPaused = !isPaused;
+
 		if (isPaused) {
 			myPlayButton.setText(myResources.getString("PlayCommand"));
-			// showAndWait();
+			timer.pause();
+			System.out.println(isPaused);
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-
-			// for(duration % mySpeed == 0){
-			step();
-			// }
-		}
-	}
-
-	/**
-	 * Inner class deals with clicks based on
-	 * http://blogs.kiyut.com/tonny/2013/07/30/javafx-webview-addhyperlinklistener/
-	 * and BrowserView by
-	 * 
-	 * @author Owen Astrachan
-	 * @author Marcin Dobosz
-	 * @author Yuzhang Han
-	 * @author Edwin Ward
-	 * @author Robert C. Duvall
-	 */
-	private class PlayListener implements ChangeListener<State> {
-		public static final String EVENT_CLICK = "click";
-
-		@Override
-		public void changed(ObservableValue<? extends State> observed, State oldState, State newState) {
-			// TODO Auto-generated method stub
-			isPaused = !isPaused;
+			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED * mySpeedMultiplier), e -> step());
+			timer.setCycleCount(Timeline.INDEFINITE);
+			timer.getKeyFrames().add(frame);
+			timer.play();
 		}
 	}
 

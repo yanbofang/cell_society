@@ -7,6 +7,6 @@ public class Fire extends Cell {
 	}
 
 	public String toString() {
-		return "F";
+		return "2";
 	}
 }
