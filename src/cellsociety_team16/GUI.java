@@ -24,13 +24,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
 import xml.XMLManager;
 import xml.XMLSimulation;
-
 
 /**
  * Loads the UI for Cell Society interface
@@ -78,7 +78,7 @@ public class GUI {
 	private boolean isPaused;
 	// default speed value is in the middle
 	private double mySpeedMultiplier = .5;
-	//TODO may not need depending on how SimulationModel is handling things
+	// TODO may not need depending on how SimulationModel is handling things
 	private XMLManager myXMLManager;
 
 	public GUI(SimulationModel simulation, String language) {
@@ -116,16 +116,16 @@ public class GUI {
 		BorderPane root = new BorderPane();
 		// sets padding in order of top, right, bottom, and left
 		// 20 is based on whatever looked nice, arbitrary
-		int padding = 20;
+		int padding = 10;
 		root.setPadding(new Insets(height / padding, width / padding, width / padding, height / padding));
 
 		// set up space for visualization window
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		gridSideSize = (int) Math.min(height * .75, width * .75);
-		//TODO figure out why the two lines below are such a problem
-		//root.getCenter().prefHeight(gridSideSize);
-		//root.getCenter().prefWidth(gridSideSize);
+		// TODO figure out why the two lines below are such a problem
+		// root.getCenter().prefHeight(gridSideSize);
+		// root.getCenter().prefWidth(gridSideSize);
 		mySimulationModel.setRandomPositions();
 		myGrid = setUpGrid(gridSideSize);
 		root.setCenter(myGrid);
@@ -182,20 +182,20 @@ public class GUI {
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aesthetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
-//		mySimulationChooser.valueProperty().addListener(new ChangeListener<String>() {
-//			@Override
-//			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
-//				// resets the simulation type that will be displayed
-//				// TODO see if can take a string or sml file
-//				mySimulationModel = myXMLManager.getSimulationModel();
-//			}
-//		});
-		// default simulation is game of life
-		//mySimulationChooser.setValue(XML_GAME_OF_LIFE);
+		// mySimulationChooser.valueProperty().addListener(new
+		// ChangeListener<String>() {
+		// @Override
+		// public void changed(ObservableValue<? extends String> observed,
+		// String prevValue, String newValue) {
+		// // resets the simulation type that will be displayed
+		// // TODO see if can take a string or sml file
+		// mySimulationModel = myXMLManager.getSimulationModel();
+		// }
+		// });
+
 		myResetButton = makeButton("ResetCommand", event -> resetGrid());
 		// creates the play/pause toggle button
-		 myPlayButton = makeButton("PlayCommand", event -> play());
-
+		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
 		mySpeedSlider = new Slider();
 		// slider is based on percentages, hence the 0 to 10 and default value
@@ -223,38 +223,6 @@ public class GUI {
 		return buttonLine;
 	}
 
-	/// **
-	// * Creates a ToggleButton that goes between two states
-	// * @param stateOn is the first ToggleButton, initially turned on
-	// * @param statOff is the second ToggleButton
-	// * @param nameOn is the name in the resource file corresponding to stateOn
-	// * @param nameOff is the name in the resource file correponding to
-	/// stateOff
-	// * @return ToggleGroup of these buttons
-	// */
-	// private ToggleGroup createToggleButton(ToggleButton stateOne,
-	/// ToggleButton stateTwo, String nameOne,
-	// String nameTwo) {
-	// // TODO make ToggleButton command compatible with graphics in the
-	// // resources folder, do the same for makeButton
-	// // TODO redundant code
-	// stateOn = new ToggleButton(myResources.getString(nameOn));
-	// stateOff = new ToggleButton(myResources.getString(nameOff));
-	// ToggleGroup group = new ToggleGroup();
-	// stateOn.setToggleGroup(group);
-	// // turn stateOn button on, initially
-	// stateOn.setSelected(true);
-	// stateOff.setToggleGroup(group);
-	// return group;
-	// }
-	/// **
-	// * Sets the state of buttons depending on the state of other buttons
-	// */
-	// private void setButtonState() {
-	// //myResetButton.setDisable(value);
-	// myPlayButton.setSelected(true);
-	// }
-
 	/**
 	 * Creates a button
 	 * 
@@ -266,6 +234,10 @@ public class GUI {
 	 */
 	private Button makeButton(String name, EventHandler<ActionEvent> handler) {
 		Button newButton = new Button();
+		newButton.setWrapText(true);
+		newButton.setShape(new Circle(SCREENWIDTH/10));
+		newButton.setPrefWidth(SCREENWIDTH/10);
+		newButton.setPrefHeight(SCREENWIDTH/10);
 		newButton.setText(myResources.getString(name));
 		newButton.setOnAction(handler);
 		return newButton;
@@ -289,11 +261,12 @@ public class GUI {
 	/**
 	 * Resets duration of keyframes
 	 */
-//	private void resetDuration(Timeline timer, double interval){
-//		KeyFrame keyframe = new Keyframe(
-//Duration.seconds(MAX_SPEED * interval);
-//);
-//	}
+
+	// private void resetDuration(Timeline timer, double interval){
+	// KeyFrame keyframe = new Keyframe(
+	// Duration.seconds(MAX_SPEED * interval);
+	// );
+	// }
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
 	 */
@@ -328,12 +301,6 @@ public class GUI {
 			step();
 			// }
 		}
-	}
-
-	private void pause() {
-		isPaused = true;
-		// myPauseButton.getContentDisplay();
-
 	}
 
 	/**
