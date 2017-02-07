@@ -25,7 +25,7 @@ public class SegregationHandler extends Handler {
 				curContainer.getNext().setCell(new EmptyCell());
 				curContainer.getNext().setLocked(true);
 				
-				ArrayList<Container> emptyBlock = this.emptyNeighbor();
+				ArrayList<Container> emptyBlock = (ArrayList<Container>) this.emptyNeighbor();
 				int rand = (int) (Math.random()*emptyBlock.size());
 				//System.out.println(emptyBlock.size()+" "+rand);
 

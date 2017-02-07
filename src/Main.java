@@ -26,15 +26,15 @@ public class Main extends Application{
 		
 		SimulationModel mySimulation = xml.getSimulationModel();
 		mySimulation.setRandomPositions();
-		Simulation simTest = new Simulation();
-		simTest.setInitialGrid(mySimulation);
-		for (int i=0;i<100;i++) {
-			simTest.startNewRoundSimulation();
-		}
+//		Simulation simTest = new Simulation();
+//		simTest.setInitialGrid(mySimulation);
+//		for (int i=0;i<100;i++) {
+//			simTest.startNewRoundSimulation();
+//		}
 		
 		GUI gui = new GUI(mySimulation, "English");
 
-		gui.start(primaryStage);
+		gui.init(primaryStage);
 		
 	}
 }

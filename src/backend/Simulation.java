@@ -32,17 +32,17 @@ public class Simulation {
 	public List<Integer> startNewRoundSimulation() {
 		for (int i=0;i<this.n;i++) {
 			for (int j=0;j<this.m;j++) {
-				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
+//				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
 			}
-			System.out.println();
+//			System.out.println();
 		}
 		Grid nextRoundGrid = new Grid(this.n,this.m);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
-		System.out.println();
-		List<Integer> result=new ArrayList<Integer>();
-		for (int i=0; i<thisRoundGrid.getSize();i++) {
+//		System.out.println();
+		List<Integer> result = new ArrayList<Integer>();
+		for (int i=0;i<thisRoundGrid.getSize();i++) {
 			result.add(Integer.parseInt(thisRoundGrid.getContainer(i).getMyCell().toString()));
 		}
 		return result;
@@ -101,6 +101,13 @@ public class Simulation {
 		}
 		return null;
 	}
+	
+	/**
+	 * This method is a helper method which creates a handler for each simulation based on the parameter passed
+	 * in by SimulationModel. It will detect the model type and return the handler as needed.
+	 * @param modelGeneral
+	 * @return Handler
+	 */
 	
 	private Handler setupHandler(SimulationModel modelGeneral) {
 		String modelName=modelGeneral.getName();
