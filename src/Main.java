@@ -32,7 +32,7 @@ public class Main extends Application{
 		
 		GUI gui = new GUI(mySimulation, "English");
 
-		gui.start(primaryStage);
+		gui.display(primaryStage);
 		
 	}
 }
