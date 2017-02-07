@@ -19,6 +19,8 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
+		Integer a=Integer.parseInt("1");
+		System.out.println(a);
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
 		
