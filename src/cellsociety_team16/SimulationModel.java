@@ -117,6 +117,7 @@ public abstract class SimulationModel {
 	 */
 	public void setPositions(List<Integer> lst) {
 		this.positions = lst;
+		this.setColors();
 	}
 
 	/**

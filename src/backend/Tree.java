@@ -7,6 +7,6 @@ public class Tree extends Cell{
 	}
 
 	public String toString() {
-		return "T";
+		return "1";
 	}
 }
