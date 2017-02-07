@@ -82,7 +82,6 @@ public class GUI {
 	private XMLManager myXMLManager;
 
 	public GUI(SimulationModel simulation, String language) {
-		// TODO call based on simulation chosen
 		mySimulationModel = simulation;
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		Stage newStage = new Stage();
@@ -183,21 +182,19 @@ public class GUI {
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aesthetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
-		mySimulationChooser.valueProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
-				// resets the simulation type that will be displayed
-				// TODO see if can take a string or sml file
-				mySimulationModel = myXMLManager.getSimulationModel(newValue);
-			}
-		});
+//		mySimulationChooser.valueProperty().addListener(new ChangeListener<String>() {
+//			@Override
+//			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
+//				// resets the simulation type that will be displayed
+//				// TODO see if can take a string or sml file
+//				mySimulationModel = myXMLManager.getSimulationModel();
+//			}
+//		});
 		// default simulation is game of life
-		mySimulationChooser.setValue(XML_GAME_OF_LIFE);
+		//mySimulationChooser.setValue(XML_GAME_OF_LIFE);
 		myResetButton = makeButton("ResetCommand", event -> resetGrid());
 		// creates the play/pause toggle button
-		// myPlayButton = makeButton("PlayCommand", event -> play());
-		// ToggleGroup playPauseGroup = createToggleButton(myPlayButton,
-		// myPauseButton, "PlayCommand", "PauseCommand");
+		 myPlayButton = makeButton("PlayCommand", event -> play());
 
 		myStepButton = makeButton("StepCommand", event -> step());
 		mySpeedSlider = new Slider();
