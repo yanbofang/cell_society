@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -54,6 +56,7 @@ public class GUI {
 	public static final double MAX_SPEED = 1000; // in ms
 
 	// files the user can load
+	// TODO lol need to change
 	public static final String XML_GAME_OF_LIFE = "GameOfLife";
 	public static final String XML_SEGREGATION = "Segregation";
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
@@ -80,7 +83,8 @@ public class GUI {
 	private Button myResetButton;
 	private Slider mySpeedSlider;
 	private ComboBox<String> mySimulationChooser;
-	private ColorPicker[] myColorPickers;
+	private ArrayList<ColorPicker> myColorPickers;
+	private ArrayList<Slider> myValueSliders;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
@@ -100,8 +104,10 @@ public class GUI {
 	}
 
 	/**
-	 * Initialize the display and updates only runs once per load of the game
+	 * Initialize the display and updates only runs once per load of the
+	 * simulation
 	 */
+	// TODO add more windows kinda somehow
 	public void init(Stage primaryStage) {
 		myRoot = new BorderPane();
 
@@ -161,7 +167,8 @@ public class GUI {
 	}
 
 	/**
-	 * Creates display that the user can interact with that goes along the bottom
+	 * Creates display that the user can interact with that goes along the
+	 * bottom
 	 */
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
@@ -188,6 +195,7 @@ public class GUI {
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
+
 		mySpeedSlider = makeSlider(.1, 2, mySpeedMultiplier, .1);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
@@ -205,53 +213,62 @@ public class GUI {
 
 		return buttonLine;
 	}
-/**
- * 
- */
-	private Slider makeSlider(double min, double max, double increment, double changingValue){
+
+	/**
+	 * 
+	 */
+	private Slider makeSlider(double min, double max, double increment, double changingValue) {
 		Slider newSlider = new Slider();
 		// slider is based on percentages, hence the 0 to 10 and default value
 		// which then multiplies by duration
 		newSlider.setMin(min);
-		newSlider.setMax(2);
+		newSlider.setMax(max);
 		// Sets default slider location
 		newSlider.setValue(changingValue);
-		
+
 		newSlider.setBlockIncrement(increment);
 		// will snap to integers
 		// mySpeedSlider.setSnapToTicks(true);
 		return newSlider;
 	}
+
 	/**
 	 * Sets up User input that modifies cells that appears on the left side
 	 */
 	private Node setUpLeft(int numberOfTypes) {
-		
+		VBox userInput = new VBox();
 		Group colorPickerGroup = new Group();
-		
+		Group sliderGroup = new Group();
 		Random randomGenerator = new Random();
-for (int i = 0; i < numberOfTypes; i++){
-	myColorPickers[i] = new ColorPicker();
-	Color newColor = randomLightColor();
-	myColorPickers[i].setValue(newColor);
-	colorPickerGroup.getChildren().add(myColorPickers[i]);
-	myColorPickers[i].setOnAction(new EventHandler() {
-		@Override
-		public void handle(Event e) {
-			myGrid.setColor(i, newColor);
+		
+		for (int i = 0; i < numberOfTypes; i++) {
+			myColorPickers.add(i, new ColorPicker());
+			Color newColor = randomLightColor();
+			myColorPickers.get(i).setValue(newColor);
+			colorPickerGroup.getChildren().add(myColorPickers.get(i));
+			myColorPickers.get(i).setOnAction(new EventHandler() {
+				@Override
+				public void handle(Event e) {
+					myGrid.setColor(i, newColor);
+				}
+			});
+			//TODO figure out arraylist of varying values
+			myValueSliders.add(i, makeSlider(0, 100, ))
 		}
-	});
-}
+
+		return userInput;
+	}
+
 	/**
 	 * @return a new Random pastel Color
 	 */
-	private Color randomLightColor(){
+	private Color randomLightColor() {
 		// creates a bright, light color
 		Random randomGenerator = new Random();
-		double hue  = randomGenerator.nextDouble();
-		double saturation = 1.0 ;
+		double hue = randomGenerator.nextDouble();
+		double saturation = 1.0;
 		double brightness = 1.0;
-		return Color.hsb(hue, saturation,brightness);
+		return Color.hsb(hue, saturation, brightness);
 	}
 
 	/**
