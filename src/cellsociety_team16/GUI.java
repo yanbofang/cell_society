@@ -111,7 +111,12 @@ public class GUI {
 		// .75 is arbitrary value for aesthetic purposes
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 
-		myRoot.setCenter(resetGrid());
+		//If the simulationModel contains initial positions, use setGrid which doesn't randomize new positions
+		if (mySimulationModel.getPositions().isEmpty()) {
+			myRoot.setCenter(resetGrid());
+		} else {
+			myRoot.setCenter(setGrid());
+		}
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
@@ -173,10 +178,17 @@ public class GUI {
 				// resets the simulation type that will be displayed
 				// TODO see if can take a string or sml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
-				mySimulationModel.setRandomPositions();
-				mySimulation.setInitialGrid(mySimulationModel);
+				
+				//If the simulationModel contains initial positions, use setGrid which doesn't randomize new positions
+				if (mySimulationModel.getPositions().isEmpty()) {
+					myRoot.setCenter(resetGrid());
+				} else {
+					myRoot.setCenter(setGrid());
+				}
+
+				// mySimulationModel.setRandomPositions();
+				// mySimulation.setInitialGrid(mySimulationModel);
 				// System.out.println(mySimulationModel.getName());
-				myRoot.setCenter(resetGrid());
 				play();
 			}
 		});
@@ -254,6 +266,15 @@ public class GUI {
 	 */
 	private Node resetGrid() {
 		mySimulationModel.setRandomPositions();
+		return setGrid();
+	}
+
+	/**
+	 * Set the grid without randomize positions
+	 * 
+	 * @return
+	 */
+	private Node setGrid() {
 		mySimulation.setInitialGrid(mySimulationModel);
 		myGrid = updateGrid(gridSideSize);
 		return myGrid;
@@ -275,7 +296,7 @@ public class GUI {
 	private void play() {
 		myStepButton.setDisable(isPaused);
 		myResetButton.setDisable(isPaused);
-		
+
 		isPaused = !isPaused;
 		if (isPaused) {
 			myPlayButton.setText(myResources.getString("PlayCommand"));
