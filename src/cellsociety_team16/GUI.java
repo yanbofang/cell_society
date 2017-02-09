@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import java.util.List;
+import java.util.Random;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,6 +23,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
@@ -77,6 +80,7 @@ public class GUI {
 	private Button myResetButton;
 	private Slider mySpeedSlider;
 	private ComboBox<String> mySimulationChooser;
+	private ColorPicker[] myColorPickers;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
@@ -115,7 +119,7 @@ public class GUI {
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
-		myRoot.setBottom(setUpUserInput(SCREENWIDTH));
+		myRoot.setBottom(setUpBottom());
 
 		// initializes grid
 		mySimulation.setInitialGrid(mySimulationModel);
@@ -157,9 +161,9 @@ public class GUI {
 	}
 
 	/**
-	 * Creates display that the user can interact with
+	 * Creates display that the user can interact with that goes along the bottom
 	 */
-	private Node setUpUserInput(int width) {
+	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
@@ -184,13 +188,7 @@ public class GUI {
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
-		mySpeedSlider = new Slider();
-		// slider is based on percentages, hence the 0 to 10 and default value
-		// which then multiplies by duration
-		mySpeedSlider.setMin(.1);
-		mySpeedSlider.setMax(2);
-		// Sets default slider location
-		mySpeedSlider.setValue(mySpeedMultiplier);
+		mySpeedSlider = makeSlider(.1, 2, mySpeedMultiplier, .1);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
@@ -198,9 +196,6 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-		mySpeedSlider.setBlockIncrement(.1);
-		// will snap to integers
-		// mySpeedSlider.setSnapToTicks(true);
 
 		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
@@ -209,6 +204,54 @@ public class GUI {
 		buttonLine.getChildren().addAll(mySpeedSlider);
 
 		return buttonLine;
+	}
+/**
+ * 
+ */
+	private Slider makeSlider(double min, double max, double increment, double changingValue){
+		Slider newSlider = new Slider();
+		// slider is based on percentages, hence the 0 to 10 and default value
+		// which then multiplies by duration
+		newSlider.setMin(min);
+		newSlider.setMax(2);
+		// Sets default slider location
+		newSlider.setValue(changingValue);
+		
+		newSlider.setBlockIncrement(increment);
+		// will snap to integers
+		// mySpeedSlider.setSnapToTicks(true);
+		return newSlider;
+	}
+	/**
+	 * Sets up User input that modifies cells that appears on the left side
+	 */
+	private Node setUpLeft(int numberOfTypes) {
+		
+		Group colorPickerGroup = new Group();
+		
+		Random randomGenerator = new Random();
+for (int i = 0; i < numberOfTypes; i++){
+	myColorPickers[i] = new ColorPicker();
+	Color newColor = randomLightColor();
+	myColorPickers[i].setValue(newColor);
+	colorPickerGroup.getChildren().add(myColorPickers[i]);
+	myColorPickers[i].setOnAction(new EventHandler() {
+		@Override
+		public void handle(Event e) {
+			myGrid.setColor(i, newColor);
+		}
+	});
+}
+	/**
+	 * @return a new Random pastel Color
+	 */
+	private Color randomLightColor(){
+		// creates a bright, light color
+		Random randomGenerator = new Random();
+		double hue  = randomGenerator.nextDouble();
+		double saturation = 1.0 ;
+		double brightness = 1.0;
+		return Color.hsb(hue, saturation,brightness);
 	}
 
 	/**
@@ -275,7 +318,7 @@ public class GUI {
 	private void play() {
 		myStepButton.setDisable(isPaused);
 		myResetButton.setDisable(isPaused);
-		
+
 		isPaused = !isPaused;
 		if (isPaused) {
 			myPlayButton.setText(myResources.getString("PlayCommand"));
