@@ -69,13 +69,14 @@ public class GUI {
 	private String mySimulationType;
 	// used for initializing and updating grid
 	private int gridSideSize;
-	private Node myGrid;
+	private Grid myGrid;
 	// get information on cell
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
 	private int myGridRows, myGridColumns;
 	private List<Color> myColors;
+	private ComboBox myShapeChooser;
 
 	// user input fields
 	private Button myPlayButton;
@@ -121,49 +122,17 @@ public class GUI {
 		// .75 is arbitrary value for aesthetic purposes
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 
-		myRoot.setCenter(resetGrid());
+		// initializes grid in the center
+		myRoot.setCenter(myGrid.initialize());
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
+		//TODO see if still true
 		myRoot.setBottom(setUpBottom());
-
-		// initializes grid
-		mySimulation.setInitialGrid(mySimulationModel);
-		myGrid = updateGrid(gridSideSize);
 
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
-	}
-
-	/**
-	 * Draws and colors a rectangular grid of squares
-	 * 
-	 * @return a new grid object to add to the scene
-	 */
-	private Node updateGrid(int gridExtents) {
-		Group cells = new Group();
-		myGridRows = mySimulationModel.getRows();
-		myGridColumns = mySimulationModel.getCols();
-
-		myColors = mySimulationModel.getColors();
-
-		int index = 0;
-
-		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
-		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
-			// determines place on the screen
-			int rowLoc = row_iter * sideSize;
-
-			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
-				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
-
-				r.setFill(myColors.get(index));
-				cells.getChildren().add(r);
-				index++;
-			}
-		}
-		return cells;
 	}
 
 	/**
@@ -235,6 +204,7 @@ public class GUI {
 	/**
 	 * Sets up User input that modifies cells that appears on the left side
 	 */
+	//TODO throws NoGridException
 	private Node setUpLeft(int numberOfTypes) {
 		VBox userInput = new VBox();
 		Group colorPickerGroup = new Group();
@@ -253,7 +223,7 @@ public class GUI {
 				}
 			});
 			//TODO figure out arraylist of varying values
-			myValueSliders.add(i, makeSlider(0, 100, ))
+			//myValueSliders.add(i, makeSlider(0, 100, ))
 		}
 
 		return userInput;
@@ -308,25 +278,12 @@ public class GUI {
 	}
 
 	/**
-	 * Reramdonizes the simulation Triggered by a button press
-	 * 
-	 * @return a new grid of the mySimulationType
-	 */
-	private Node resetGrid() {
-		mySimulationModel.setRandomPositions();
-		mySimulation.setInitialGrid(mySimulationModel);
-		myGrid = updateGrid(gridSideSize);
-		return myGrid;
-	}
-
-	/**
 	 * Updates the simulation by one advancement Triggered by a button or usual
 	 * run calls
 	 */
 	private void step() {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
-		myGrid = updateGrid(gridSideSize);
-		myRoot.setCenter(myGrid);
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 	}
 
 	/**
