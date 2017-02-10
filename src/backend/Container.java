@@ -25,6 +25,10 @@ public class Container {
 		this.setMyCell(a);
 	}
 	
+	public void setNext(Cell a) {
+		this.getNext().setCell(a);
+		this.getNext().setLocked(true);
+	}
 	//Getters and Setters below
 	public void addNeighbors(Container a) {
 		this.myNeighbors.add(a);

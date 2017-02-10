@@ -17,7 +17,11 @@ import cellsociety_team16.*;
  */
 
 public class Simulation {
-	public Grid thisRoundGrid;
+	private static final String GAME_OF_LIFE = "GameOfLife";
+	private static final String SEGREGATION = "Segregation";
+	private static final String WA_TOR = "WaTor";
+	private static final String SPREADING_FIRE = "SpreadingFire";
+	private Grid thisRoundGrid;
 	private int n=0;
 	private int m=0;
 	
@@ -76,26 +80,24 @@ public class Simulation {
 	 * @return Cell according to the current simulation we are supposed to run
 	 */
 	private Cell createNewCell(String modelName, int curPosStats) {
-		if (modelName.compareTo("GameOfLife")==0) {
-			if (curPosStats==0) return new EmptyCell();
+		if (curPosStats==0) return new EmptyCell();
+		
+		if (modelName.compareTo(GAME_OF_LIFE)==0) {
 			if (curPosStats==1) return new Life();
 			if (curPosStats==2) return new Life();			
 		}
 
-		if (modelName.compareTo("Segregation")==0) {
-			if (curPosStats==0) return new EmptyCell();
+		if (modelName.compareTo(SEGREGATION)==0) {
 			if (curPosStats==1) return new People();
 			if (curPosStats==2) return new People();			
 		}
 
-		if (modelName.compareTo("SpreadingFire")==0) {
-			if (curPosStats==0) return new EmptyCell();
+		if (modelName.compareTo(SPREADING_FIRE)==0) {
 			if (curPosStats==1) return new Tree();
 			if (curPosStats==2) return new Fire();			
 		}
 
-		if (modelName.compareTo("WaTor")==0) {
-			if (curPosStats==0) return new EmptyCell();
+		if (modelName.compareTo(WA_TOR)==0) {
 			if (curPosStats==1) return new Fish();
 			if (curPosStats==2) return new Shark();			
 		}
@@ -111,26 +113,26 @@ public class Simulation {
 	
 	private Handler setupHandler(SimulationModel modelGeneral) {
 		String modelName=modelGeneral.getName();
-		if (modelName.compareTo("SpreadingFire")==0) {
+		if (modelName.compareTo(SPREADING_FIRE)==0) {
 			SpreadingFireModel model = (SpreadingFireModel) modelGeneral;
 			double fireProb=model.getFireProbability();
 			double treeProb=model.getTreeProbability();
 			return new SpreadingFireHandler(fireProb,treeProb);
 		}
 		
-		if (modelName.compareTo("WaTor")==0) {
+		if (modelName.compareTo(WA_TOR)==0) {
 			WaTorModel model = (WaTorModel) modelGeneral;
 			int fishBreed = model.getFishBreed();
 			int sharkBreed = model.getSharkBreed();
 			return new WaTorHandler(fishBreed);
 		}
 		
-		if (modelName.compareTo("GameOfLife")==0) {
+		if (modelName.compareTo(GAME_OF_LIFE)==0) {
 			GameOfLifeModel model = (GameOfLifeModel) modelGeneral;
 			return new GameOfLifeHandler();
 		}
 		
-		if (modelName.compareTo("Segregation")==0) {
+		if (modelName.compareTo(SEGREGATION)==0) {
 			SegregationModel model = (SegregationModel) modelGeneral;
 			double percent = model.getSatisfactionRate();
 			return new SegregationHandler(percent);
