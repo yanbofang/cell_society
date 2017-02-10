@@ -1,6 +1,7 @@
 package xml;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -45,18 +46,16 @@ public class XMLManager extends Application {
 		return new XMLParser().getSimulation(dataFile);
 	}
 
+	
 	public SimulationModel getSimulationModel() {
 		XMLSimulation xml = this.getSimulation();
-		if (xml.getName().equals("GameOfLife")) {
-			return new GameOfLifeModel(xml);
-		} else if (xml.getName().equals("SpreadingFire")) {
-			return new SpreadingFireModel(xml);
-		} else if (xml.getName().equals("Segregation")) {
-			return new SegregationModel(xml);
-		} else if (xml.getName().equals("WaTor")) {
-			return new WaTorModel(xml);
+		try{
+			Class<?> model = Class.forName("cellsociety_team16." + xml.getName() + "Model");
+			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
+
+		}catch(Exception e){
+			return null;
 		}
-		return null;
 	}
 
 	/**

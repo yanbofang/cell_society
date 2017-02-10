@@ -78,7 +78,7 @@ public class XMLSimulation {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
 	}
 
-	public ArrayList<Integer> getPositions() {
+	public List<Integer> getPositions() {
 		String ints = myDataValues.get(DATA_FIELDS.get(12));
 		ArrayList<Integer> pos = new ArrayList<Integer>();
 		for (int i = 0; i < ints.length(); i++) {
