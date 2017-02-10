@@ -46,8 +46,7 @@ public abstract class Handler {
 	 */
 	public List<Container> emptyNeighbor() {
 		ArrayList<Container> emptyNeighborList = new ArrayList<>();
-		for (int i=0;i<thisRoundGrid.getSize();i++) {
-			Container curContainer = thisRoundGrid.getContainer(i);
+		for (Container curContainer: thisRoundGrid.getContainerlist()) {
 			if (curContainer.getMyCell().is("EmptyCell") && !curContainer.getNext().isLocked()) {
 				emptyNeighborList.add(curContainer);
 			}
@@ -66,8 +65,7 @@ public abstract class Handler {
 	 */
 	public int numberLiveNeighbor(ArrayList<Container> myNeighbor, Predicate<String> predicate) {
 		int cnt=0;
-		for (int i=0;i<myNeighbor.size();i++) {
-			Container curNeighbor = myNeighbor.get(i);
+		for (Container curNeighbor:myNeighbor) {
 			if (this.check(predicate, curNeighbor.getMyCell() )) cnt++;
 		}
 		return cnt;

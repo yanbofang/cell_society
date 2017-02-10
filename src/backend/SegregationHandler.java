@@ -18,6 +18,7 @@ public class SegregationHandler extends Handler {
 	public SegregationHandler(double percent) {
 		this.percent=percent;
 	}
+	
 	/**
 	 * The required method to determine the future status of the current cell
 	 */
@@ -30,25 +31,19 @@ public class SegregationHandler extends Handler {
 			int cnt = this.numberLiveNeighbor(myNeighbor, function);
 
 			if (((double)cnt)/8>=percent) {
-				System.out.println(curContainer.getPosX()+" "+curContainer.getPosY()+" "+cnt);
-				curContainer.getNext().setCell(curContainer.getMyCell());
-				curContainer.getNext().setLocked(true);
+				curContainer.setNext(curContainer.getMyCell());
 			} else {
-				curContainer.getNext().setCell(new EmptyCell());
-				curContainer.getNext().setLocked(true);
+				curContainer.setNext(new EmptyCell());
 				
 				ArrayList<Container> emptyBlock = (ArrayList<Container>) this.emptyNeighbor();
 				int rand = (int) (Math.random()*emptyBlock.size());
-				//System.out.println(emptyBlock.size()+" "+rand);
 
-				emptyBlock.get(rand).getNext().setCell(curContainer.getMyCell());
-				emptyBlock.get(rand).getNext().setLocked(true);
+				emptyBlock.get(rand).setNext(curContainer.getMyCell());
 			}
 		}
 
 		if (curContainer.getMyCell().is("EmptyCell") ) {
-			curContainer.getNext().setCell(new EmptyCell());
-			curContainer.getNext().setLocked(true);
+			curContainer.setNext(new EmptyCell());
 		}
 	}
 

@@ -16,5 +16,6 @@ public class Life extends Cell {
 		
 	public String toString() {
 		return "1";
-	}	
+	}
+	
 }
