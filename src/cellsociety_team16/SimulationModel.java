@@ -30,6 +30,11 @@ public abstract class SimulationModel {
 	private double emptyPercentage;
 	private List<Integer> positions;
 	private List<Color> colors;
+	private String cellShape;
+	private String activeColor;
+	private String inactiveColor;
+	private String emptyColor;
+	private int cellSize;
 
 	/**
 	 * Constructor for SimulationModel
@@ -44,6 +49,11 @@ public abstract class SimulationModel {
 		inactivePercentage = simulation.getInactivePercentage();
 		emptyPercentage = simulation.getEmptyPercentage();
 		positions = simulation.getPositions();
+		cellShape = simulation.getCellShape();
+		activeColor = simulation.getActiveColor();
+		inactiveColor = simulation.getInactiveColor();
+		emptyColor = simulation.getEmptyColor();
+		cellSize = simulation.getCellSize();
 		colors = this.setColors();
 	}
 
@@ -74,12 +84,32 @@ public abstract class SimulationModel {
 		return this.cols;
 	}
 
+	public String getCellShape(){
+		return this.cellShape;
+	}
+	
+	public String getActiveColor(){
+		return this.activeColor;
+	}
+	
+	public String getInactiveColor(){
+		return this.inactiveColor;
+	}
+	
+	public String getEmptyColor(){
+		return this.emptyColor;
+	}
+	
+	public int getCellSize(){
+		return this.cellSize;
+	}
+	
 	/**
 	 * set up the percentage of the "active" cells
 	 * 
 	 * @param percentage
 	 */
-	void setActivePercentage(double percentage) {
+	public void setActivePercentage(double percentage) {
 		this.activePercentage = percentage;
 	}
 
