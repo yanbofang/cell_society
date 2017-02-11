@@ -1,8 +1,10 @@
 package cellsociety_team16;
 
+import javafx.scene.shape.Shape;
 import backend.Simulation;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
@@ -13,28 +15,7 @@ public class SquareGrid extends Grid {
 	}
 
 	@Override
-	public Node updateGrid(int gridExtents) {
-		Group cells = new Group();
-		myGridRows = mySimulationModel.getRows();
-		myGridColumns = mySimulationModel.getCols();
-
-		myColors = mySimulationModel.getColors();
-
-		int index = 0;
-
-		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
-		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
-			// determines place on the screen
-			int rowLoc = row_iter * sideSize;
-
-			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
-				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
-
-				r.setFill((Paint) myColors.get(index));
-				cells.getChildren().add(r);
-				index++;
-			}
-		}
-		return cells;
+	protected Shape drawShape(int xLoc, int yLoc, int xSize, int ySize) {
+		return new Rectangle(xLoc, yLoc, xSize, ySize);
 	}
 }
