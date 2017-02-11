@@ -41,6 +41,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
+import xml.XMLException;
 import xml.XMLManager;
 
 /**
@@ -55,6 +56,7 @@ public class GUI {
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	public static final Paint BACKGROUND = Color.ALICEBLUE;
+	// TODO mess with min and max speed values
 	public static final double MAX_SPEED = 1000; // in ms
 
 	// files the user can load
@@ -83,6 +85,8 @@ public class GUI {
 	private PopulationGraph myGraph;
 
 	// user input fields
+	private Button myLoadButton;
+	private Button mySaveButton;
 	private Button myPlayButton;
 	private Button myStepButton;
 	private Button myResetButton;
@@ -117,9 +121,12 @@ public class GUI {
 	/**
 	 * Initialize the display and updates only runs once per load of the
 	 * simulation
+	 * 
+	 * @throws Exception
 	 */
 	// TODO add more windows
 	public void init(Stage primaryStage) {
+		myStage = primaryStage;
 		myRoot = new BorderPane();
 
 		// sets padding in order of top, right, bottom, and left
@@ -154,7 +161,7 @@ public class GUI {
 	
 	/**
 	 * Creates display that the user can interact with that goes along the
-	 * bottom
+	 * bottom throws an exception if the file loaded is not suitable
 	 */
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
@@ -182,6 +189,18 @@ public class GUI {
 				play();
 			}
 		});
+		// mySaveButton = makeButton("SaveFileCommand", event ->
+		// myXMLManager.saveFile();
+		// }
+		// myLoadButton = makeButton("LoadFileCommand", event -> {
+		// try {
+		// myXMLManager.start(myStage);
+		// } catch (Exception e) {
+		// throw new XMLException(e);
+		// }
+		// mySimulationModel = myXMLManager.getSimulationModel();
+		// myGrid.initialize(gridSideSize);
+		// });
 		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
@@ -195,18 +214,22 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-		
-		buttonLine.getChildren().add(mySimulationChooser);
-		buttonLine.getChildren().add(myResetButton);
-		buttonLine.getChildren().add(myPlayButton);
-		buttonLine.getChildren().add(myStepButton);
-		buttonLine.getChildren().addAll(mySpeedSlider);
+// buttonLine.getChildren().add(mySaveButton);
+		// buttonLine.getChildren().add(myLoadButton);
+		buttonLine.getChildren().addAll(myResetButton, myPlayButton, myStepButton, mySpeedSlider);
 
 		return buttonLine;
 	}
 
 	/**
 	 * 
+	 * @param min
+	 *            value of the slider
+	 * @param max
+	 *            value of the slider
+	 * @param increment
+	 * @param changingValue
+	 * @return
 	 */
 	private Slider makeSlider(double min, double max, double increment, double changingValue) {
 		Slider newSlider = new Slider();
@@ -238,13 +261,13 @@ public class GUI {
 			Color newColor = randomLightColor();
 			myColorPickers.get(i).setValue(newColor);
 			colorPickerGroup.getChildren().add(myColorPickers.get(i));
-			// myColorPickers.get(i).setOnAction(new EventHandler() {
-			// @Override
-			// public void handle(Event e) {
-			// myGrid.setColor(i, newColor);
-			// }
-			// });
-			// TODO figure out arraylist of varying values
+
+			myColorPickers.get(i).setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent e) {
+					myGrid.setColor(myColorPickers.indexOf(this), newColor);
+				}
+			});
 			// myValueSliders.add(i, makeSlider(0, 100, ))
 		}
 
