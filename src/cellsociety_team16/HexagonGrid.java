@@ -23,7 +23,6 @@ public class HexagonGrid extends Grid {
 //		for (int i = 0; i < sideCount * 2; i += 2) {
 //
 //		}
-//	
 //	return new Polygon(pointArray);
 		return null;
 	}

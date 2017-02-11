@@ -76,9 +76,6 @@ public class GUI {
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
-	private Stage myStage;
-	private int myGridRows, myGridColumns;
-	private List<Color> myColors;
 	
 	//graph
 	private PopulationGraph myGraph;
