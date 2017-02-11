@@ -131,8 +131,7 @@ public abstract class Grid {
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
-
-
+	//Oh my gosh I used to have a comment here why is it not here anymore
 	abstract Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
 	// abstract public List getCellPositions();

@@ -8,6 +8,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 
 //TODO figure out if it is just the mere existance of this file that makes it always come up as a merge conflict
+//Wait dude this is my old comment I used to have a different cry for help why is this no longer deleted where did it not go
 public class HexagonGrid extends Grid {
 	private int HEXAGON_ANGLE;
 	private int sideCount = 6;
