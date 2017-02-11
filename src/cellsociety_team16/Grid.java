@@ -119,7 +119,7 @@ public abstract class Grid {
 		}
 		return cells;
 	}
-
+	
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
 	 * 
