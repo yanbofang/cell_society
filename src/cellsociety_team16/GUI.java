@@ -5,7 +5,9 @@ import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -14,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,12 +24,15 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
@@ -51,6 +57,7 @@ public class GUI {
 	public static final double MAX_SPEED = 1000; // in ms
 
 	// files the user can load
+	// TODO lol need to change
 	public static final String XML_GAME_OF_LIFE = "GameOfLife";
 	public static final String XML_SEGREGATION = "Segregation";
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
@@ -63,7 +70,7 @@ public class GUI {
 	private String mySimulationType;
 	// used for initializing and updating grid
 	private int gridSideSize;
-	private Node myGrid;
+	private Grid myGrid;
 	// get information on cell
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
@@ -77,6 +84,10 @@ public class GUI {
 	private Button myResetButton;
 	private Slider mySpeedSlider;
 	private ComboBox<String> mySimulationChooser;
+	private ArrayList<ColorPicker> myColorPickers;
+	private ArrayList<Slider> myValueSliders;
+	private ComboBox<Object> myShapeChooser;
+	private CheckBox addGridLines;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
@@ -93,11 +104,17 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
+		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+		// set grid extents to a of whichever is smaller, width or height
+		// .75 is arbitrary value for aesthetic purposes
+		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 	}
 
 	/**
-	 * Initialize the display and updates only runs once per load of the game
+	 * Initialize the display and updates only runs once per load of the
+	 * simulation
 	 */
+	// TODO add more windows
 	public void init(Stage primaryStage) {
 		myRoot = new BorderPane();
 
@@ -107,24 +124,12 @@ public class GUI {
 		myRoot.setPadding(new Insets(SCREENHEIGHT / padding, SCREENWIDTH / padding, SCREENWIDTH / padding,
 				SCREENHEIGHT / padding));
 
-		// set grid extents to a of whichever is smaller, width or height
-		// .75 is arbitrary value for aesthetic purposes
-		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
-
-		//If the simulationModel contains initial positions, use setGrid which doesn't randomize new positions
-		if (mySimulationModel.getPositions().isEmpty()) {
-			myRoot.setCenter(resetGrid());
-		} else {
-			myRoot.setCenter(setGrid());
-		}
+		myRoot.setCenter(myGrid.initialize(gridSideSize));
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
-		myRoot.setBottom(setUpUserInput(SCREENWIDTH));
-
-		// initializes grid
-		mySimulation.setInitialGrid(mySimulationModel);
-		myGrid = updateGrid(gridSideSize);
+		// TODO see if still true
+		myRoot.setBottom(setUpBottom());
 
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
@@ -132,41 +137,14 @@ public class GUI {
 	}
 
 	/**
-	 * Draws and colors a rectangular grid of squares
-	 * 
-	 * @return a new grid object to add to the scene
+	 * Creates display that the user can interact with that goes along the
+	 * bottom
 	 */
-	private Node updateGrid(int gridExtents) {
-		Group cells = new Group();
-		myGridRows = mySimulationModel.getRows();
-		myGridColumns = mySimulationModel.getCols();
-
-		myColors = mySimulationModel.getColors();
-
-		int index = 0;
-
-		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
-		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
-			// determines place on the screen
-			int rowLoc = row_iter * sideSize;
-
-			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
-				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
-
-				r.setFill(myColors.get(index));
-				cells.getChildren().add(r);
-				index++;
-			}
-		}
-		return cells;
-	}
-
-	/**
-	 * Creates display that the user can interact with
-	 */
-	private Node setUpUserInput(int width) {
+	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
+		// TODO just click to load a new file
+		// Click to save current settings
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aethstetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
@@ -176,33 +154,26 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
-				// TODO see if can take a string or sml file
+				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
-				
-				//If the simulationModel contains initial positions, use setGrid which doesn't randomize new positions
-				if (mySimulationModel.getPositions().isEmpty()) {
-					myRoot.setCenter(resetGrid());
-				} else {
-					myRoot.setCenter(setGrid());
-				}
+
+				// If the simulationModel contains initial positions, use
+				// setGrid which doesn't randomize new positions
+				myGrid.initialize(gridSideSize);
 
 				// mySimulationModel.setRandomPositions();
 				// mySimulation.setInitialGrid(mySimulationModel);
 				// System.out.println(mySimulationModel.getName());
+				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
 		});
-		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(resetGrid()));
+		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
-		mySpeedSlider = new Slider();
-		// slider is based on percentages, hence the 0 to 10 and default value
-		// which then multiplies by duration
-		mySpeedSlider.setMin(.1);
-		mySpeedSlider.setMax(2);
-		// Sets default slider location
-		mySpeedSlider.setValue(mySpeedMultiplier);
+
+		mySpeedSlider = makeSlider(.1, 2, mySpeedMultiplier, .1);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
@@ -210,9 +181,6 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-		mySpeedSlider.setBlockIncrement(.1);
-		// will snap to integers
-		// mySpeedSlider.setSnapToTicks(true);
 
 		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
@@ -221,6 +189,64 @@ public class GUI {
 		buttonLine.getChildren().addAll(mySpeedSlider);
 
 		return buttonLine;
+	}
+
+	/**
+	 * 
+	 */
+	private Slider makeSlider(double min, double max, double increment, double changingValue) {
+		Slider newSlider = new Slider();
+		// slider is based on percentages, hence the 0 to 10 and default value
+		// which then multiplies by duration
+		newSlider.setMin(min);
+		newSlider.setMax(max);
+		// Sets default slider location
+		newSlider.setValue(changingValue);
+
+		newSlider.setBlockIncrement(increment);
+		// will snap to integers
+		// mySpeedSlider.setSnapToTicks(true);
+		return newSlider;
+	}
+
+	/**
+	 * Sets up User input that modifies cells that appears on the left side
+	 */
+	// TODO throws NoGridException
+	private Node setUpLeft(int numberOfTypes) {
+		VBox userInput = new VBox();
+		Group colorPickerGroup = new Group();
+		Group sliderGroup = new Group();
+		Random randomGenerator = new Random();
+
+		for (int i = 0; i < numberOfTypes; i++) {
+			myColorPickers.add(i, new ColorPicker());
+			Color newColor = randomLightColor();
+			myColorPickers.get(i).setValue(newColor);
+			colorPickerGroup.getChildren().add(myColorPickers.get(i));
+			// myColorPickers.get(i).setOnAction(new EventHandler() {
+			// @Override
+			// public void handle(Event e) {
+			// myGrid.setColor(i, newColor);
+			// }
+			// });
+			// TODO figure out arraylist of varying values
+			// myValueSliders.add(i, makeSlider(0, 100, ))
+		}
+
+		return userInput;
+	}
+
+	/**
+	 * @return a new Random pastel Color
+	 */
+	private Color randomLightColor() {
+		// creates a bright, light color
+		Random randomGenerator = new Random();
+		double hue = randomGenerator.nextDouble();
+		double saturation = 1.0;
+		double brightness = 1.0;
+		return Color.hsb(hue, saturation, brightness);
 	}
 
 	/**
@@ -260,34 +286,12 @@ public class GUI {
 	}
 
 	/**
-	 * Reramdonizes the simulation Triggered by a button press
-	 * 
-	 * @return a new grid of the mySimulationType
-	 */
-	private Node resetGrid() {
-		mySimulationModel.setRandomPositions();
-		return setGrid();
-	}
-
-	/**
-	 * Set the grid without randomize positions
-	 * 
-	 * @return
-	 */
-	private Node setGrid() {
-		mySimulation.setInitialGrid(mySimulationModel);
-		myGrid = updateGrid(gridSideSize);
-		return myGrid;
-	}
-
-	/**
 	 * Updates the simulation by one advancement Triggered by a button or usual
 	 * run calls
 	 */
 	private void step() {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
-		myGrid = updateGrid(gridSideSize);
-		myRoot.setCenter(myGrid);
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 	}
 
 	/**
