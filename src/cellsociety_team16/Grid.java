@@ -57,7 +57,7 @@ public abstract class Grid {
 			return updateGrid(gridExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
-		
+
 		return updateGrid(gridExtents);
 	}
 
@@ -82,7 +82,7 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	public Node updateGrid(int gridExtents){
+	public Node updateGrid(int gridExtents) {
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
@@ -100,7 +100,7 @@ public abstract class Grid {
 				Shape shapely = drawShape(col_iter * sideSize, rowLoc, sideSize, sideSize);
 
 				shapely.setFill((Paint) myColorMap.get(myInts.get(index)));
-				if(gridLines){
+				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
 				}
 				cells.getChildren().add(shapely);
@@ -120,6 +120,7 @@ public abstract class Grid {
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
+
 	abstract protected Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
 	// abstract public List getCellPositions();
