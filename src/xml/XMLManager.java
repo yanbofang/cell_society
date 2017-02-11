@@ -17,6 +17,8 @@ public class XMLManager extends Application {
 	// kind of data files to look for
 	public static final String DATA_FILE_EXTENSION = "*.xml";
 	public static final String dir = System.getProperty("user.dir");
+	public static final File CONFIGURATION_FILE = new File(dir + "/data/Configuration.xml");
+
 
 
 	// it is generally accepted behavior that the chooser remembers where user
@@ -30,7 +32,7 @@ public class XMLManager extends Application {
 		dataFile = myChooser.showOpenDialog(primaryStage);
 		if (dataFile != null) {
 			try {
-				System.out.println(new XMLParser().getSimulation(dataFile));
+				System.out.println(new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE));
 			} catch (XMLException e) {
 				Alert a = new Alert(AlertType.ERROR);
 				a.setContentText(String.format("ERROR reading file %s", dataFile.getPath()));
@@ -43,7 +45,7 @@ public class XMLManager extends Application {
 	}
 
 	public XMLSimulation getSimulation() {
-		return new XMLParser().getSimulation(dataFile);
+		return new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE);
 	}
 
 	
