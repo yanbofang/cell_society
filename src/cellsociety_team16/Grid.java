@@ -50,7 +50,7 @@ public abstract class Grid {
 		mySimulationModel = simmod;
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
-		 //gridExtents = mySimulationModel.getCellSize();
+		 //cellExtents = mySimulationModel.getCellSize();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
 		if (mySimulationModel.getPositions().isEmpty()) {
@@ -60,6 +60,7 @@ public abstract class Grid {
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
+
 	}
 
 	public void setColor(int cellType, Color newColor) {
@@ -94,6 +95,11 @@ public abstract class Grid {
 		mySimulationModel.setRandomPositions();
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
+	}
+
+	protected Shape drawShape(int xLoc, int yLoc, int xSize, int ySize) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// abstract public List getCellPositions();
