@@ -77,7 +77,34 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	abstract public Node updateGrid(int gridExtents);
+	//refactored code
+	public Node updateGrid(int gridExtents) {
+		Group cells = new Group();
+		myGridRows = mySimulationModel.getRows();
+		myGridColumns = mySimulationModel.getCols();
+
+		myInts = mySimulationModel.getPositions();
+
+		int index = 0;
+
+		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
+		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
+			// determines place on the screen
+			int rowLoc = row_iter * sideSize;
+
+			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
+				Shape shapely = drawShape(col_iter * sideSize, rowLoc, sideSize, sideSize);
+
+				shapely.setFill(getColor(myInts.get(index)));
+				if (gridLines) {
+					shapely.setStroke(GRIDLINE_COLOR);
+				}
+				cells.getChildren().add(shapely);
+				index++;
+			}
+		}
+		return cells;
+	}
 
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
