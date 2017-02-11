@@ -34,6 +34,7 @@ public abstract class Grid {
 	private List<Paint> myColors;
 	protected Simulation mySimulation;
 	protected int myGridRows, myGridColumns;
+	protected int cellExtents;
 
 	/**
 	 * Initalizes a grid object
@@ -57,10 +58,13 @@ public abstract class Grid {
 	public Node initialize(int gridExtents) {
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
+		 //cellExtents = mySimulationModel.getCellSize();
+		myGridRows = mySimulationModel.getRows();
+		myGridColumns = mySimulationModel.getCols();
 		if (mySimulationModel.getPositions().isEmpty()) {
 			mySimulationModel.setRandomPositions();
 			mySimulation.setInitialGrid(mySimulationModel);
-			return updateGrid(gridExtents);
+			return updateGrid(cellExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
 

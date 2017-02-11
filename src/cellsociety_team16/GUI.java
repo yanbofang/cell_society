@@ -23,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -77,7 +78,11 @@ public class GUI {
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
-	private Stage myStage;
+	private int myGridRows, myGridColumns;
+	private List<Color> myColors;
+	
+	//graph
+	private PopulationGraph myGraph;
 
 	// user input fields
 	private Button myLoadButton;
@@ -130,18 +135,30 @@ public class GUI {
 		myRoot.setPadding(new Insets(SCREENHEIGHT / padding, SCREENWIDTH / padding, SCREENWIDTH / padding,
 				SCREENHEIGHT / padding));
 
-		myRoot.setCenter(myGrid.initialize(gridSideSize));
+		myRoot.setCenter(myGrid.initialize(gridSideSize, mySimulationModel));
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
 		// TODO see if still true
 		myRoot.setBottom(setUpBottom());
+		myRoot.setTop(setUpTop());
 
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
 
+	private Node setUpTop(){
+		HBox top = new HBox();
+		top.setAlignment(Pos.CENTER);
+		top.setMaxHeight(SCREENHEIGHT/5);
+		myGraph = new PopulationGraph(mySimulationModel);
+		top.getChildren().add(myGraph.createPopulationGraph());
+		return top;
+	}
+	
+	
+	
 	/**
 	 * Creates display that the user can interact with that goes along the
 	 * bottom throws an exception if the file loaded is not suitable
@@ -162,8 +179,12 @@ public class GUI {
 				// resets the simulation type that will be displayed
 				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
-
-				myGrid.initialize(gridSideSize);
+				// If the simulationModel contains initial positions, use
+				// setGrid which doesn't randomize new positions
+				myGrid.initialize(gridSideSize, mySimulationModel);
+				// mySimulationModel.setRandomPositions();
+				// mySimulation.setInitialGrid(mySimulationModel);
+				// System.out.println(mySimulationModel.getName());
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
@@ -308,6 +329,8 @@ public class GUI {
 	private void step() {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
+		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
+		
 	}
 
 	/**
