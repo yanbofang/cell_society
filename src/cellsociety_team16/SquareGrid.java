@@ -37,12 +37,4 @@ public class SquareGrid extends Grid {
 		}
 		return cells;
 	}
-
-	@Override
-	public Node resetGrid(int gridExtents) {
-		mySimulationModel.setRandomPositions();
-		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridExtents);
-	}
-
 }

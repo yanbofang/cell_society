@@ -105,13 +105,16 @@ public class GUI {
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
 		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+		// set grid extents to a of whichever is smaller, width or height
+		// .75 is arbitrary value for aesthetic purposes
+		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 	}
 
 	/**
 	 * Initialize the display and updates only runs once per load of the
 	 * simulation
 	 */
-	// TODO add more windows kinda somehow
+	// TODO add more windows
 	public void init(Stage primaryStage) {
 		myRoot = new BorderPane();
 
@@ -121,20 +124,11 @@ public class GUI {
 		myRoot.setPadding(new Insets(SCREENHEIGHT / padding, SCREENWIDTH / padding, SCREENWIDTH / padding,
 				SCREENHEIGHT / padding));
 
-		// set grid extents to a of whichever is smaller, width or height
-		// .75 is arbitrary value for aesthetic purposes
-		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
-
-		//If the simulationModel contains initial positions, use setGrid which doesn't randomize new positions
-		if (mySimulationModel.getPositions().isEmpty()) {
-			myRoot.setCenter(resetGrid());
-		} else {
-			myRoot.setCenter(setGrid());
-		}
+		myRoot.setCenter(myGrid.initialize(gridSideSize));
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
-		//TODO see if still true
+		// TODO see if still true
 		myRoot.setBottom(setUpBottom());
 
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
@@ -149,8 +143,8 @@ public class GUI {
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
-		//TODO just click to load a new file
-		//Click to save current settings
+		// TODO just click to load a new file
+		// Click to save current settings
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aethstetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
@@ -162,13 +156,10 @@ public class GUI {
 				// resets the simulation type that will be displayed
 				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
-				
-				//If the simulationModel contains initial positions, use setGrid which doesn't randomize new positions
-				if (mySimulationModel.getPositions().isEmpty()) {
-					myRoot.setCenter(resetGrid());
-				} else {
-					myRoot.setCenter(setGrid());
-				}
+
+				// If the simulationModel contains initial positions, use
+				// setGrid which doesn't randomize new positions
+				myGrid.initialize(gridSideSize);
 
 				// mySimulationModel.setRandomPositions();
 				// mySimulation.setInitialGrid(mySimulationModel);
@@ -221,26 +212,26 @@ public class GUI {
 	/**
 	 * Sets up User input that modifies cells that appears on the left side
 	 */
-	//TODO throws NoGridException
+	// TODO throws NoGridException
 	private Node setUpLeft(int numberOfTypes) {
 		VBox userInput = new VBox();
 		Group colorPickerGroup = new Group();
 		Group sliderGroup = new Group();
 		Random randomGenerator = new Random();
-		
+
 		for (int i = 0; i < numberOfTypes; i++) {
 			myColorPickers.add(i, new ColorPicker());
 			Color newColor = randomLightColor();
 			myColorPickers.get(i).setValue(newColor);
 			colorPickerGroup.getChildren().add(myColorPickers.get(i));
-//			myColorPickers.get(i).setOnAction(new EventHandler() {
-//				@Override
-//				public void handle(Event e) {
-//					myGrid.setColor(i, newColor);
-//				}
-//			});
-			//TODO figure out arraylist of varying values
-			//myValueSliders.add(i, makeSlider(0, 100, ))
+			// myColorPickers.get(i).setOnAction(new EventHandler() {
+			// @Override
+			// public void handle(Event e) {
+			// myGrid.setColor(i, newColor);
+			// }
+			// });
+			// TODO figure out arraylist of varying values
+			// myValueSliders.add(i, makeSlider(0, 100, ))
 		}
 
 		return userInput;
@@ -292,27 +283,6 @@ public class GUI {
 		newButton.setOnAction(handler);
 
 		return newButton;
-	}
-
-	/**
-	 * Reramdonizes the simulation Triggered by a button press
-	 * 
-	 * @return a new grid of the mySimulationType
-	 */
-	private Node resetGrid() {
-		mySimulationModel.setRandomPositions();
-		return setGrid();
-	}
-
-	/**
-	 * Set the grid without randomize positions
-	 * 
-	 * @return
-	 */
-	private Node setGrid() {
-		mySimulation.setInitialGrid(mySimulationModel);
-		myGrid = updateGrid(gridSideSize);
-		return myGrid;
 	}
 
 	/**
