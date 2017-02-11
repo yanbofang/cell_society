@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="Simulation">
+    <cellShape>Square</cellShape>
+    <activeColor>Red</activeColor>
+    <inactiveColor>Blue</inactiveColor>
+    <emptyColor>White</emptyColor>
+    <cellSize>4</cellSize>
+</data>
