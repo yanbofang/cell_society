@@ -29,6 +29,7 @@ public abstract class SimulationModel {
 	private double inactivePercentage;
 	private double emptyPercentage;
 	private List<Integer> positions;
+	private List<Integer> counts;
 	private List<Color> colors;
 	private String cellShape;
 	private String activeColor;
@@ -102,6 +103,24 @@ public abstract class SimulationModel {
 	
 	public int getCellSize(){
 		return this.cellSize;
+	}
+	
+	/**
+	 * Return an arraylist of counts of 3 types of cells, index 0 is the count of empty ones, index 1 is the inactive,  2 is the active
+	 * @return
+	 */
+	public List<Integer> getCounts(){
+		counts = new ArrayList<Integer>(Arrays.asList(0,0,0));
+		for(Integer i: positions){
+			if(i==0){
+				counts.set(0, counts.get(0) + 1);
+			}else if(i == 1){
+				counts.set(1, counts.get(1) + 1);
+			}else if(i == 2){
+				counts.set(2, counts.get(2) + 1);
+			}
+		}
+		return counts;
 	}
 	
 	/**

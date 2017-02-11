@@ -23,6 +23,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
@@ -77,6 +78,9 @@ public class GUI {
 	private SimulationModel mySimulationModel;
 	private int myGridRows, myGridColumns;
 	private List<Color> myColors;
+	
+	//graph
+	private PopulationGraph myGraph;
 
 	// user input fields
 	private Button myPlayButton;
@@ -124,18 +128,30 @@ public class GUI {
 		myRoot.setPadding(new Insets(SCREENHEIGHT / padding, SCREENWIDTH / padding, SCREENWIDTH / padding,
 				SCREENHEIGHT / padding));
 
-		myRoot.setCenter(myGrid.initialize(gridSideSize));
+		myRoot.setCenter(myGrid.initialize(gridSideSize, mySimulationModel));
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
 		// TODO see if still true
 		myRoot.setBottom(setUpBottom());
+		myRoot.setTop(setUpTop());
 
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
 
+	private Node setUpTop(){
+		HBox top = new HBox();
+		top.setAlignment(Pos.CENTER);
+		top.setMaxHeight(SCREENHEIGHT/5);
+		myGraph = new PopulationGraph(mySimulationModel);
+		top.getChildren().add(myGraph.createPopulationGraph());
+		return top;
+	}
+	
+	
+	
 	/**
 	 * Creates display that the user can interact with that goes along the
 	 * bottom
@@ -156,11 +172,9 @@ public class GUI {
 				// resets the simulation type that will be displayed
 				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
-
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
-				myGrid.initialize(gridSideSize);
-
+				myGrid.initialize(gridSideSize, mySimulationModel);
 				// mySimulationModel.setRandomPositions();
 				// mySimulation.setInitialGrid(mySimulationModel);
 				// System.out.println(mySimulationModel.getName());
@@ -181,7 +195,7 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-
+		
 		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
@@ -292,6 +306,8 @@ public class GUI {
 	private void step() {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
+		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
+		
 	}
 
 	/**
