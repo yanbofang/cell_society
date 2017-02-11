@@ -1,29 +1,17 @@
 package backend;
 
+/**
+ * This class is an extension of Cell. 
+ * This class is used for Segregation Simulation. People's priority is 0.
+ * @author chenxingyu
+ *
+ */
 public class People extends Cell {
-	private int priority = 0;
-	private Container myContainer;
-
-	@Override
-	public void setContainer(Container a) {
-		// TODO Auto-generated method stub
-		this.setMyContainer(a);
+	public People() {
+		this.setPriority(0);
+		this.setIdentity("People");
 	}
-
-	@Override
-	public int getPriority() {
-		// TODO Auto-generated method stub
-		return this.priority;
-	}
-
-	public Container getMyContainer() {
-		return myContainer;
-	}
-
-	public void setMyContainer(Container myContainer) {
-		this.myContainer = myContainer;
-	}
-
+	
 	public String toString() {
 		return "1";
 	}

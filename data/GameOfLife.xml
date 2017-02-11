@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="Simulation">
-    <name>Game of Life</name>
+    <name>GameOfLife</name>
     <author>Xingyu Chen</author>
-    <rows>5</rows>
-    <cols>5</cols>
-
-    <activeX>
-	    <x>1</x>
-	    <x>2</x>
-	    <x>2</x>
-	</activeX>
-	<activeY>
-	    <y>2</y>
-	    <y>4</y>
-	    <y>3</y>
-	</activeY>
+    <rows>10</rows>
+    <cols>10</cols>
+    <activePercentage>0</activePercentage>
+	<inactivePercentage>0.4</inactivePercentage>
+	<emptyPercentage>0.6</emptyPercentage>
 </data>

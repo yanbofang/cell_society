@@ -1,36 +1,28 @@
 package backend;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.function.Predicate;
+/**
+ * A specific class for Game of Life Simulation
+ * 
+ * @author chenxingyu
+ *
+ */
 public class GameOfLifeHandler extends Handler {	
-
+	/**
+	 * The required method to determine the future status of the current cell
+	 */
 	public void solve(Container curContainer) {
 		ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
-		if (curContainer.getMyCell() instanceof Life) {
-			int cnt = this.numberLiveNeighbor(myNeighbor);
-			if (cnt==2 || cnt==3) {
-				curContainer.getNext().setCell(new Life());
-			} else {
-				curContainer.getNext().setCell(new EmptyCell());
-			}
-		}
-
-		if (curContainer.getMyCell() instanceof EmptyCell) {
-			int cnt = this.numberLiveNeighbor(myNeighbor);
-			if (cnt==3) {
-				curContainer.getNext().setCell(new Life());
-			} else { 
-				curContainer.getNext().setCell(new EmptyCell());
-			}
+		Predicate<String> function = s-> s.compareTo("Life")==0;
+		int cnt = this.numberLiveNeighbor(myNeighbor, function);
+		
+		if (cnt==3) {
+			curContainer.setNext(new Life());
+		} else if (cnt==2 && curContainer.getMyCell().is("Life")) {
+			curContainer.setNext(new Life());
+		} else {
+			curContainer.setNext(new EmptyCell());			
 		}
 	}
-
-	@Override
-	public boolean check(Cell cell) {
-		// TODO Auto-generated method stub
-		return cell instanceof Life;
-	}
-	
 }

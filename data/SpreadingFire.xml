@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="Simulation">
+    <name>SpreadingFire</name>
+    <author>Xingyu Chen</author>
+    <rows>10</rows>
+    <cols>10</cols>
+    <activePercentage>0.2</activePercentage>
+	<inactivePercentage>0.4</inactivePercentage>
+	<emptyPercentage>0.4</emptyPercentage>
+	<fireProbability>0.9</fireProbability>
+	<treeProbability>0.1</treeProbability>
+</data>

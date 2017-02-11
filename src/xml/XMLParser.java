@@ -30,17 +30,21 @@ public class XMLParser {
     /**
      * Get the data contained in this XML file as an object
      */
-    public Simulation getSimulation (File dataFile) {
+    public XMLSimulation getSimulation (File dataFile, File configurationFile) {
         Element root = getRootElement(dataFile);
-        if (! isValidFile(root, Simulation.DATA_TYPE)) {
-            throw new XMLException("XML file does not represent %s", Simulation.DATA_TYPE);
+        Element configurationRoot = getRootElement(configurationFile);
+        if (! isValidFile(root, XMLSimulation.DATA_TYPE)) {
+            throw new XMLException("XML file does not represent %s", XMLSimulation.DATA_TYPE);
         }
         // read data associated with the fields given by the object
         Map<String, String> results = new HashMap<>();
-        for (String field : Simulation.DATA_FIELDS) {
+        for (String field : XMLSimulation.DATA_FIELDS) {
             results.put(field, getTextValue(root, field));
         }
-        return new Simulation(results);
+        for(String field : XMLSimulation.CONFIGURATION_FIELDS){
+        	results.put(field, getTextValue(configurationRoot, field));
+        }
+        return new XMLSimulation(results);
     }
 
 
