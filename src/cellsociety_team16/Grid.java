@@ -113,6 +113,7 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
+	//refactored code
 	public Node updateGrid(int gridExtents) {
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
