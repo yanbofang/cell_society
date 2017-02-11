@@ -22,6 +22,8 @@ public class XMLSimulation {
 			"activePercentage", "inactivePercentage", "emptyPercentage", "fireProbability", "treeProbability",
 			"satisfactionRate", "fishBreed", "sharkBreed", "positions" });
 
+	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[]{"cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize"});
+	
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
 
@@ -70,11 +72,11 @@ public class XMLSimulation {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(9)));
 	}
 
-	public Integer getFishBreed() {
+	public int getFishBreed() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(10)));
 	}
 
-	public Integer getSharkBreed() {
+	public int getSharkBreed() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
 	}
 
@@ -95,6 +97,28 @@ public class XMLSimulation {
 		return pos;
 	}
 
+	public String getCellShape(){
+		return myDataValues.get(CONFIGURATION_FIELDS.get(0));
+	}
+	
+	public String getActiveColor(){
+		return myDataValues.get(CONFIGURATION_FIELDS.get(1));
+	}
+	
+	public String getInactiveColor(){
+		return myDataValues.get(CONFIGURATION_FIELDS.get(2));
+	}
+	
+	public String getEmptyColor(){
+		return myDataValues.get(CONFIGURATION_FIELDS.get(3));
+	}
+	
+	public int getCellSize(){
+		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(4)));
+	}
+	
+	
+	
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();

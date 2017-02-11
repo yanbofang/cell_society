@@ -1,12 +1,10 @@
 package cellsociety_team16;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -23,87 +21,53 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private List<Integer> myInts;
-	private Paint DEFAULT_COLOR_EMPTY = Color.WHITE;
-	private Paint DEFAULT_COLOR_ACTIVE = Color.GREEN;
-	private Paint DEFAULT_COLOR_SPECIAL = Color.RED;
-	private Paint GRIDLINE_COLOR = Color.BLACK;
+	private Map<Integer, Paint> myColorMap;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
 	protected Shape myShape;
 	protected SimulationModel mySimulationModel;
-	private List<Paint> myColors;
+	protected List myColors;
 	protected Simulation mySimulation;
 	protected int myGridRows, myGridColumns;
+	protected int cellExtents;
 
 	/**
-	 * Initalizes a grid object
+	 * Declares a grid object
 	 */
 	public Grid(SimulationModel simulationModel, Simulation simulation) {
 		mySimulationModel = simulationModel;
 		mySimulation = simulation;
-		myColors = new ArrayList<Paint>();
-		myColors.add(0, DEFAULT_COLOR_EMPTY);
-		myColors.add(1, DEFAULT_COLOR_ACTIVE);
-		myColors.add(2, DEFAULT_COLOR_SPECIAL);
 	}
 
-	/**
-	 * Draws out a grid
-	 * 
-	 * @param gridExtents
-	 *            determines cell size
-	 * @return a grid of the simulationModelType
-	 */
-	public Node initialize(int gridExtents) {
+	// TODO put this into mysimulationmodel class
+	public Node initialize(int cellExtents, SimulationModel simmod) {
+		mySimulationModel = simmod;
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
+		 //cellExtents = mySimulationModel.getCellSize();
+		myGridRows = mySimulationModel.getRows();
+		myGridColumns = mySimulationModel.getCols();
 		if (mySimulationModel.getPositions().isEmpty()) {
 			mySimulationModel.setRandomPositions();
 			mySimulation.setInitialGrid(mySimulationModel);
-			return updateGrid(gridExtents);
+			return updateGrid(cellExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
-
-		return updateGrid(gridExtents);
+		return updateGrid(cellExtents);
 	}
 
-	/**
-	 * Resets color of a certain type of cell
-	 * 
-	 * @param cellType
-	 *            where 0 corresponds to empty, 1 to active, and 2 to special
-	 * @param newColor
-	 *            sets the color the cellType will now be
-	 */
 	public void setColor(int cellType, Color newColor) {
-		myColors.add(cellType, newColor);
+		myColorMap.put(cellType, newColor);
 	}
 
-	/**
-	 * @param cellType
-	 *            where 0 corresponds to empty, 1 to active, and 2 to pecial
-	 * @return the color of that cellType
-	 */
 	private Paint getColor(int cellType) {
-		return myColors.get(cellType);
+		return myColorMap.get(cellType);
 	}
 
-	/**
-	 * Sets the grid size as constant if true, infinite if false
-	 * 
-	 * @param yes
-	 *            is true or false
-	 */
 	public void setStaticGridSize(boolean yes) {
 		gridSizeStatic = yes;
 	}
 
-	/**
-	 * Draws grid lines outlining the cells
-	 * 
-	 * @param boo
-	 *            is true if lines are to be drawn
-	 */
 	public void setGridLines(boolean boo) {
 		gridLines = boo;
 	}
@@ -152,17 +116,6 @@ public abstract class Grid {
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
-
-	/**
-	 * Draws a shape of the specified size
-	 * 
-	 * @param xLoc
-	 * @param yLoc
-	 * @param xSize
-	 * @param ySize
-	 * @return that shape, dependent upon which subclass of Grid is made
-	 */
-	abstract protected Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
 	// abstract public List getCellPositions();
 
