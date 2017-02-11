@@ -7,6 +7,7 @@ import backend.Simulation;
 import cellsociety_team16.SimulationModel;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 
 /**
@@ -20,20 +21,21 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private List<Integer> myInts;
-	private Map<Integer, Color> myColorMap;
+	private Map<Integer, Paint> myColorMap;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
 	protected Shape myShape;
 	protected SimulationModel mySimulationModel;
 	protected List myColors;
-	private Simulation mySimulation;
+	protected Simulation mySimulation;
 	protected int myGridRows, myGridColumns;
 
 	/**
 	 * Declares a grid object
 	 */
-	public Grid(SimulationModel simulationModel) {
+	public Grid(SimulationModel simulationModel, Simulation simulation) {
 		mySimulationModel = simulationModel;
+		mySimulation = simulation;
 	}	
 	//TODO put this into mysimulationmodel class
 	public Node initialize(){
@@ -45,7 +47,7 @@ public abstract class Grid {
 		myColorMap.put(cellType, newColor);
 	}
 
-	private Color getColor(int cellType) {
+	private Paint getColor(int cellType) {
 		return myColorMap.get(cellType);
 	}
 
@@ -67,7 +69,7 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid of the mySimulationType
 	 */
-	abstract public Node resetGrid();
+	abstract public Node resetGrid(int gridExtents);
 
 	// abstract public List getCellPositions();
 

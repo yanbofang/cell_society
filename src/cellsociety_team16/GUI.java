@@ -24,6 +24,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
@@ -76,7 +77,6 @@ public class GUI {
 	private SimulationModel mySimulationModel;
 	private int myGridRows, myGridColumns;
 	private List<Color> myColors;
-	private ComboBox myShapeChooser;
 
 	// user input fields
 	private Button myPlayButton;
@@ -86,6 +86,8 @@ public class GUI {
 	private ComboBox<String> mySimulationChooser;
 	private ArrayList<ColorPicker> myColorPickers;
 	private ArrayList<Slider> myValueSliders;
+	private ComboBox<Object> myShapeChooser;
+	private CheckBox addGridLines;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
@@ -102,6 +104,7 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
+		myGrid = new SquareGrid(mySimulationModel, mySimulation);
 	}
 
 	/**
@@ -142,6 +145,8 @@ public class GUI {
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
+		//TODO just click to load a new file
+		//Click to save current settings
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
 		// 4 is an arbitrary value for aethstetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
@@ -151,16 +156,16 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
-				// TODO see if can take a string or sml file
+				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 				mySimulationModel.setRandomPositions();
 				mySimulation.setInitialGrid(mySimulationModel);
 				// System.out.println(mySimulationModel.getName());
-				myRoot.setCenter(resetGrid());
+				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
 		});
-		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(resetGrid()));
+		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
@@ -216,12 +221,12 @@ public class GUI {
 			Color newColor = randomLightColor();
 			myColorPickers.get(i).setValue(newColor);
 			colorPickerGroup.getChildren().add(myColorPickers.get(i));
-			myColorPickers.get(i).setOnAction(new EventHandler() {
-				@Override
-				public void handle(Event e) {
-					myGrid.setColor(i, newColor);
-				}
-			});
+//			myColorPickers.get(i).setOnAction(new EventHandler() {
+//				@Override
+//				public void handle(Event e) {
+//					myGrid.setColor(i, newColor);
+//				}
+//			});
 			//TODO figure out arraylist of varying values
 			//myValueSliders.add(i, makeSlider(0, 100, ))
 		}

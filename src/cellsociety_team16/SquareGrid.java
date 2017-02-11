@@ -1,13 +1,15 @@
 package cellsociety_team16;
 
+import backend.Simulation;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 
 public class SquareGrid extends Grid {
 
-	public SquareGrid(SimulationModel simulationModel) {
-		super(simulationModel);
+	public SquareGrid(SimulationModel simulationModel, Simulation simulation) {
+		super(simulationModel, simulation);
 	}
 
 	@Override
@@ -28,7 +30,7 @@ public class SquareGrid extends Grid {
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
 
-				r.setFill(myColors.get(index));
+				r.setFill((Paint) myColors.get(index));
 				cells.getChildren().add(r);
 				index++;
 			}
@@ -37,10 +39,10 @@ public class SquareGrid extends Grid {
 	}
 
 	@Override
-	public Node resetGrid() {
+	public Node resetGrid(int gridExtents) {
 		mySimulationModel.setRandomPositions();
 		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridSideSize);
+		return updateGrid(gridExtents);
 	}
 
 }
