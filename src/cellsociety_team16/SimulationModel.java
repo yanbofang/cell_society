@@ -179,5 +179,4 @@ public abstract class SimulationModel {
 			}
 		}
 	}
-
 }
