@@ -27,10 +27,4 @@ public class HexagonGrid extends Grid {
 //	return new Polygon(pointArray);
 		return null;
 	}
-
-	@Override
-	public Node updateGrid(int gridExtents) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

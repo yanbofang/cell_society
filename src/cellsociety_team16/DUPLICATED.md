@@ -1,7 +1,7 @@
-+ # Peer Code Review
+
++ # Peer Review Code
 +
-+ Kris Elbert: ke60
-+ Maddie Briere: mfb333
++ author Kris Elbert: ke60
++ author Maddie Briere: mfb33
 +
-+
-+ The code we decided to refactor was the method in and the method in 
++ We decided to refactor the update method in the Grid class and the Override update method in SquareGrid to generalize the code. By created a drawShape() method that differentiates the drawn shapes, the code becomes more flexible and easier to expand.

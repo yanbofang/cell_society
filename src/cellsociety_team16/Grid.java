@@ -1,10 +1,12 @@
 package cellsociety_team16;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -20,16 +22,19 @@ public abstract class Grid {
 	// TODO may not need
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
+	private Color GRIDLINE_COLOR = Color.BLACK;
+	private Color EMPTY_COLOR = Color.WHITE;
+	private Color ACTIVE_COLOR = Color.GREEN;
+	private Color SPECIAL_COLOR = Color.RED;
 	private List<Integer> myInts;
-	private Map<Integer, Paint> myColorMap;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
 	protected Shape myShape;
 	protected SimulationModel mySimulationModel;
-	protected List myColors;
+	protected List<Paint> myColors;
 	protected Simulation mySimulation;
 	protected int myGridRows, myGridColumns;
-	protected int cellExtents;
+	protected int gridExtents;
 
 	/**
 	 * Declares a grid object
@@ -37,6 +42,10 @@ public abstract class Grid {
 	public Grid(SimulationModel simulationModel, Simulation simulation) {
 		mySimulationModel = simulationModel;
 		mySimulation = simulation;
+		myColors = new ArrayList<Paint>();
+		myColors.add(0, EMPTY_COLOR);
+		myColors.add(1, ACTIVE_COLOR);
+		myColors.add(2, SPECIAL_COLOR);
 	}
 
 	/**
@@ -50,25 +59,25 @@ public abstract class Grid {
 		mySimulationModel = simmod;
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
-		 //cellExtents = mySimulationModel.getCellSize();
+		// cellExtents = mySimulationModel.getCellSize();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
+		
 		if (mySimulationModel.getPositions().isEmpty()) {
 			mySimulationModel.setRandomPositions();
 			mySimulation.setInitialGrid(mySimulationModel);
-			return updateGrid(cellExtents);
+			return updateGrid(gridExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
-
 	}
 
 	public void setColor(int cellType, Color newColor) {
-		myColorMap.put(cellType, newColor);
+		myColors.add(cellType, newColor);
 	}
 
 	private Paint getColor(int cellType) {
-		return myColorMap.get(cellType);
+		return myColors.get(cellType);
 	}
 
 	public void setStaticGridSize(boolean yes) {
@@ -84,7 +93,33 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	abstract public Node updateGrid(int gridExtents);
+	public Node updateGrid(int gridExtents) {
+		Group cells = new Group();
+		myGridRows = mySimulationModel.getRows();
+		myGridColumns = mySimulationModel.getCols();
+
+		myInts = mySimulationModel.getPositions();
+
+		int index = 0;
+
+		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
+		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
+			// determines place on the screen
+			int rowLoc = row_iter * sideSize;
+
+			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
+				Shape shapely = drawShape(col_iter * sideSize, rowLoc, sideSize, sideSize);
+
+				shapely.setFill(getColor(myInts.get(index)));
+				if (gridLines) {
+					shapely.setStroke(GRIDLINE_COLOR);
+				}
+				cells.getChildren().add(shapely);
+				index++;
+			}
+		}
+		return cells;
+	}
 
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
@@ -97,10 +132,7 @@ public abstract class Grid {
 		return updateGrid(gridExtents);
 	}
 
-	protected Shape drawShape(int xLoc, int yLoc, int xSize, int ySize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	abstract Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
 	// abstract public List getCellPositions();
 
