@@ -64,7 +64,7 @@ public class Simulation {
 		for (int i=0;i<n;i++) {
 			for (int j=0;j<m;j++) {
 				int curPos=i*n+j;
-				int curPosStats = initialStatus.get(curPos);
+				int curPosStats=initialStatus.get(curPos);
 				thisRoundGrid.getContainer(curPos).setCell(this.createNewCell(modelGeneral.getName(),curPosStats));
 			}
 		}
