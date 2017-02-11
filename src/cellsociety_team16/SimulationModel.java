@@ -43,6 +43,8 @@ public abstract class SimulationModel {
 		activePercentage = simulation.getActivePercentage();
 		inactivePercentage = simulation.getInactivePercentage();
 		emptyPercentage = simulation.getEmptyPercentage();
+		positions = simulation.getPositions();
+		colors = this.setColors();
 	}
 
 	/**

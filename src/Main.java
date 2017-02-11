@@ -19,20 +19,20 @@ public class Main extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
-		Integer a=Integer.parseInt("1");
-		System.out.println(a);
+//		Integer a=Integer.parseInt("1");
+//		System.out.println(a);
 		XMLManager xml = new XMLManager();
 		xml.start(primaryStage);
 		
-		SimulationModel mySimulation = xml.getSimulationModel();
-		mySimulation.setRandomPositions();
+		SimulationModel mySimulationModel = xml.getSimulationModel();
+		//mySimulation.setRandomPositions();
 //		Simulation simTest = new Simulation();
 //		simTest.setInitialGrid(mySimulation);
 //		for (int i=0;i<100;i++) {
 //			simTest.startNewRoundSimulation();
 //		}
 		
-		GUI gui = new GUI(mySimulation, "English");
+		GUI gui = new GUI(mySimulationModel, "English");
 
 		gui.init(primaryStage);
 		
