@@ -49,7 +49,9 @@ public abstract class Grid {
 
 	/**
 	 * Draws out a grid
-	 * @param gridExtents determines cell size
+	 * 
+	 * @param gridExtents
+	 *            determines cell size
 	 * @return a grid of the simulationModelType
 	 */
 	public Node initialize(int gridExtents) {
@@ -64,32 +66,44 @@ public abstract class Grid {
 
 		return updateGrid(gridExtents);
 	}
-/**
- * Resets color of a certain type of cell
- * @param cellType where 0 corresponds to empty, 1 to active, and 2 to special
- * @param newColor sets the color the cellType will now be
- */
+
+	/**
+	 * Resets color of a certain type of cell
+	 * 
+	 * @param cellType
+	 *            where 0 corresponds to empty, 1 to active, and 2 to special
+	 * @param newColor
+	 *            sets the color the cellType will now be
+	 */
 	public void setColor(int cellType, Color newColor) {
 		myColors.add(cellType, newColor);
 	}
-/**
- * @param cellType where 0 corresponds to empty, 1 to active, and 2 to pecial
- * @return the color of that cellType
- */
+
+	/**
+	 * @param cellType
+	 *            where 0 corresponds to empty, 1 to active, and 2 to pecial
+	 * @return the color of that cellType
+	 */
 	private Paint getColor(int cellType) {
 		return myColors.get(cellType);
 	}
-/**
- * Sets the grid size as constant if true, infinite if false
- * @param yes is true or false
- */
+
+	/**
+	 * Sets the grid size as constant if true, infinite if false
+	 * 
+	 * @param yes
+	 *            is true or false
+	 */
 	public void setStaticGridSize(boolean yes) {
 		gridSizeStatic = yes;
 	}
-/**
- * Draws grid lines outlining the cells
- * @param boo is true if lines are to be drawn
- */
+
+	/**
+	 * Draws grid lines outlining the cells
+	 * 
+	 * @param boo
+	 *            is true if lines are to be drawn
+	 */
 	public void setGridLines(boolean boo) {
 		gridLines = boo;
 	}
@@ -137,14 +151,16 @@ public abstract class Grid {
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
-/**
- * Draws a shape of the specified size
- * @param xLoc
- * @param yLoc
- * @param xSize
- * @param ySize
- * @return that shape, dependent upon which subclass of Grid is made
- */
+
+	/**
+	 * Draws a shape of the specified size
+	 * 
+	 * @param xLoc
+	 * @param yLoc
+	 * @param xSize
+	 * @param ySize
+	 * @return that shape, dependent upon which subclass of Grid is made
+	 */
 	abstract protected Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
 	// abstract public List getCellPositions();
