@@ -5,7 +5,6 @@ import java.util.List;
 
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -61,22 +60,22 @@ public abstract class Grid {
 		// cellExtents = mySimulationModel.getCellSize();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
-		
+
 		if (mySimulationModel.getPositions().isEmpty()) {
 			mySimulationModel.setRandomPositions();
 			mySimulation.setInitialGrid(mySimulationModel);
-			return updateGrid(gridExtents);
+			return updateGrid(cellExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
 
 	public void setColor(int cellType, Color newColor) {
-		myColors.add(cellType, newColor);
+		myColorMap.put(cellType, newColor);
 	}
 
 	private Paint getColor(int cellType) {
-		return myColors.get(cellType);
+		return myColorMap.get(cellType);
 	}
 
 	public void setStaticGridSize(boolean yes) {
@@ -92,6 +91,7 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
+	//refactored code
 	public Node updateGrid(int gridExtents) {
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
@@ -130,6 +130,7 @@ public abstract class Grid {
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
+
 
 	abstract Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
