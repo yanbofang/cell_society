@@ -116,10 +116,11 @@ public class GUI {
 	/**
 	 * Initialize the display and updates only runs once per load of the
 	 * simulation
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 */
 	// TODO add more windows
-	public void init(Stage primaryStage) throws Exception {
+	public void init(Stage primaryStage) {
 		myStage = primaryStage;
 		myRoot = new BorderPane();
 
@@ -145,7 +146,7 @@ public class GUI {
 	 * Creates display that the user can interact with that goes along the
 	 * bottom throws an exception if the file loaded is not suitable
 	 */
-	private Node setUpBottom() throws Exception {
+	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
 		// TODO just click to load a new file
@@ -162,26 +163,23 @@ public class GUI {
 				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 
-				// If the simulationModel contains initial positions, use
-				// setGrid which doesn't randomize new positions
 				myGrid.initialize(gridSideSize);
-
-				// mySimulationModel.setRandomPositions();
-				// mySimulation.setInitialGrid(mySimulationModel);
-				// System.out.println(mySimulationModel.getName());
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
 		});
-		myLoadButton = makeButton("LoadFileCommand", event -> {
-			try {
-				myXMLManager.start(myStage);
-			} catch (Exception e) {
-				throw new XMLException(e);
-			}
-			mySimulationModel = myXMLManager.getSimulationModel();
-			myGrid.initialize(gridSideSize);
-		});
+		// mySaveButton = makeButton("SaveFileCommand", event ->
+		// myXMLManager.saveFile();
+		// }
+		// myLoadButton = makeButton("LoadFileCommand", event -> {
+		// try {
+		// myXMLManager.start(myStage);
+		// } catch (Exception e) {
+		// throw new XMLException(e);
+		// }
+		// mySimulationModel = myXMLManager.getSimulationModel();
+		// myGrid.initialize(gridSideSize);
+		// });
 		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
@@ -195,12 +193,9 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-
-		buttonLine.getChildren().add(myLoadButton);
-		buttonLine.getChildren().add(myResetButton);
-		buttonLine.getChildren().add(myPlayButton);
-		buttonLine.getChildren().add(myStepButton);
-		buttonLine.getChildren().addAll(mySpeedSlider);
+// buttonLine.getChildren().add(mySaveButton);
+		// buttonLine.getChildren().add(myLoadButton);
+		buttonLine.getChildren().addAll(myResetButton, myPlayButton, myStepButton, mySpeedSlider);
 
 		return buttonLine;
 	}
