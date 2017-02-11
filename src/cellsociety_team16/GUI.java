@@ -76,8 +76,6 @@ public class GUI {
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
-	private int myGridRows, myGridColumns;
-	private List<Color> myColors;
 	
 	//graph
 	private PopulationGraph myGraph;
@@ -118,7 +116,7 @@ public class GUI {
 	 * Initialize the display and updates only runs once per load of the
 	 * simulation
 	 */
-	// TODO add more windows
+	// TODO add ability to add more windows
 	public void init(Stage primaryStage) {
 		myRoot = new BorderPane();
 
