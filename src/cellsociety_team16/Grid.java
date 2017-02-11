@@ -5,6 +5,7 @@ import java.util.List;
 
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -64,18 +65,18 @@ public abstract class Grid {
 		if (mySimulationModel.getPositions().isEmpty()) {
 			mySimulationModel.setRandomPositions();
 			mySimulation.setInitialGrid(mySimulationModel);
-			return updateGrid(cellExtents);
+			return updateGrid(gridExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
 
 	public void setColor(int cellType, Color newColor) {
-		myColorMap.put(cellType, newColor);
+		myColors.add(cellType, newColor);
 	}
 
 	private Paint getColor(int cellType) {
-		return myColorMap.get(cellType);
+		return myColors.get(cellType);
 	}
 
 	public void setStaticGridSize(boolean yes) {
