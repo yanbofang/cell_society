@@ -106,7 +106,7 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		myGrid = new HexagonGrid(mySimulationModel, mySimulation);
+		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		//makes a square grid

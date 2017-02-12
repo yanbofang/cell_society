@@ -14,14 +14,15 @@ public class SquareGrid extends Grid {
 	 * @param simulationModel
 	 * @param simulation
 	 */
-	private static boolean offsetHalf;
+	private static double TRANSLATION = 0;
+	private static boolean MANIPULATED;
 
 	// false because squares do not need an offselt
 	public SquareGrid(SimulationModel simulationModel, Simulation simulation) {
-		super(simulationModel, simulation, offsetHalf);
+		super(simulationModel, simulation, TRANSLATION, MANIPULATED);
 	}
 
-	Shape drawShape(double xLoc, double yLoc, double cellSize) {
+	Shape drawShape(double xLoc, double yLoc, double cellSize, int rotationAngle) {
 		// makes a square
 		// double sideSize = Math.min(xSize, ySize);
 		return new Rectangle(xLoc, yLoc, cellSize, cellSize);
