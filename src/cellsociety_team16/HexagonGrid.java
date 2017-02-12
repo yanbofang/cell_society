@@ -28,11 +28,11 @@ public class HexagonGrid extends Grid {
 		// note: if xSize == ySize, will appear as a square
 		// so we will assume that the viualization window is square and a bit of
 		// triangular overhang is acceptable
-		Polyline h = new Polyline();
+		Polygon h = new Polygon();
 		// double yDifference = Math.sqrt(xSize*xSize-ySize*ySize);
 		// if base hexagons a square
 		// from equation for equilatural hexagon
-		double yDifference = cellSize / Math.sqrt(3);
+		double yDifference = cellSize - cellSize / Math.sqrt(3);
 		h.getPoints()
 				.addAll(new Double[] { 
 						xLoc + cellSize / 2, yLoc, 
