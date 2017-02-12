@@ -24,11 +24,13 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -84,6 +86,7 @@ public class GUI {
 	private Button myPlayButton;
 	private Button myStepButton;
 	private Button myResetButton;
+	private Button myNewSimulationButton;
 	private Slider mySpeedSlider;
 	private ComboBox<String> mySimulationChooser;
 	private ArrayList<ColorPicker> myColorPickers;
@@ -187,6 +190,17 @@ public class GUI {
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
+		
+		Initializer init = new Initializer();
+		myNewSimulationButton = makeButton("NewSimulationCommand", event -> {
+			try {
+				init.newSimulation();
+			} catch (Exception e) {
+				Alert a = new Alert(AlertType.ERROR);
+                a.setContentText(String.format("Couldn't start a new simulation"));
+                a.showAndWait();
+			}
+		});
 
 		mySpeedSlider = makeSlider(.1, 2, mySpeedMultiplier, .1);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -202,6 +216,7 @@ public class GUI {
 		buttonLine.getChildren().add(myPlayButton);
 		buttonLine.getChildren().add(myStepButton);
 		buttonLine.getChildren().addAll(mySpeedSlider);
+		buttonLine.getChildren().add(myNewSimulationButton);
 
 		return buttonLine;
 	}
@@ -326,7 +341,7 @@ public class GUI {
 			timer.pause();
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED/2), e -> step());
+			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED / 2), e -> step());
 			timer.setCycleCount(Timeline.INDEFINITE);
 			timer.getKeyFrames().add(frame);
 			timer.play();
