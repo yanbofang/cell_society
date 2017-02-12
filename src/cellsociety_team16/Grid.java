@@ -35,12 +35,12 @@ public abstract class Grid {
 	protected List<Paint> myColors;
 	protected Simulation mySimulation;
 	protected int myGridRows, myGridColumns;
-	protected int gridExtents;
+	private boolean offsetHalf;
 
 	/**
 	 * Declares a grid object
 	 */
-	public Grid(SimulationModel simulationModel, Simulation simulation) {
+	public Grid(SimulationModel simulationModel, Simulation simulation, boolean bool) {
 		mySimulationModel = simulationModel;
 		mySimulation = simulation;
 		myColors = new ArrayList<Paint>();
@@ -60,31 +60,55 @@ public abstract class Grid {
 		mySimulationModel = simmod;
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
-		// cellExtents = mySimulationModel.getCellSize();
+		// cellExtents = mySimulationModel.getcellSize();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
 
 		if (mySimulationModel.getPositions().isEmpty()) {
 			mySimulationModel.setRandomPositions();
-			mySimulation.setInitialGrid(mySimulationModel);
-			return updateGrid(gridExtents);
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
 
+	/**
+	 * Sets color of a certain type of cell: 0 is empty, 1 is active, 2 is
+	 * special
+	 * 
+	 * @param cellType
+	 * @param newColor
+	 */
 	public void setColor(int cellType, Color newColor) {
 		myColors.add(cellType, newColor);
 	}
 
+	/**
+	 * Gets value of color corresponding to which type of cell it is
+	 * 
+	 * @param cellType:
+	 *            0 is empty, 1 is active, 2 is special
+	 * @return that cell's color in Paint form
+	 */
 	private Paint getColor(int cellType) {
 		return myColors.get(cellType);
 	}
 
+	/**
+	 * Sets a finite or infinite grid
+	 * 
+	 * @param yes
+	 *            if true makes the grid constant size
+	 */
 	public void setStaticGridSize(boolean yes) {
 		gridSizeStatic = yes;
 	}
 
+	/**
+	 * Adds lines around cells, including empty spaces
+	 * 
+	 * @param boo
+	 *            if true adds grid lines
+	 */
 	public void setGridLines(boolean boo) {
 		gridLines = boo;
 	}
@@ -94,8 +118,8 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	// refactored code
 	public Node updateGrid(int gridExtents) {
+		int offset;
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
@@ -103,12 +127,18 @@ public abstract class Grid {
 		myInts = mySimulationModel.getPositions();
 
 		int index = 0;
-
-		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
+		// int cellSize = Math.min(gridXSize / myGridRows, gridYSize /
+		// myGridColumns);
+		int cellSize = Math.min(gridExtents / myGridRows, gridExtents / myGridColumns);
+		// int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
-			int rowLoc = row_iter * sideSize;
-
+			int rowLoc = row_iter * cellSize;
+			if (offsetHalf && rowLoc % 2 == 0) {
+				offset = cellSize / 2;
+			} else {
+				offset = 0;
+			}
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				Shape shapely = drawShape(col_iter * sideSize, rowLoc, sideSize, sideSize);
 				// Set an id for each sell based on index, so that we can keep
@@ -151,8 +181,22 @@ public abstract class Grid {
 		return updateGrid(gridExtents);
 	}
 
-	// Oh my gosh I used to have a comment here why is it not here anymore
-	abstract Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
+	protected void setHalfOffset(boolean bool) {
+		offsetHalf = bool;
+	}
+
+	/**
+	 * Draws a shape as determined by the subclass of grid
+	 * 
+	 * @param xLoc
+	 *            corresponds to upper left hand side coordinate
+	 * @param yLoc
+	 *            corresponds to upper left hand side coordinate
+	 * @param cellSize
+	 *            corresponds to overall width of the cell
+	 * @return a shape determined by the grid subclass called
+	 */
+	abstract Shape drawShape(double xLoc, double yLoc, double cellSize);
 
 	// abstract public List getCellPositions();
 
