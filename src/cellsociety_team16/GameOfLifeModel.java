@@ -2,8 +2,15 @@ package cellsociety_team16;
 
 import xml.XMLSimulation;
 
+/**
+ * GameOfLifeModel
+ * @author Yanbo Fang
+ *
+ */
 public class GameOfLifeModel extends SimulationModel {
 
+	private int numberOfStates = 2;
+	
 	/**
 	 * Constructor for GameOfLifeModel
 	 * 
@@ -15,7 +22,7 @@ public class GameOfLifeModel extends SimulationModel {
 
 	@Override
 	public int numberOfStates() {
-		return 2;
+		return this.numberOfStates;
 	}
 
 }

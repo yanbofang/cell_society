@@ -185,6 +185,7 @@ public abstract class Grid {
 		List<Integer> positions = mySimulationModel.getPositions();
 		positions.set(Integer.parseInt(cell.getId()), nextColor);
 		mySimulationModel.setPositions(positions);
+		mySimulation.setInitialGrid(mySimulationModel);
 	}
 
 	/**

@@ -12,6 +12,7 @@ public class SpreadingFireModel extends SimulationModel {
 
 	private double fireProbability;
 	private double treeProbability;
+	private int numberOfStates = 3;
 
 	/**
 	 * Constructor for SpreadingFireModel
@@ -62,7 +63,7 @@ public class SpreadingFireModel extends SimulationModel {
 
 	@Override
 	public int numberOfStates() {
-		return 3;
+		return this.numberOfStates;
 	}
 
 }

@@ -20,7 +20,7 @@ public class XMLSimulation {
 	// simple way to create an immutable list
 	public static final List<String> DATA_FIELDS = Arrays.asList(new String[] { "name", "author", "rows", "cols",
 			"activePercentage", "inactivePercentage", "emptyPercentage", "fireProbability", "treeProbability",
-			"satisfactionRate", "fishBreed", "sharkBreed", "positions" });
+			"satisfactionRate", "fishBreed", "sharkBreed", "sugarMetabolism","sugarGrowBackRate", "positions", "amounts" });
 
 	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[]{"cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize"});
 	
@@ -80,8 +80,16 @@ public class XMLSimulation {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
 	}
 
+	public int getSugarMetabolism(){
+		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(12)));
+	}
+	
+	public int getSugarGrowBackRate(){
+		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(13)));
+	}
+	
 	public List<Integer> getPositions() {
-		String ints = myDataValues.get(DATA_FIELDS.get(12));
+		String ints = myDataValues.get(DATA_FIELDS.get(14));
 		ArrayList<Integer> pos = new ArrayList<Integer>();
 		for (int i = 0; i < ints.length(); i++) {
 			Integer cellState = Integer.parseInt(ints.substring(i, i + 1));
@@ -89,6 +97,7 @@ public class XMLSimulation {
 				throw new XMLException("Invalid cell state value at index %d", i / 2);
 			}
 			pos.add(cellState);
+			//Skip the space
 			i++;
 		}
 		if (pos.size() > this.getCols() * this.getRows()) {
@@ -96,6 +105,21 @@ public class XMLSimulation {
 		}
 		return pos;
 	}
+	
+	public List<Integer> getAmounts(){
+		String ints = myDataValues.get(DATA_FIELDS.get(14));
+		ArrayList<Integer> amounts = new ArrayList<Integer>();
+		for (int i = 0; i < ints.length(); i++) {
+			Integer amount = Integer.parseInt(ints.substring(i, i + 1));
+			amounts.add(amount);
+			i++;
+		}
+		if (amounts.size() > this.getCols() * this.getRows()) {
+			throw new XMLException("Cell locaations are outside the bounds of the grid's size");
+		}
+		return amounts;
+	}
+	
 
 	public String getCellShape(){
 		return myDataValues.get(CONFIGURATION_FIELDS.get(0));
