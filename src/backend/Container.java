@@ -77,6 +77,7 @@ public class Container {
 	
 	public void addMyCell(Cell myCell) {
 		this.myCell.add(myCell);
+		myCell.setMyContainer(this);
 	}
 	public boolean isLocked() {
 		return locked;
@@ -109,29 +110,41 @@ public class Container {
 	}
 	private int foodPheromone=0;
 	private int homePheromone=0;
-	public int getFoodPheromone() {
-		return foodPheromone;
+	public int getPheromone(String a) {
+		if (a.compareTo("Food")==0) return foodPheromone;
+		if (a.compareTo("Home")==0) return homePheromone;
+		return 0;
 	}
-	public void setFoodPheromone(int foodPheromone) {
-		this.foodPheromone = foodPheromone;
-	}
-	public int getHomePheromone() {
-		return homePheromone;
-	}
-	public void setHomePheromone(int homePheromone) {
-		this.homePheromone = homePheromone;
+	public void setPheromone(String a, int Pheromone) {
+		if (a.compareTo("Food")==0) this.foodPheromone = Pheromone;
+		if (a.compareTo("Home")==0) this.homePheromone = Pheromone;
 	}
 
 	public List<Container> getNeighborAtDirection(int i) {
 		List<Container> temp=new ArrayList<Container>();
-		int[][] directionX=new int[][]{{-1,-2,-3},{0,0,0},{0,0,0},{1,2,3}};
-		int[][] directionY=new int[][]{{0,0,0},{1,2,3},{-1,-2,-3},{0,0,0}};
+		int[][] directionX=new int[][]{{-1,-1,-1},{0,-1,1},{1,1,1},{0,-1,1}};
+		int[][] directionY=new int[][]{{0,-1,1},{-1,-1,-1},{0,-1,1},{1,1,1}};
 		Grid myGird=this.myGrid;
 		int n=myGrid.getN();
 		int m=myGrid.getM();
 		for (int j=0;j<3;i++) {
 			int xx=myGrid.boundXHandle(this.getPosX()+directionX[i][j]);
 			int yy=myGrid.boundYHandle(this.getPosY()+directionY[i][j]);
+			if (xx>=n || xx<0 || yy<0 || yy>=m) continue;
+			temp.add(myGrid.getContainer(xx*n+yy));
+		}
+		return temp;
+	}
+
+	public List<Container> getNeighborFromCloserToFurther() {
+		List<Container> temp=new ArrayList<Container>();
+		int[] directionX=new int[]{-1,0,1,0,-2,0,2,0,-2,0,2,0};
+		int[] directionY=new int[]{0,1,0,-1,0,2,0,-2,0,2,0,-2};
+		int n=myGrid.getN();
+		int m=myGrid.getM();
+		for (int i=0;i<directionX.length;i++) {
+			int xx=myGrid.boundXHandle(this.getPosX()+directionX[i]);
+			int yy=myGrid.boundYHandle(this.getPosY()+directionY[i]);
 			if (xx>=n || xx<0 || yy<0 || yy>=m) continue;
 			temp.add(myGrid.getContainer(xx*n+yy));
 		}

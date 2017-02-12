@@ -11,6 +11,7 @@ public class SquareGrid extends Grid {
 		this.n=n;
 		this.m=m;
 		this.setNeighborDefn(neighborDefn);
+		this.fillContainer();
 	}
 	
 	public SquareGrid(int n, int m, int neighborDefn, String boundary) {
@@ -19,6 +20,7 @@ public class SquareGrid extends Grid {
 		this.m=m;
 		this.setNeighborDefn(neighborDefn);
 		this.setBoundary(boundary);
+		this.fillContainer();
 	}
 
 	@Override

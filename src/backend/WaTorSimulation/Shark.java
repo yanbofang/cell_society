@@ -8,6 +8,8 @@ package backend.WaTorSimulation;
  */
 
 public class Shark extends Fish {
+	private int hungryDuration=0;
+	
 	public Shark() {
 		this.setPriority(0);
 		this.setIdentity("Shark");
@@ -20,6 +22,22 @@ public class Shark extends Fish {
 	@Override
 	public Shark breed() {
 		return new Shark();
+	}
+
+	public int getHungryDuration() {
+		return hungryDuration;
+	}
+
+	public void setHungryDuration(int hungryDuration) {
+		this.hungryDuration = hungryDuration;
+	}
+	
+	public void increaseHungryDuration() {
+		this.hungryDuration++;
+	}
+
+	public void decreaseHungryDuration() {
+		this.hungryDuration--;
 	}
 
 }
