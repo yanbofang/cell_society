@@ -165,7 +165,7 @@ public abstract class Grid {
 					}
 				});
 				shapely.setFill(getColor(myInts.get(index)));
-				if (!gridLines) {
+				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
 				}
 				if(col_iter%2 == 1){
