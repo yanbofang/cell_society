@@ -106,13 +106,11 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+		myGrid = new HexagonGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		//makes a square grid
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
-		gridXSize = gridSideSize;
-		gridYSize = gridSideSize;
 	}
 
 	/**
@@ -129,7 +127,7 @@ public class GUI {
 		myRoot.setPadding(new Insets(SCREENHEIGHT / padding, SCREENWIDTH / padding, SCREENWIDTH / padding,
 				SCREENHEIGHT / padding));
 
-		myRoot.setCenter(myGrid.initialize(gridXSize, gridYSize, mySimulationModel));
+		myRoot.setCenter(myGrid.initialize(gridSideSize, mySimulationModel));
 
 		// must do before initiate the grid so mySimulationChooser combBox is
 		// initiated
@@ -176,12 +174,12 @@ public class GUI {
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
-				myGrid.initialize(gridXSize, gridYSize, mySimulationModel);
-				myRoot.setCenter(myGrid.resetGrid(gridXSize, gridYSize));
+				myGrid.initialize(gridSideSize, mySimulationModel);
+				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
 		});
-		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridXSize, gridYSize)));
+		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
@@ -305,7 +303,7 @@ public class GUI {
 	 */
 	private void step() {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
-		myRoot.setCenter(myGrid.updateGrid(gridXSize, gridYSize));
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 		
 	}

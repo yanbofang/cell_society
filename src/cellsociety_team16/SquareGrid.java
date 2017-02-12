@@ -13,12 +13,14 @@ public class SquareGrid extends Grid {
  * @param simulationModel
  * @param simulation
  */
+	private static boolean offsetHalf;
+	//false because squares do not need an offselt
 	public SquareGrid(SimulationModel simulationModel, Simulation simulation) {
-		super(simulationModel, simulation);
+		super(simulationModel, simulation, offsetHalf);
 	}
-	Shape drawShape(double xLoc, double yLoc, double xSize, double ySize) {
+	Shape drawShape(double xLoc, double yLoc, double cellSize) {
 		//makes a square
-		double sideSize = Math.min(xSize, ySize);
-		return new Rectangle(xLoc, yLoc, sideSize, sideSize);
+		//double sideSize = Math.min(xSize, ySize);
+		return new Rectangle(xLoc, yLoc, cellSize, cellSize);
 	}
 }
