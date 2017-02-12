@@ -2,6 +2,7 @@ package cellsociety_team16;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
@@ -47,10 +48,6 @@ public abstract class Grid {
 		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
-
-		myColors.add(0, simulationModel.getEmptyColor());
-		myColors.add(1, simulationModel.getInactiveColor());
-		myColors.add(2, simulationModel.getActiveColor());
 	}
 
 	/**
@@ -62,6 +59,10 @@ public abstract class Grid {
 	 */
 	public Node initialize(int gridExtents, SimulationModel simmod) {
 		mySimulationModel = simmod;
+		
+		myColors.add(0, mySimulationModel.getEmptyColor());
+		myColors.add(1, mySimulationModel.getInactiveColor());
+		myColors.add(2, mySimulationModel.getActiveColor());
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
 		// cellExtents = mySimulationModel.getcellSize();
@@ -78,25 +79,49 @@ public abstract class Grid {
 	/**
 	 * Sets color of a certain type of cell: 0 is empty, 1 is active, 2 is
 	 * special
-	 * 
+	 * Will reset color for all of those cell types
 	 * @param cellType
 	 * @param newColor
+	 * @param weight determines how dark it should be, negative values make lighter
 	 */
-	public void setColor(int cellType, Color newColor) {
+	public void setColor(int cellType, Color newColor, int weight) {
+		if(weight < 0){
+			for (int i = 0; i > weight; i--){
+				newColor.brighter();
+			}
+		}
+		for(int i = 0; i < weight; i++){
+			newColor.darker();
+		}
 		myColors.add(cellType, newColor);
 	}
 
 	/**
 	 * Gets value of color corresponding to which type of cell it is
-	 * 
+	 * Does not tell how light or dark the color is, only the base
 	 * @param cellType:
 	 *            0 is empty, 1 is active, 2 is special
 	 * @return that cell's color in Paint form
 	 */
-	private Paint getColor(int cellType) {
-		return myColors.get(cellType);
+	public Color getColor(int cellType) {
+		try{
+			return myColors.get(cellType);
+		} catch (IndexOutOfBoundsException e){
+			myColors.add(cellType, randomLightColor());
+			return getColor(cellType);
+		}
 	}
-
+	/**
+	 * @return a new Random pastel Color
+	 */
+	private Color randomLightColor() {
+		// creates a bright, light color
+		Random randomGenerator = new Random();
+		double hue = randomGenerator.nextDouble();
+		double saturation = 1.0;
+		double brightness = 1.0;
+		return Color.hsb(hue, saturation, brightness);
+	}
 	/**
 	 * Sets a finite or infinite grid
 	 * 
@@ -165,7 +190,7 @@ public abstract class Grid {
 					}
 				});
 				shapely.setFill(getColor(myInts.get(index)));
-				if (!gridLines) {
+				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
 				}
 				if(col_iter%2 == 1){
@@ -177,7 +202,10 @@ public abstract class Grid {
 		}
 		return cells;
 	}
-
+/**
+ * When clicked, will change color and communicate with simulation Model
+ * @param cell
+ */
 	public void changeCellState(Shape cell) {
 		Color currentColor = (Color) cell.getFill();
 		int nextColor = myColors.indexOf(currentColor) >= mySimulationModel.numberOfStates() - 1 ? 0 : myColors.indexOf(currentColor) + 1;
