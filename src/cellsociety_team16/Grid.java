@@ -5,8 +5,10 @@ import java.util.List;
 
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
@@ -22,14 +24,14 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private Color GRIDLINE_COLOR = Color.BLACK;
-	private Color EMPTY_COLOR = Color.WHITE;
-	private Color ACTIVE_COLOR = Color.GREEN;
-	private Color SPECIAL_COLOR = Color.RED;
+	// private Color EMPTY_COLOR = Color.WHITE;
+	// private Color ACTIVE_COLOR = Color.GREEN;
+	// private Color SPECIAL_COLOR = Color.RED;
 	private List<Integer> myInts;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
 	private SimulationModel mySimulationModel;
-	private List<Paint> myColors;
+	private List<Color> myColors;
 	private Simulation mySimulation;
 	private int myGridRows, myGridColumns;
 	private double myOffsetPercentage;
@@ -42,12 +44,13 @@ public abstract class Grid {
 	public Grid(SimulationModel simulationModel, Simulation simulation, double translationPercentage, boolean bool) {
 		mySimulationModel = simulationModel;
 		mySimulation = simulation;
-		myColors = new ArrayList<Paint>();
-		myColors.add(0, EMPTY_COLOR);
-		myColors.add(1, ACTIVE_COLOR);
-		myColors.add(2, SPECIAL_COLOR);
+		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
+
+		myColors.add(0, simulationModel.getEmptyColor());
+		myColors.add(1, simulationModel.getInactiveColor());
+		myColors.add(2, simulationModel.getActiveColor());
 	}
 
 	/**
@@ -152,6 +155,15 @@ public abstract class Grid {
 				} 
 				Shape shapely = drawShape(cellSize * (col_iter + myOffsetPercentage*onOffset), rowLoc, cellSize, rotateAngle);
 
+				// Set an id for each sell based on index, so that we can keep
+				// track of the changes of individual cell
+				shapely.setId(Integer.toString(index));
+				shapely.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent t) {
+						changeCellState(shapely);
+					}
+				});
 				shapely.setFill(getColor(myInts.get(index)));
 				if (!gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
@@ -164,6 +176,15 @@ public abstract class Grid {
 			}
 		}
 		return cells;
+	}
+
+	public void changeCellState(Shape cell) {
+		Color currentColor = (Color) cell.getFill();
+		int nextColor = myColors.indexOf(currentColor) >= myColors.size() - 1 ? 0 : myColors.indexOf(currentColor) + 1;
+		cell.setFill(getColor(nextColor));
+		List<Integer> positions = mySimulationModel.getPositions();
+		positions.set(Integer.parseInt(cell.getId()), nextColor);
+		mySimulationModel.setPositions(positions);
 	}
 
 	/**
