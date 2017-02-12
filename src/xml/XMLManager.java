@@ -54,7 +54,6 @@ public class XMLManager extends Application {
 		try{
 			Class<?> model = Class.forName("cellsociety_team16." + xml.getName() + "Model");
 			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
-
 		}catch(Exception e){
 			return null;
 		}
