@@ -1,7 +1,11 @@
-package backend;
+package backend.WaTorSimulation;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
+
+import backend.Container;
+import backend.EmptyCell;
+import backend.Handler;
 
 /**
  * A specific class for WaTor Simulation
@@ -59,7 +63,7 @@ public class WaTorHandler extends Handler {
 	
 	private void solveForShark(Container curContainer) {
 		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
-		curContainer.getMyCell().increaseLifeSpan();
+		((Shark) curContainer.getMyCell()).increaseLifeSpan();
 		if (fishCnt > 0) {
 			int fishNum = randNum(fishCnt);
 			this.eatNearbyFish(curContainer, myNeighbor, fishNum);
@@ -73,7 +77,7 @@ public class WaTorHandler extends Handler {
 	
 	private void solveForFish(Container curContainer) {
 		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
-		curContainer.getMyCell().increaseLifeSpan();
+		((Fish) curContainer.getMyCell()).increaseLifeSpan();
 		if (emptyCnt > 0) {
 			int emptyNum = (int) (Math.random() * ((double) emptyCnt) );
 			this.moveToNearbyPlace(curContainer, myNeighbor, emptyNum);
@@ -97,7 +101,7 @@ public class WaTorHandler extends Handler {
 			Predicate<Container> function = s -> readyForBreed(s);
 			
 			Container breedContainer=this.searchForNth(breedNum, myNeighbor, function);
-			breedContainer.getMyCell().setLifeSpan(0);
+			((Fish) breedContainer.getMyCell()).setLifeSpan(0);
 			if (breedContainer.getMyCell().is(FISH)) {
 				curContainer.setNext(new Fish());
 			} else {
@@ -154,7 +158,7 @@ public class WaTorHandler extends Handler {
 	}
 
 	private boolean readyForBreed(Container a) {
-		return (a.isLocked() && (a.getMyCell().is(FISH) || a.getMyCell().is(SHARK)) && a.getMyCell().getLifeSpan() > breedTime);
+		return (a.isLocked() && (a.getMyCell().is(FISH) || a.getMyCell().is(SHARK)) && ((Fish) a.getMyCell()).getLifeSpan() > breedTime);
 	}
 
 }

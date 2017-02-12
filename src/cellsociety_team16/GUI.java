@@ -355,7 +355,7 @@ public class GUI {
 			timer.pause();
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED * mySpeedMultiplier), e -> step());
+			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED/2), e -> step());
 			timer.setCycleCount(Timeline.INDEFINITE);
 			timer.getKeyFrames().add(frame);
 			timer.play();

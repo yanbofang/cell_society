@@ -18,9 +18,9 @@ import xml.XMLSimulation;
  */
 public abstract class SimulationModel {
 
-//	public static final Color ACTIVE_COLOR = Color.RED;
-//	public static final Color INACTIVE_COLOR = Color.GREEN;
-//	public static final Color EMPTY_COLOR = Color.WHITE;
+	// public static final Color ACTIVE_COLOR = Color.RED;
+	// public static final Color INACTIVE_COLOR = Color.GREEN;
+	// public static final Color EMPTY_COLOR = Color.WHITE;
 
 	private String name;
 	private int rows;
@@ -225,7 +225,7 @@ public abstract class SimulationModel {
 		}
 		return Arrays.asList(arry);
 	}
-	
+
 	public abstract int numberOfStates();
 
 	/**

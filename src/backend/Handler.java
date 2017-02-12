@@ -37,6 +37,11 @@ public abstract class Handler {
 				}
 			}
 		}
+		for (int i=0;i<this.nextRoundGrid.getSize();i++) {
+			if (this.nextRoundGrid.getContainer(i).getMyCell()==null) {
+				this.nextRoundGrid.getContainer(i).setMyCell(new EmptyCell());
+			}
+		}
 	}
 	
 	/**
