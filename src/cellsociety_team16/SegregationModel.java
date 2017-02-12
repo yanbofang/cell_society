@@ -11,6 +11,7 @@ import xml.XMLSimulation;
 public class SegregationModel extends SimulationModel {
 
 	private double satisfactionRate;
+	private int numberOfStates = 2;
 
 	/**
 	 * Constructor for SegregationModel
@@ -42,7 +43,7 @@ public class SegregationModel extends SimulationModel {
 
 	@Override
 	public int numberOfStates() {
-		return 2;
+		return this.numberOfStates;
 	}
 
 }

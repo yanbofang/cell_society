@@ -165,7 +165,7 @@ public abstract class Grid {
 					}
 				});
 				shapely.setFill(getColor(myInts.get(index)));
-				if (!gridLines) {
+				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
 				}
 				if(col_iter%2 == 1){
@@ -185,6 +185,7 @@ public abstract class Grid {
 		List<Integer> positions = mySimulationModel.getPositions();
 		positions.set(Integer.parseInt(cell.getId()), nextColor);
 		mySimulationModel.setPositions(positions);
+		mySimulation.setInitialGrid(mySimulationModel);
 	}
 
 	/**
