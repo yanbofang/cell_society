@@ -11,7 +11,11 @@ public class GameOfLifeModel extends SimulationModel {
 	 */
 	public GameOfLifeModel(XMLSimulation simulation) {
 		super(simulation);
-		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public int numberOfStates() {
+		return 2;
 	}
 
 }
