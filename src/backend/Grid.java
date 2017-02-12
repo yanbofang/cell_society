@@ -42,6 +42,9 @@ public abstract class Grid {
 		this.m=m;
 	}
 	
+	/**
+	 * Public method to fill the Grid with Container and add corresponding neighbor to each Container
+	 */
 	public void fillContainer() {
 		for (int i=0;i<size;i++) {
 			Container tempContainer = new Container();

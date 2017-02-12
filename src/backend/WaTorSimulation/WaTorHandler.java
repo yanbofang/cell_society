@@ -21,6 +21,7 @@ public class WaTorHandler extends Handler {
 	private int emptyCnt=0;
 	private int sharkCnt=0;
 	private int breedTime=4;
+	private int deathTime=3;
 	
 	public WaTorHandler(int breedTime) {
 		this.breedTime=breedTime;
@@ -64,9 +65,17 @@ public class WaTorHandler extends Handler {
 	private void solveForShark(Container curContainer) {
 		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
 		((Shark) curContainer.getMyCell()).increaseLifeSpan();
+		Shark curShark = ((Shark) curContainer.getMyCell());
+		curShark.increaseHungryDuration();
+		if (curShark.getHungryDuration()>deathTime) {
+			curContainer.setNext(new EmptyCell());
+			return;
+		}
+
 		if (fishCnt > 0) {
 			int fishNum = randNum(fishCnt);
 			this.eatNearbyFish(curContainer, myNeighbor, fishNum);
+			curShark.decreaseHungryDuration();
 		} else if (emptyCnt > 0) {
 			int emptyNum = randNum(emptyCnt);
 			this.moveToNearbyPlace(curContainer, myNeighbor, emptyNum);
