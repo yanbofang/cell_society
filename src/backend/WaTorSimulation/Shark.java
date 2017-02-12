@@ -1,4 +1,4 @@
-package backend;
+package backend.WaTorSimulation;
 
 /**
  * This class is an extension of Cell. 

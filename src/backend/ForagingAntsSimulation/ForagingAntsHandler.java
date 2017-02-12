@@ -1,6 +1,12 @@
-package backend;
+package backend.ForagingAntsSimulation;
 
 import java.util.ArrayList;
+
+import backend.Container;
+import backend.EmptyCell;
+import backend.Grid;
+import backend.Handler;
+import backend.Home;
 
 public class ForagingAntsHandler extends Handler{
 	private int max=20;

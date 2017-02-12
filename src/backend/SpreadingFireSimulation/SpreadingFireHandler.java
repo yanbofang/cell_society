@@ -1,7 +1,11 @@
-package backend;
+package backend.SpreadingFireSimulation;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
+
+import backend.Container;
+import backend.EmptyCell;
+import backend.Handler;
 /**
  * A specific class for Fire Spreading Simulation
  * 

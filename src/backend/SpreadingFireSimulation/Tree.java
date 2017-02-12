@@ -1,4 +1,6 @@
-package backend;
+package backend.SpreadingFireSimulation;
+
+import backend.Cell;
 
 /**
  * This class is an extension of Cell. 

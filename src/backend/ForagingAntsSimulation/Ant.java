@@ -1,4 +1,6 @@
-package backend;
+package backend.ForagingAntsSimulation;
+
+import backend.Cell;
 
 public class Ant extends Cell{
 	private int headDirection=0;

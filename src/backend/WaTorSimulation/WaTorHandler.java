@@ -1,7 +1,11 @@
-package backend;
+package backend.WaTorSimulation;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
+
+import backend.Container;
+import backend.EmptyCell;
+import backend.Handler;
 
 /**
  * A specific class for WaTor Simulation

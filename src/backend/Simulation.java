@@ -3,6 +3,16 @@ package backend;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.GameOfLifeSimulation.GameOfLifeHandler;
+import backend.GameOfLifeSimulation.Life;
+import backend.SegregationSimulation.People;
+import backend.SegregationSimulation.SegregationHandler;
+import backend.SpreadingFireSimulation.Fire;
+import backend.SpreadingFireSimulation.SpreadingFireHandler;
+import backend.SpreadingFireSimulation.Tree;
+import backend.WaTorSimulation.Fish;
+import backend.WaTorSimulation.Shark;
+import backend.WaTorSimulation.WaTorHandler;
 import cellsociety_team16.SimulationModel;
 import cellsociety_team16.*;
 /**

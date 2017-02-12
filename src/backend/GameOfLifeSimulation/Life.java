@@ -1,6 +1,8 @@
-package backend;
+package backend.GameOfLifeSimulation;
 
 import java.util.ArrayList;
+
+import backend.Cell;
 /**
  * This class is an extension of Cell. 
  * This class is used for Game of Life Simulation. Life's priority is 0.

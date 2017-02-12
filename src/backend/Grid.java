@@ -79,7 +79,7 @@ public abstract class Grid {
 		return result;
 	}
 	
-	private int boundXHandle(int x) {
+	public int boundXHandle(int x) {
 		if (this.boundaryIs("FINITE")) {
 			return x; 
 		}
@@ -89,7 +89,7 @@ public abstract class Grid {
 		return x;
 	}
 
-	private int boundYHandle(int y) {
+	public int boundYHandle(int y) {
 		if (this.boundaryIs("FINITE")) {
 			return y; 
 		}
