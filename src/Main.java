@@ -25,6 +25,9 @@ public class Main extends Application{
 		xml.start(primaryStage);
 		
 		SimulationModel mySimulationModel = xml.getSimulationModel();
+		
+		XMLWriter writer = new XMLWriter();
+		writer.writeToXML(mySimulationModel);
 		//mySimulation.setRandomPositions();
 //		Simulation simTest = new Simulation();
 //		simTest.setInitialGrid(mySimulation);
