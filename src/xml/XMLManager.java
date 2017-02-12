@@ -1,6 +1,7 @@
 package xml;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -16,6 +17,8 @@ public class XMLManager extends Application {
 	// kind of data files to look for
 	public static final String DATA_FILE_EXTENSION = "*.xml";
 	public static final String dir = System.getProperty("user.dir");
+	public static final File CONFIGURATION_FILE = new File(dir + "/data/Configuration.xml");
+
 
 
 	// it is generally accepted behavior that the chooser remembers where user
@@ -29,7 +32,7 @@ public class XMLManager extends Application {
 		dataFile = myChooser.showOpenDialog(primaryStage);
 		if (dataFile != null) {
 			try {
-				System.out.println(new XMLParser().getSimulation(dataFile));
+				System.out.println(new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE));
 			} catch (XMLException e) {
 				Alert a = new Alert(AlertType.ERROR);
 				a.setContentText(String.format("ERROR reading file %s", dataFile.getPath()));
@@ -42,21 +45,18 @@ public class XMLManager extends Application {
 	}
 
 	public XMLSimulation getSimulation() {
-		return new XMLParser().getSimulation(dataFile);
+		return new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE);
 	}
 
+	
 	public SimulationModel getSimulationModel() {
 		XMLSimulation xml = this.getSimulation();
-		if (xml.getName().equals("GameOfLife")) {
-			return new GameOfLifeModel(xml);
-		} else if (xml.getName().equals("SpreadingFire")) {
-			return new SpreadingFireModel(xml);
-		} else if (xml.getName().equals("Segregation")) {
-			return new SegregationModel(xml);
-		} else if (xml.getName().equals("WaTor")) {
-			return new WaTorModel(xml);
+		try{
+			Class<?> model = Class.forName("cellsociety_team16." + xml.getName() + "Model");
+			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
+		}catch(Exception e){
+			return null;
 		}
-		return null;
 	}
 
 	/**

@@ -40,4 +40,9 @@ public class SegregationModel extends SimulationModel {
 		this.satisfactionRate = satisfactionRate;
 	}
 
+	@Override
+	public int numberOfStates() {
+		return 2;
+	}
+
 }
