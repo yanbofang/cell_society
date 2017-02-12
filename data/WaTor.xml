@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="Simulation">
     <name>WaTor</name>
-    <author>Xingyu Chen</author>
+    <author>Xingyu Chen, Kris Elbert, Yanbo Fang</author>
     <rows>15</rows>
     <cols>15</cols>
     <activePercentage>0.2</activePercentage>
