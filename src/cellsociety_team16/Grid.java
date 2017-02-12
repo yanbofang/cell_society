@@ -141,18 +141,24 @@ public abstract class Grid {
 			} else {
 				onOffset = 0;
 			}
+		if(row_iter%2 == 0){
+				rotateAngle = 180;
+			} else {
+				rotateAngle = 0;
+			}
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
-				if(myManipulatable && col_iter %2 == 0){
-					rotateAngle = 180;
-				} else {
-					rotateAngle = 0;
-				}
-				Shape shapely = drawShape(cellSize* (col_iter + myOffsetPercentage*onOffset), rowLoc, cellSize, rotateAngle);
+				if(col_iter%2 == 1){
+					rotateAngle += 180;
+				} 
+				Shape shapely = drawShape(cellSize * (col_iter + myOffsetPercentage*onOffset), rowLoc, cellSize, rotateAngle);
 
 				shapely.setFill(getColor(myInts.get(index)));
-				if (gridLines) {
+				if (!gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
 				}
+				if(col_iter%2 == 1){
+					rotateAngle -= 180;
+				} 
 				cells.getChildren().add(shapely);
 				index++;
 			}
@@ -185,7 +191,7 @@ public abstract class Grid {
 	 * @param cellSize
 	 *            corresponds to overall width of the cell
 	 * @param rotateXAngle
-	 * 			  sets rotation angle of shape
+	 *            sets rotation angle of shape
 	 * @return a shape determined by the grid subclass called
 	 */
 	abstract Shape drawShape(double xLoc, double yLoc, double cellSize, int rotateXAngle);

@@ -6,7 +6,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
 public class TriangleGrid extends Grid {
-	private static double TRANSLATION = .5;
+	private static double TRANSLATION = 0;
 	private static boolean MANIPULATED = true;
 
 	public TriangleGrid(SimulationModel simulationModel, Simulation simulation) {
@@ -20,10 +20,9 @@ public class TriangleGrid extends Grid {
 				new Double[] { 
 						xLoc, yLoc + cellSize, 
 						xLoc + cellSize, yLoc, 
-						xLoc + 2 * cellSize, 
-						yLoc + cellSize 
+						xLoc + 2*cellSize, yLoc + cellSize 
 						});
-		triangle.getTransforms().add(new Rotate(rotationAngle,0,0));
+		triangle.getTransforms().add(new Rotate(rotationAngle,xLoc+cellSize,yLoc+cellSize/2));
 		return triangle;
 	}
 

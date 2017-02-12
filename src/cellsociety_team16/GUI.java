@@ -76,8 +76,8 @@ public class GUI {
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
-	
-	//graph
+
+	// graph
 	private PopulationGraph myGraph;
 
 	// user input fields
@@ -109,7 +109,7 @@ public class GUI {
 		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
-		//makes a square grid
+		// makes a square grid
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 	}
 
@@ -139,22 +139,26 @@ public class GUI {
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
-/**
- * Sets up top node with a graph to keep track of the population change over time
- * @return top node
- */
-	private Node setUpTop(){
+
+	/**
+	 * Sets up top node with a graph to keep track of the population change over
+	 * time
+	 * 
+	 * @return top node
+	 */
+	private Node setUpTop() {
 		HBox top = new HBox();
 		top.setAlignment(Pos.CENTER);
-		top.setMaxHeight(SCREENHEIGHT/5);
+		top.setMaxHeight(SCREENHEIGHT / 5);
 		myGraph = new PopulationGraph(mySimulationModel);
 		top.getChildren().add(myGraph.createPopulationGraph());
 		return top;
 	}
-	
+
 	/**
 	 * Creates display that the user can interact with that goes along the
 	 * bottom
+	 * 
 	 * @return bottom node
 	 */
 	private Node setUpBottom() {
@@ -192,7 +196,7 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-		
+
 		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
@@ -222,6 +226,7 @@ public class GUI {
 
 	/**
 	 * Sets up User input that modifies cells that appears on the left side
+	 * 
 	 * @return left node
 	 */
 	// TODO throws NoGridException
@@ -236,16 +241,16 @@ public class GUI {
 			Color newColor = randomLightColor();
 			myColorPickers.get(i).setValue(newColor);
 			colorPickerGroup.getChildren().add(myColorPickers.get(i));
-			// myColorPickers.get(i).setOnAction(new EventHandler() {
-			// @Override
-			// public void handle(Event e) {
-			// myGrid.setColor(i, newColor);
-			// }
-			// });
+			myColorPickers.get(i).setOnAction(new EventHandler() {
+				@Override
+				public void handle(Event e) {
+					myGrid.setColor(myColorPickers.indexOf(this), newColor);
+				}
+			});
 			// TODO figure out arraylist of varying values
 			// myValueSliders.add(i, makeSlider(0, 100, ))
 		}
-
+		userInput.getChildren().addAll(myColorPickers);
 		return userInput;
 	}
 
@@ -305,7 +310,7 @@ public class GUI {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
-		
+
 	}
 
 	/**
