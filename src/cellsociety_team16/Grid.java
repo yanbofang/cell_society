@@ -5,8 +5,10 @@ import java.util.List;
 
 import backend.Simulation;
 import cellsociety_team16.SimulationModel;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
@@ -22,9 +24,9 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private Color GRIDLINE_COLOR = Color.BLACK;
-	private Color EMPTY_COLOR = Color.WHITE;
-	private Color ACTIVE_COLOR = Color.GREEN;
-	private Color SPECIAL_COLOR = Color.RED;
+	// private Color EMPTY_COLOR = Color.WHITE;
+	// private Color ACTIVE_COLOR = Color.GREEN;
+	// private Color SPECIAL_COLOR = Color.RED;
 	private List<Integer> myInts;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
@@ -42,9 +44,9 @@ public abstract class Grid {
 		mySimulationModel = simulationModel;
 		mySimulation = simulation;
 		myColors = new ArrayList<Paint>();
-		myColors.add(0, EMPTY_COLOR);
-		myColors.add(1, ACTIVE_COLOR);
-		myColors.add(2, SPECIAL_COLOR);
+		myColors.add(0, simulationModel.getEmptyColor());
+		myColors.add(1, simulationModel.getInactiveColor());
+		myColors.add(2, simulationModel.getActiveColor());
 	}
 
 	/**
@@ -92,7 +94,7 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	//refactored code
+	// refactored code
 	public Node updateGrid(int gridExtents) {
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
@@ -109,7 +111,15 @@ public abstract class Grid {
 
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				Shape shapely = drawShape(col_iter * sideSize, rowLoc, sideSize, sideSize);
-
+				// Set an id for each sell based on index, so that we can keep
+				// track of the changes of individual cell
+				shapely.setId(Integer.toString(index));
+				shapely.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent t) {
+						changeCellState(shapely);
+					}
+				});
 				shapely.setFill(getColor(myInts.get(index)));
 				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
@@ -120,7 +130,16 @@ public abstract class Grid {
 		}
 		return cells;
 	}
-	
+
+	public void changeCellState(Shape cell) {
+		Color currentColor = (Color) cell.getFill();
+		int nextColor = myColors.indexOf(currentColor) >= myColors.size() - 1 ? 0 : myColors.indexOf(currentColor) + 1;
+		cell.setFill(getColor(nextColor));
+		List<Integer> positions = mySimulationModel.getPositions();
+		positions.set(Integer.parseInt(cell.getId()), nextColor);
+		mySimulationModel.setPositions(positions);
+	}
+
 	/**
 	 * Reramdonizes the simulation Triggered by a button press
 	 * 
@@ -131,7 +150,8 @@ public abstract class Grid {
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
-	//Oh my gosh I used to have a comment here why is it not here anymore
+
+	// Oh my gosh I used to have a comment here why is it not here anymore
 	abstract Shape drawShape(int xLoc, int yLoc, int xSize, int ySize);
 
 	// abstract public List getCellPositions();
