@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><cars><supercars><carname>Ferrari 101</carname></supercars></cars>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><data Simulation=""><name>WaTor</name><author>XingyuChen, Kris Elber, Yanbo Fang</author><rows>15</rows><cols>15</cols><activePercentage>0.2</activePercentage><inactivePercentage>0.40.4</inactivePercentage><emptyPercentage/></data>
