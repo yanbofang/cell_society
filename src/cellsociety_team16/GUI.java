@@ -70,7 +70,7 @@ public class GUI {
 	// current simulation type
 	private String mySimulationType;
 	// used for initializing and updating grid
-	private int gridSideSize;
+	private int gridSideSize, gridXSize, gridYSize;
 	private Grid myGrid;
 	// get information on cell
 	private Simulation mySimulation;
@@ -106,9 +106,10 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+		myGrid = new HexagonGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
+		//makes a square grid
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 	}
 
@@ -138,7 +139,10 @@ public class GUI {
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
-
+/**
+ * Sets up top node with a graph to keep track of the population change over time
+ * @return top node
+ */
 	private Node setUpTop(){
 		HBox top = new HBox();
 		top.setAlignment(Pos.CENTER);
@@ -148,11 +152,10 @@ public class GUI {
 		return top;
 	}
 	
-	
-	
 	/**
 	 * Creates display that the user can interact with that goes along the
 	 * bottom
+	 * @return bottom node
 	 */
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
@@ -168,14 +171,10 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
-				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
 				myGrid.initialize(gridSideSize, mySimulationModel);
-				// mySimulationModel.setRandomPositions();
-				// mySimulation.setInitialGrid(mySimulationModel);
-				// System.out.println(mySimulationModel.getName());
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
@@ -223,6 +222,7 @@ public class GUI {
 
 	/**
 	 * Sets up User input that modifies cells that appears on the left side
+	 * @return left node
 	 */
 	// TODO throws NoGridException
 	private Node setUpLeft(int numberOfTypes) {

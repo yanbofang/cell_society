@@ -8,13 +8,22 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class SquareGrid extends Grid {
+	/**
+	 * Draws a grid of rectangles
+	 * 
+	 * @param simulationModel
+	 * @param simulation
+	 */
+	private static boolean offsetHalf;
 
+	// false because squares do not need an offselt
 	public SquareGrid(SimulationModel simulationModel, Simulation simulation) {
-		super(simulationModel, simulation);
+		super(simulationModel, simulation, offsetHalf);
 	}
-//refactored code
-	@Override
-	Shape drawShape(int xLoc, int yLoc, int xSize, int ySize) {
-		return new Rectangle(xLoc, yLoc, xSize, ySize);
+
+	Shape drawShape(double xLoc, double yLoc, double cellSize) {
+		// makes a square
+		// double sideSize = Math.min(xSize, ySize);
+		return new Rectangle(xLoc, yLoc, cellSize, cellSize);
 	}
 }
