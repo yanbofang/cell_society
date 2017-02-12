@@ -117,7 +117,7 @@ public abstract class Grid {
 			this.getContainer(i).setNext(this.next.getContainer(i));
 		}
 	}
-	
+	 
 	//Getters and Setters
 	public Container getContainer(int num) {
 		return this.containerlist.get(num);

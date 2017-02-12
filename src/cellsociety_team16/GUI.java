@@ -51,10 +51,10 @@ import xml.XMLManager;
  */
 public class GUI {
 	// constants
-	public static final int SCREENWIDTH = 500;
+	public static final int SCREENWIDTH = 700;
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
-	public static final Paint BACKGROUND = Color.ALICEBLUE;
+	public static final Color BACKGROUND = Color.ALICEBLUE;
 	public static final double MAX_SPEED = 1000; // in ms
 
 	// files the user can load
@@ -89,7 +89,7 @@ public class GUI {
 	private ArrayList<ColorPicker> myColorPickers;
 	private ArrayList<Slider> myValueSliders;
 	private ComboBox<Object> myShapeChooser;
-	private CheckBox addGridLines;
+	private CheckBox myGridLines;
 
 	// get strings from resource file
 	private ResourceBundle myResources;
@@ -106,11 +106,12 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
+		// default is square grid
+		myGrid = new SquareGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid
-		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
+		gridSideSize = (int) Math.min(SCREENHEIGHT * .6, SCREENWIDTH * .75);
 	}
 
 	/**
@@ -123,18 +124,18 @@ public class GUI {
 
 		// sets padding in order of top, right, bottom, and left
 		// 20 is based on whatever looked nice, arbitrary
-		int padding = 10;
+		int padding = 100;
 		myRoot.setPadding(new Insets(SCREENHEIGHT / padding, SCREENWIDTH / padding, SCREENWIDTH / padding,
 				SCREENHEIGHT / padding));
 
 		myRoot.setCenter(myGrid.initialize(gridSideSize, mySimulationModel));
-
-		// must do before initiate the grid so mySimulationChooser combBox is
-		// initiated
-		// TODO see if still true
+		myRoot.getCenter().minWidth(gridSideSize);
+		myRoot.getCenter().minHeight(gridSideSize);
 		myRoot.setBottom(setUpBottom());
 		myRoot.setTop(setUpTop());
-
+		// must do before initiate the grid so can get colors
+		// TODO see if still true
+		myRoot.setLeft(setUpLeft());
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
@@ -149,6 +150,7 @@ public class GUI {
 	private Node setUpTop() {
 		HBox top = new HBox();
 		top.setAlignment(Pos.CENTER);
+		// 5 is what looked fine
 		top.setMaxHeight(SCREENHEIGHT / 5);
 		myGraph = new PopulationGraph(mySimulationModel);
 		top.getChildren().add(myGraph.createPopulationGraph());
@@ -178,8 +180,11 @@ public class GUI {
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
+				// TODO make a reset fn to simplify
+				System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
 				myGrid.initialize(gridSideSize, mySimulationModel);
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
+				myRoot.setLeft(setUpLeft());
 				play();
 			}
 		});
@@ -207,6 +212,73 @@ public class GUI {
 	}
 
 	/**
+	 * Sets up User input that modifies cells that appears on the left side Will
+	 * need to update each time the simulationModel changes
+	 * 
+	 * @return left node
+	 */
+	// TODO throws NoGridException
+	private Node setUpLeft() {
+		VBox userInput = new VBox();
+		Group colorPickerGroup = new Group();
+		Group sliderGroup = new Group();
+		Random randomGenerator = new Random();
+		myColorPickers = new ArrayList<ColorPicker>();
+		// for (int i = 0; i < mySimulationModel.numberOfStates(); i++) {
+		// ColorPicker newPicker = makeColorPicker(myGrid.getColor(i), i);
+		// myColorPickers.add(i, newPicker);
+		// colorPickerGroup.getChildren().add(newPicker);
+		//
+		// // TODO figure out arraylist of varying values
+		// // myValueSliders.add(i, makeSlider(0, 100, ))
+		// }
+		ColorPicker emptyPicker = makeColorPicker(0);
+		// myColorPickers.add(i, newPicker);
+		// input.getChildren().add(newPicker);
+		userInput.getChildren().add(emptyPicker);
+		ColorPicker activePicker = makeColorPicker(1);
+		//Slider myEmptySlider = makeSlider(0,100,10,emptyPercentage);
+		
+	//	userInput.getChildren().add(myEmptySlider);
+		// myColorPickers.add(i, newPicker);
+		// colorPickerGroup.getChildren().add(newPicker);
+		userInput.getChildren().add(activePicker);
+		ColorPicker specialPicker = makeColorPicker(2);
+		// myColorPickers.add(i, newPicker);
+		// colorPickerGroup.getChildren().add(newPicker);
+		userInput.getChildren().add(specialPicker);
+		// userInput.getChildren().addAll(myColorPickers);
+
+		myGridLines = new CheckBox(myResources.getString("GridLinesCheckBox"));
+		myGridLines.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
+				myGrid.setGridLines(new_val);
+			}
+		});
+		
+		userInput.getChildren().add(myGridLines);
+		return userInput;
+	}
+/**
+ * Creates a colorpicker with index of celltype that determine its color
+ * @param index
+ * @return ColorPicker
+ */
+	private ColorPicker makeColorPicker(int index) {
+		ColorPicker newPicker = new ColorPicker();
+		newPicker.setValue(myGrid.getColor(index));
+		newPicker.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				// 0 gets base value, not lighter or darker
+				myGrid.setColor(index, newPicker.getValue(), 0);
+				
+				System.out.println(newPicker.getValue());
+			}
+		});
+		return newPicker;
+	}
+	/**
 	 * 
 	 */
 	private Slider makeSlider(double min, double max, double increment, double changingValue) {
@@ -222,48 +294,6 @@ public class GUI {
 		// will snap to integers
 		// mySpeedSlider.setSnapToTicks(true);
 		return newSlider;
-	}
-
-	/**
-	 * Sets up User input that modifies cells that appears on the left side
-	 * 
-	 * @return left node
-	 */
-	// TODO throws NoGridException
-	private Node setUpLeft(int numberOfTypes) {
-		VBox userInput = new VBox();
-		Group colorPickerGroup = new Group();
-		Group sliderGroup = new Group();
-		Random randomGenerator = new Random();
-
-		for (int i = 0; i < numberOfTypes; i++) {
-			myColorPickers.add(i, new ColorPicker());
-			Color newColor = randomLightColor();
-			myColorPickers.get(i).setValue(newColor);
-			colorPickerGroup.getChildren().add(myColorPickers.get(i));
-			myColorPickers.get(i).setOnAction(new EventHandler() {
-				@Override
-				public void handle(Event e) {
-					myGrid.setColor(myColorPickers.indexOf(this), newColor);
-				}
-			});
-			// TODO figure out arraylist of varying values
-			// myValueSliders.add(i, makeSlider(0, 100, ))
-		}
-		userInput.getChildren().addAll(myColorPickers);
-		return userInput;
-	}
-
-	/**
-	 * @return a new Random pastel Color
-	 */
-	private Color randomLightColor() {
-		// creates a bright, light color
-		Random randomGenerator = new Random();
-		double hue = randomGenerator.nextDouble();
-		double saturation = 1.0;
-		double brightness = 1.0;
-		return Color.hsb(hue, saturation, brightness);
 	}
 
 	/**
@@ -310,7 +340,6 @@ public class GUI {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
-
 	}
 
 	/**
