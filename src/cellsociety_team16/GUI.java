@@ -237,9 +237,9 @@ public class GUI {
 		// input.getChildren().add(newPicker);
 		userInput.getChildren().add(emptyPicker);
 		ColorPicker activePicker = makeColorPicker(1);
-		Slider myEmptySlider = makeSlider(0,100,10,emptyPercentage);
+		//Slider myEmptySlider = makeSlider(0,100,10,emptyPercentage);
 		
-		userInput.getChildren().add(myEmptySlider);
+	//	userInput.getChildren().add(myEmptySlider);
 		// myColorPickers.add(i, newPicker);
 		// colorPickerGroup.getChildren().add(newPicker);
 		userInput.getChildren().add(activePicker);
