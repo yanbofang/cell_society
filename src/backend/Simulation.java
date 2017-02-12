@@ -36,15 +36,15 @@ public class Simulation {
 	public List<Integer> startNewRoundSimulation() {
 		for (int i=0;i<this.n;i++) {
 			for (int j=0;j<this.m;j++) {
-//				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
+				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
 			}
-//			System.out.println();
+			System.out.println();
 		}
-		Grid nextRoundGrid = new Grid(this.n,this.m);
+		Grid nextRoundGrid = new SquareGrid(this.n,this.m, 8);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
-//		System.out.println();
+		System.out.println();
 		List<Integer> result = new ArrayList<Integer>();
 		for (int i=0;i<thisRoundGrid.getSize();i++) {
 			result.add(Integer.parseInt(thisRoundGrid.getContainer(i).getMyCell().toString()));
@@ -60,12 +60,12 @@ public class Simulation {
 		List<Integer> initialStatus=modelGeneral.getPositions();
 		this.n=modelGeneral.getRows();
 		this.m=modelGeneral.getCols();
-		this.thisRoundGrid = new Grid(this.n,this.m);
+		this.thisRoundGrid = new SquareGrid(this.n,this.m, 8);
 		for (int i=0;i<n;i++) {
 			for (int j=0;j<m;j++) {
 				int curPos=i*n+j;
 				int curPosStats=initialStatus.get(curPos);
-				thisRoundGrid.getContainer(curPos).setCell(this.createNewCell(modelGeneral.getName(),curPosStats));
+				thisRoundGrid.getContainer(curPos).setMyCell(this.createNewCell(modelGeneral.getName(),curPosStats));
 			}
 		}
 	}
