@@ -133,11 +133,11 @@ public abstract class Grid {
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
 			int rowLoc = row_iter * cellSize;
-if(offsetHalf && rowLoc %2 == 0){
- offset = cellSize/2;
-} else {
-	offset = 0;
-}
+			if (offsetHalf && rowLoc % 2 == 0) {
+				offset = cellSize / 2;
+			} else {
+				offset = 0;
+			}
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
 				Shape shapely = drawShape(col_iter * cellSize + offset, rowLoc, cellSize);
 
@@ -162,9 +162,11 @@ if(offsetHalf && rowLoc %2 == 0){
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
-protected void setHalfOffset(boolean bool){
-	offsetHalf = bool;
-}
+
+	protected void setHalfOffset(boolean bool) {
+		offsetHalf = bool;
+	}
+
 	/**
 	 * Draws a shape as determined by the subclass of grid
 	 * 

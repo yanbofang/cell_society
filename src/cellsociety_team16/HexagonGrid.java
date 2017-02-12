@@ -42,12 +42,6 @@ public class HexagonGrid extends Grid {
 						xLoc, yLoc + cellSize, 
 						xLoc, yLoc + yDifference 
 						});
-		// xLoc, yLoc-yDifference,
-		// xLoc+xSize/2, yLoc,
-		// xLoc+xSize, yLoc-yDifference,
-		// xLoc+xSize, yLoc-yDifference-ySize/2,
-		// xLoc+xSize/2, yLoc+ySize,
-		// xLoc, yLoc-ySize+yDifference});
 		//makes a sick chevron
 //		xLoc + cellSize / 2, yLoc, 
 //		xLoc + cellSize, yLoc + yDifference, 
