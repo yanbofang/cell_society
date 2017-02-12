@@ -22,12 +22,12 @@ public class SquareGrid extends Grid {
 	}
 
 	@Override
-	public LocInfo getNeighborArrayX() {
+	public LocInfo getNeighborArrayX(int x, int y) {
 		return new LocInfo(POSXSQUARE);
 	}
 
 	@Override
-	public LocInfo getNeighborArrayY() {
+	public LocInfo getNeighborArrayY(int x, int y) {
 		// TODO Auto-generated method stub
 		return new LocInfo(POSYSQUARE);
 	}

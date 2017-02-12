@@ -27,11 +27,15 @@ import cellsociety_team16.*;
  */
 
 public class Simulation {
+	private static final String HEXAGON = "Hexagon";
+	private static final String SQUARE = "Square";
+	private static final String TRIANGLE = "Triangle";
 	private static final String GAME_OF_LIFE = "GameOfLife";
 	private static final String SEGREGATION = "Segregation";
 	private static final String WA_TOR = "WaTor";
 	private static final String SPREADING_FIRE = "SpreadingFire";
 	private Grid thisRoundGrid;
+	private String shape;
 	private int n=0;
 	private int m=0;
 	
@@ -50,7 +54,7 @@ public class Simulation {
 			}
 			System.out.println();
 		}
-		Grid nextRoundGrid = new SquareGrid(this.n,this.m, 8);
+		Grid nextRoundGrid = createNewGrid(shape, this.n,this.m, 12);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
@@ -70,7 +74,8 @@ public class Simulation {
 		List<Integer> initialStatus=modelGeneral.getPositions();
 		this.n=modelGeneral.getRows();
 		this.m=modelGeneral.getCols();
-		this.thisRoundGrid = new SquareGrid(this.n,this.m, 8);
+		this.shape=modelGeneral.getCellShape();
+		this.thisRoundGrid = createNewGrid(this.shape, this.n,this.m, 12);
 		for (int i=0;i<n;i++) {
 			for (int j=0;j<m;j++) {
 				int curPos=i*n+j;
@@ -114,6 +119,21 @@ public class Simulation {
 		return null;
 	}
 	
+	private Grid createNewGrid(String gridType, int n, int m, int num) {
+		System.out.println(gridType);
+		if (gridType.compareTo(TRIANGLE)==0) {
+			return new TriangleGrid(n,m,num);
+		}
+		
+		if (gridType.compareTo(SQUARE)==0) {
+			return new SquareGrid(n,m,num);
+		}
+
+		if (gridType.compareTo(HEXAGON)==0) {
+			return new HexagonGrid(n,m,num);
+		}
+		return null;
+	}
 	/**
 	 * This method is a helper method which creates a handler for each simulation based on the parameter passed
 	 * in by SimulationModel. It will detect the model type and return the handler as needed.
