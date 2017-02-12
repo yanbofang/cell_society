@@ -10,7 +10,8 @@ import backend.Cell;
  */
 
 public class Fish extends Cell {
-	
+	private int lifeSpan=0;
+
 	public Fish() {
 		this.setPriority(1);
 		this.setIdentity("Fish");
@@ -22,5 +23,15 @@ public class Fish extends Cell {
 
 	public Fish breed() {
 		return new Fish();
+	}
+	
+	public void setLifeSpan(int lifeSpan) {
+		this.lifeSpan = lifeSpan;
+	}
+	public void increaseLifeSpan() {
+		this.lifeSpan++;
+	}
+	public int getLifeSpan() {
+		return lifeSpan;
 	}
 }

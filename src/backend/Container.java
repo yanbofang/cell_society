@@ -1,6 +1,7 @@
 package backend;
 
 import java.util.ArrayList;
+import java.util.List;
 /**
  * This class serves as the container for the cell. 
  * These containers will maintain the spatial relationship between containers in each round.
@@ -16,6 +17,7 @@ public class Container {
 	private boolean locked=false;
 	private int posX;
 	private int posY;
+	private Grid myGrid;
 	
 	private ArrayList<Container> myNeighbors=new ArrayList<Container>();
 	//Constructors below
@@ -24,6 +26,11 @@ public class Container {
 	
 	public Container(Cell a) {
 		this.setMyCell(a);
+	}
+	
+	public Container(Grid myGrid) {
+		super();
+		this.myGrid=myGrid;
 	}
 	
 	public void setNext(Cell a) {
@@ -115,5 +122,20 @@ public class Container {
 		this.homePheromone = homePheromone;
 	}
 
+	public List<Container> getNeighborAtDirection(int i) {
+		List<Container> temp=new ArrayList<Container>();
+		int[][] directionX=new int[][]{{-1,-2,-3},{0,0,0},{0,0,0},{1,2,3}};
+		int[][] directionY=new int[][]{{0,0,0},{1,2,3},{-1,-2,-3},{0,0,0}};
+		Grid myGird=this.myGrid;
+		int n=myGrid.getN();
+		int m=myGrid.getM();
+		for (int j=0;j<3;i++) {
+			int xx=myGrid.boundXHandle(this.getPosX()+directionX[i][j]);
+			int yy=myGrid.boundYHandle(this.getPosY()+directionY[i][j]);
+			if (xx>=n || xx<0 || yy<0 || yy>=m) continue;
+			temp.add(myGrid.getContainer(xx*n+yy));
+		}
+		return temp;
+	}
 
 }
