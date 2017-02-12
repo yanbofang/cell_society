@@ -28,7 +28,7 @@ public class SpreadingFireHandler extends Handler {
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub
 		if (curContainer.getMyCell().is(FIRE)) {
-			curContainer.setNext(new EmptyCell());
+			solveForFire(curContainer);
 		}
 		
 		if (curContainer.getMyCell().is(TREE)) {
@@ -36,13 +36,12 @@ public class SpreadingFireHandler extends Handler {
 		}
 		
 		if (curContainer.getMyCell().is(EMPTY_CELL)) {
-			boolean treeProduced = (Math.random() * 1.0)<treeProb;
-			if (treeProduced) {
-				curContainer.setNext(new Tree());
-			} else {
-				curContainer.setNext(new EmptyCell());
-			}
+			solveForEmptyCell(curContainer);
 		}
+	}
+	
+	private void solveForFire(Container curContainer) {
+		curContainer.setNext(new EmptyCell());
 	}
 	
 	private void solveForTree(Container curContainer) {
@@ -65,6 +64,15 @@ public class SpreadingFireHandler extends Handler {
 		
 		if (!fired) {
 			curContainer.setNext(curContainer.getMyCell());
+		}
+	}
+	
+	private void solveForEmptyCell(Container curContainer) {
+		boolean treeProduced = (Math.random() * 1.0)<treeProb;
+		if (treeProduced) {
+			curContainer.setNext(new Tree());
+		} else {
+			curContainer.setNext(new EmptyCell());
 		}
 	}
 }

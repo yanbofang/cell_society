@@ -10,8 +10,9 @@ import java.util.ArrayList;
  *
  */
 public class Container {
+	
 	private Container next=null;
-	private Cell myCell=null;
+	private ArrayList<Cell> myCell=null;
 	private boolean locked=false;
 	private int posX;
 	private int posY;
@@ -26,18 +27,14 @@ public class Container {
 	}
 	
 	public void setNext(Cell a) {
-		this.getNext().setCell(a);
+		this.getNext().addMyCell(a);;
 		this.getNext().setLocked(true);
 	}
 	//Getters and Setters below
 	public void addNeighbors(Container a) {
 		this.myNeighbors.add(a);
 	}
-		
-	public void setCell(Cell a) {
-		this.setMyCell(a);
-	}
-	
+			
 	public Container getNext() {
 		return this.next;
 	}
@@ -55,14 +52,25 @@ public class Container {
 	}
 
 	public Cell getMyCell() {
-		return myCell;
+		return myCell.get(0);
+	}
+	
+	public Cell getIthCell(int i) {
+		return myCell.get(i);
+	}
+	
+	public int numCellContain() {
+		return myCell.size();
 	}
 
 	public void setMyCell(Cell myCell) {
-		this.myCell = myCell;
+		this.myCell.add(myCell);
 		myCell.setMyContainer(this);
 	}
-
+	
+	public void addMyCell(Cell myCell) {
+		this.myCell.add(myCell);
+	}
 	public boolean isLocked() {
 		return locked;
 	}
@@ -86,5 +94,26 @@ public class Container {
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
+	public boolean contains(String s) {
+		for (Cell a:this.myCell) {
+			if (a.is(s)) return true;
+		}
+		return false;
+	}
+	private int foodPheromone=0;
+	private int homePheromone=0;
+	public int getFoodPheromone() {
+		return foodPheromone;
+	}
+	public void setFoodPheromone(int foodPheromone) {
+		this.foodPheromone = foodPheromone;
+	}
+	public int getHomePheromone() {
+		return homePheromone;
+	}
+	public void setHomePheromone(int homePheromone) {
+		this.homePheromone = homePheromone;
+	}
+
 
 }
