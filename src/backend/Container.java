@@ -13,7 +13,7 @@ import java.util.List;
 public class Container {
 	
 	private Container next=null;
-	private ArrayList<Cell> myCell=null;
+	private ArrayList<Cell> myCell=new ArrayList<Cell>();
 	private boolean locked=false;
 	private int posX;
 	private int posY;

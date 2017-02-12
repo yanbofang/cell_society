@@ -22,6 +22,7 @@ public abstract class Grid {
 	public static final int[] POSYSQUARE={0,-1,0,1,-1,-1,1,1};
 	
 	public static final int[] POSXTRIANGLE={0,0,1,-1,-1,-1,0,0,1,1,1,1};
+	public static final int[] POSXTRIANGLEREVERSE={0,0,-1,1,1,1,0,0,-1,-1,-1,-1};
 	public static final int[] POSYTRIANGLE={-1,1,0,-1,0,1,-2,2,-2,-1,1,2};
 
 	public static final int[] POSXHEXAGON={-1,-2,-1,1,2};
@@ -66,16 +67,17 @@ public abstract class Grid {
 		List<Integer> result = new ArrayList<Integer>();
 		int n=this.getN();
 		int m=this.getM();
-		LocInfo POSX=this.getNeighborArrayX();
-		LocInfo POSY=this.getNeighborArrayY();
+		LocInfo POSX=this.getNeighborArrayX(x, y);
+		LocInfo POSY=this.getNeighborArrayY(x, y);
 		for (int k=0;k<this.getNeighborDefn();k++) {
 			int xx,yy;
 			xx=boundXHandle(x+POSX.get(k));
 			yy=boundYHandle(y+POSY.get(k));
 			if (xx>=n || xx<0 || yy<0 || yy>=m) continue;
-			System.out.println(xx+" "+yy);
+			System.out.print(xx+" "+yy+"-");
 			result.add(xx*n+yy);
 		}
+		System.out.println();
 		return result;
 	}
 	
@@ -103,8 +105,8 @@ public abstract class Grid {
 		return (this.boundary.compareTo(string)==0);
 	}
 
-	public abstract LocInfo getNeighborArrayX();
-	public abstract LocInfo getNeighborArrayY();
+	public abstract LocInfo getNeighborArrayX(int x, int y);
+	public abstract LocInfo getNeighborArrayY(int x, int y);
 	/**
 	 * Connect the Grid at time t to the Grid at time (t+1)
 	 * @param nextRoundGrid
