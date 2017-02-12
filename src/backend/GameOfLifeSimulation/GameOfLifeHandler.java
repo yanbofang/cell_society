@@ -1,7 +1,11 @@
-package backend;
+package backend.GameOfLifeSimulation;
 
 import java.util.ArrayList;
 import java.util.function.Predicate;
+
+import backend.Container;
+import backend.EmptyCell;
+import backend.Handler;
 /**
  * A specific class for Game of Life Simulation
  * 

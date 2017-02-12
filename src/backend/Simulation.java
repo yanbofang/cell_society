@@ -3,6 +3,16 @@ package backend;
 import java.util.ArrayList;
 import java.util.List;
 
+import backend.GameOfLifeSimulation.GameOfLifeHandler;
+import backend.GameOfLifeSimulation.Life;
+import backend.SegregationSimulation.People;
+import backend.SegregationSimulation.SegregationHandler;
+import backend.SpreadingFireSimulation.Fire;
+import backend.SpreadingFireSimulation.SpreadingFireHandler;
+import backend.SpreadingFireSimulation.Tree;
+import backend.WaTorSimulation.Fish;
+import backend.WaTorSimulation.Shark;
+import backend.WaTorSimulation.WaTorHandler;
 import cellsociety_team16.SimulationModel;
 import cellsociety_team16.*;
 /**
@@ -17,11 +27,15 @@ import cellsociety_team16.*;
  */
 
 public class Simulation {
+	private static final String HEXAGON = "Hexagon";
+	private static final String SQUARE = "Square";
+	private static final String TRIANGLE = "Triangle";
 	private static final String GAME_OF_LIFE = "GameOfLife";
 	private static final String SEGREGATION = "Segregation";
 	private static final String WA_TOR = "WaTor";
 	private static final String SPREADING_FIRE = "SpreadingFire";
 	private Grid thisRoundGrid;
+	private String shape;
 	private int n=0;
 	private int m=0;
 	
@@ -36,15 +50,15 @@ public class Simulation {
 	public List<Integer> startNewRoundSimulation() {
 		for (int i=0;i<this.n;i++) {
 			for (int j=0;j<this.m;j++) {
-//				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
+				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
 			}
-//			System.out.println();
+			System.out.println();
 		}
-		Grid nextRoundGrid = new Grid(this.n,this.m);
+		Grid nextRoundGrid = createNewGrid(shape, this.n,this.m, 12);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
-//		System.out.println();
+		System.out.println();
 		List<Integer> result = new ArrayList<Integer>();
 		for (int i=0;i<thisRoundGrid.getSize();i++) {
 			result.add(Integer.parseInt(thisRoundGrid.getContainer(i).getMyCell().toString()));
@@ -60,12 +74,13 @@ public class Simulation {
 		List<Integer> initialStatus=modelGeneral.getPositions();
 		this.n=modelGeneral.getRows();
 		this.m=modelGeneral.getCols();
-		this.thisRoundGrid = new Grid(this.n,this.m);
+		this.shape=modelGeneral.getCellShape();
+		this.thisRoundGrid = createNewGrid(this.shape, this.n,this.m, 12);
 		for (int i=0;i<n;i++) {
 			for (int j=0;j<m;j++) {
 				int curPos=i*n+j;
 				int curPosStats=initialStatus.get(curPos);
-				thisRoundGrid.getContainer(curPos).setCell(this.createNewCell(modelGeneral.getName(),curPosStats));
+				thisRoundGrid.getContainer(curPos).setMyCell(this.createNewCell(modelGeneral.getName(),curPosStats));
 			}
 		}
 	}
@@ -104,6 +119,21 @@ public class Simulation {
 		return null;
 	}
 	
+	private Grid createNewGrid(String gridType, int n, int m, int num) {
+		System.out.println(gridType);
+		if (gridType.compareTo(TRIANGLE)==0) {
+			return new TriangleGrid(n,m,num);
+		}
+		
+		if (gridType.compareTo(SQUARE)==0) {
+			return new SquareGrid(n,m,num);
+		}
+
+		if (gridType.compareTo(HEXAGON)==0) {
+			return new HexagonGrid(n,m,num);
+		}
+		return null;
+	}
 	/**
 	 * This method is a helper method which creates a handler for each simulation based on the parameter passed
 	 * in by SimulationModel. It will detect the model type and return the handler as needed.

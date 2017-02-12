@@ -12,6 +12,7 @@ public class WaTorModel extends SimulationModel {
 
 	private int fishBreed;
 	private int sharkBreed;
+	private int numberOfStates = 3;
 
 	/**
 	 * Constructor for WaTorModel
@@ -58,6 +59,11 @@ public class WaTorModel extends SimulationModel {
 	 */
 	public void setSharkBreed(int sharkBreed) {
 		this.sharkBreed = sharkBreed;
+	}
+
+	@Override
+	public int numberOfStates() {
+		return this.numberOfStates;
 	}
 
 }

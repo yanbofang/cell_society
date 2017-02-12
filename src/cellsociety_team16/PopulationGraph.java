@@ -4,6 +4,11 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
+/**
+ * Class for the Graph of Populations
+ * @author Yanbo Fang
+ *
+ */
 public class PopulationGraph {
 
 	private NumberAxis xAxis;
@@ -14,6 +19,10 @@ public class PopulationGraph {
 	private XYChart.Series inactiveSeries;
 	private XYChart.Series activeSeries;
 
+	/**
+	 * Construcotor for PopulationGraph
+	 * @param model
+	 */
 	public PopulationGraph(SimulationModel model) {
 		xAxis = new NumberAxis();
 		yAxis = new NumberAxis();
@@ -21,6 +30,10 @@ public class PopulationGraph {
 		lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 	}
 
+	/**
+	 * Create the population graph
+	 * @return
+	 */
 	public LineChart<Number, Number> createPopulationGraph() {
 		emptySeries = new XYChart.Series<>();
 		inactiveSeries = new XYChart.Series();
@@ -33,10 +46,19 @@ public class PopulationGraph {
 		return lineChart;
 	}
 
+	/**
+	 * Get the current X-axis value
+	 * @return
+	 */
 	public double getCurrentX() {
 		return this.currentX;
 	}
 
+	/**
+	 * Update the graph, pass in a simulationModel and a double for xAxix value
+	 * @param mySimulationModel
+	 * @param x
+	 */
 	public void updateGraph(SimulationModel mySimulationModel, Double x) {
 		currentX = x;
 		emptySeries.getData().add(new XYChart.Data<>(currentX, mySimulationModel.getCounts().get(0)));

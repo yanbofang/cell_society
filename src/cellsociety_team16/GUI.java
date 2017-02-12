@@ -70,16 +70,14 @@ public class GUI {
 	// current simulation type
 	private String mySimulationType;
 	// used for initializing and updating grid
-	private int gridSideSize;
+	private int gridSideSize, gridXSize, gridYSize;
 	private Grid myGrid;
 	// get information on cell
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
-	private int myGridRows, myGridColumns;
-	private List<Color> myColors;
-	
-	//graph
+
+	// graph
 	private PopulationGraph myGraph;
 
 	// user input fields
@@ -108,9 +106,10 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
+		// makes a square grid
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .75, SCREENWIDTH * .75);
 	}
 
@@ -118,7 +117,7 @@ public class GUI {
 	 * Initialize the display and updates only runs once per load of the
 	 * simulation
 	 */
-	// TODO add more windows
+	// TODO add ability to add more windows
 	public void init(Stage primaryStage) {
 		myRoot = new BorderPane();
 
@@ -141,20 +140,26 @@ public class GUI {
 		primaryStage.show();
 	}
 
-	private Node setUpTop(){
+	/**
+	 * Sets up top node with a graph to keep track of the population change over
+	 * time
+	 * 
+	 * @return top node
+	 */
+	private Node setUpTop() {
 		HBox top = new HBox();
 		top.setAlignment(Pos.CENTER);
-		top.setMaxHeight(SCREENHEIGHT/5);
+		top.setMaxHeight(SCREENHEIGHT / 5);
 		myGraph = new PopulationGraph(mySimulationModel);
 		top.getChildren().add(myGraph.createPopulationGraph());
 		return top;
 	}
-	
-	
-	
+
 	/**
 	 * Creates display that the user can interact with that goes along the
 	 * bottom
+	 * 
+	 * @return bottom node
 	 */
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
@@ -170,14 +175,10 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
-				// TODO see if can take a string or xml file
 				mySimulationModel = myXMLManager.getSimulationModel(newValue);
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
 				myGrid.initialize(gridSideSize, mySimulationModel);
-				// mySimulationModel.setRandomPositions();
-				// mySimulation.setInitialGrid(mySimulationModel);
-				// System.out.println(mySimulationModel.getName());
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
 				play();
 			}
@@ -195,7 +196,7 @@ public class GUI {
 				timer.setRate(mySpeedMultiplier);
 			}
 		});
-		
+
 		buttonLine.getChildren().add(mySimulationChooser);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
@@ -225,6 +226,8 @@ public class GUI {
 
 	/**
 	 * Sets up User input that modifies cells that appears on the left side
+	 * 
+	 * @return left node
 	 */
 	// TODO throws NoGridException
 	private Node setUpLeft(int numberOfTypes) {
@@ -238,16 +241,16 @@ public class GUI {
 			Color newColor = randomLightColor();
 			myColorPickers.get(i).setValue(newColor);
 			colorPickerGroup.getChildren().add(myColorPickers.get(i));
-			// myColorPickers.get(i).setOnAction(new EventHandler() {
-			// @Override
-			// public void handle(Event e) {
-			// myGrid.setColor(i, newColor);
-			// }
-			// });
+			myColorPickers.get(i).setOnAction(new EventHandler() {
+				@Override
+				public void handle(Event e) {
+					myGrid.setColor(myColorPickers.indexOf(this), newColor);
+				}
+			});
 			// TODO figure out arraylist of varying values
 			// myValueSliders.add(i, makeSlider(0, 100, ))
 		}
-
+		userInput.getChildren().addAll(myColorPickers);
 		return userInput;
 	}
 
@@ -307,7 +310,7 @@ public class GUI {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
-		
+
 	}
 
 	/**
@@ -323,7 +326,7 @@ public class GUI {
 			timer.pause();
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED * mySpeedMultiplier), e -> step());
+			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED/2), e -> step());
 			timer.setCycleCount(Timeline.INDEFINITE);
 			timer.getKeyFrames().add(frame);
 			timer.play();

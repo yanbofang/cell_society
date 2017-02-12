@@ -5,36 +5,26 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 
 public class SquareGrid extends Grid {
+	/**
+	 * Draws a grid of rectangles
+	 * 
+	 * @param simulationModel
+	 * @param simulation
+	 */
+	private static double TRANSLATION = 0;
+	private static boolean MANIPULATED;
 
+	// false because squares do not need an offselt
 	public SquareGrid(SimulationModel simulationModel, Simulation simulation) {
-		super(simulationModel, simulation);
+		super(simulationModel, simulation, TRANSLATION, MANIPULATED);
 	}
-//refactored code
-	@Override
-	public Node updateGrid(int gridExtents) {
-		Group cells = new Group();
-		myGridRows = mySimulationModel.getRows();
-		myGridColumns = mySimulationModel.getCols();
 
-		myColors = mySimulationModel.getColors();
-
-		int index = 0;
-
-		int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
-		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
-			// determines place on the screen
-			int rowLoc = row_iter * sideSize;
-
-			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
-				Rectangle r = new Rectangle(col_iter * sideSize, rowLoc, sideSize, sideSize);
-
-				r.setFill((Paint) myColors.get(index));
-				cells.getChildren().add(r);
-				index++;
-			}
-		}
-		return cells;
+	Shape drawShape(double xLoc, double yLoc, double cellSize, int rotationAngle) {
+		// makes a square
+		// double sideSize = Math.min(xSize, ySize);
+		return new Rectangle(xLoc, yLoc, cellSize, cellSize);
 	}
 }
