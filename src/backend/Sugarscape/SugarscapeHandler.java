@@ -21,14 +21,22 @@ public class SugarscapeHandler extends Handler {
 		if (curContainer.contains("Agent")) {
 			Agent curAgent = (Agent) curContainer.getMyCell();
 			int max=0;
-			for (int i=0;i<4;i++) {	
-				List<Container> a = curContainer.getNeighborAtDirection(i);
-				for (Container tempContainer: a) {
-					if (tempContainer.contains("Patch") && ((Patch) tempContainer.getMyCell()).getSugarAmount()>max) {
-						max=((Patch) tempContainer.getMyCell()).getSugarAmount();
-					}
+			Container maxContainer = curContainer;
+			List<Container> a = curContainer.getNeighborFromCloserToFurther();
+			for (Container tempContainer : a) {
+				if (tempContainer.contains("Patch") && ((Patch) tempContainer.getMyCell()).getSugarAmount() > max) {
+					max = ((Patch) tempContainer.getMyCell()).getSugarAmount();
+					maxContainer=tempContainer;
 				}
 			}
+			curAgent.addSugar(((Patch) maxContainer.getMyCell()).getSugarAmount());
+			curAgent.subtractMetabolism();
+			if (curAgent.getSugarAmount()<0) {
+				curContainer.setNext(new EmptyCell());
+				return;
+			}
+			maxContainer.setNext(curContainer.getMyCell());
+			curContainer.setNext(new EmptyCell());
 		}
 	}
 

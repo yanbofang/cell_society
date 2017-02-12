@@ -9,7 +9,7 @@ public class Agent extends Cell {
 	private int sugarMetabolism=0;
 
 	public Agent() {
-		this.sugarAmount=0;
+		this.setSugarAmount(0);
 		this.sugarMetabolism=defaulSugarMetabolism;
 		this.setIdentity("Patch");
 		this.setPriority(1);
@@ -18,16 +18,25 @@ public class Agent extends Cell {
 	
 	public Agent(int sugarAmount, int sugarMetabolism) {
 		super();
-		this.sugarAmount = sugarAmount;
+		this.setSugarAmount(sugarAmount);
 		this.sugarMetabolism = sugarMetabolism;
 	}
 
 
-	private void addSugar(int amount) {
-		this.sugarAmount+=amount;
+	public void addSugar(int amount) {
+		this.setSugarAmount(this.getSugarAmount() + amount);
 	}
 	
-	private void subtractMetabolism() {
-		this.sugarAmount-=this.sugarMetabolism;
+	public void subtractMetabolism() {
+		this.setSugarAmount(this.getSugarAmount() - this.sugarMetabolism);
+	}
+
+	public int getSugarAmount() {
+		return sugarAmount;
+	}
+
+
+	public void setSugarAmount(int sugarAmount) {
+		this.sugarAmount = sugarAmount;
 	}
 }

@@ -40,6 +40,9 @@ public abstract class Grid {
 		this.size = n*m;
 		this.n=n;
 		this.m=m;
+	}
+	
+	public void fillContainer() {
 		for (int i=0;i<size;i++) {
 			Container tempContainer = new Container();
 			this.containerlist.add(tempContainer);
@@ -77,7 +80,7 @@ public abstract class Grid {
 			System.out.print(xx+" "+yy+"-");
 			result.add(xx*n+yy);
 		}
-		System.out.println();
+		System.out.println(this.getNeighborDefn());
 		return result;
 	}
 	
@@ -115,6 +118,10 @@ public abstract class Grid {
 		this.next=nextRoundGrid;
 		for (int i=0;i<size;i++) {
 			this.getContainer(i).setNext(this.next.getContainer(i));
+			int Food = this.getContainer(i).getPheromone("Food");
+			this.next.getContainer(i).setPheromone("Food", Food);
+			int Home = this.getContainer(i).getPheromone("Home");
+			this.next.getContainer(i).setPheromone("Home", Food);
 		}
 	}
 	
