@@ -60,4 +60,9 @@ public class WaTorModel extends SimulationModel {
 		this.sharkBreed = sharkBreed;
 	}
 
+	@Override
+	public int numberOfStates() {
+		return 3;
+	}
+
 }

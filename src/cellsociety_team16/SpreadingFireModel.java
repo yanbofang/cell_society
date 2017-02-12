@@ -60,4 +60,9 @@ public class SpreadingFireModel extends SimulationModel {
 		this.treeProbability = treeProbability;
 	}
 
+	@Override
+	public int numberOfStates() {
+		return 3;
+	}
+
 }

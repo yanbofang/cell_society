@@ -225,6 +225,8 @@ public abstract class SimulationModel {
 		}
 		return Arrays.asList(arry);
 	}
+	
+	public abstract int numberOfStates();
 
 	/**
 	 * Set a list of random positions of cells

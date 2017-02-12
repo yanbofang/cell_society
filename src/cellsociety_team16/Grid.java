@@ -180,7 +180,7 @@ public abstract class Grid {
 
 	public void changeCellState(Shape cell) {
 		Color currentColor = (Color) cell.getFill();
-		int nextColor = myColors.indexOf(currentColor) >= myColors.size() - 1 ? 0 : myColors.indexOf(currentColor) + 1;
+		int nextColor = myColors.indexOf(currentColor) >= mySimulationModel.numberOfStates() - 1 ? 0 : myColors.indexOf(currentColor) + 1;
 		cell.setFill(getColor(nextColor));
 		List<Integer> positions = mySimulationModel.getPositions();
 		positions.set(Integer.parseInt(cell.getId()), nextColor);
