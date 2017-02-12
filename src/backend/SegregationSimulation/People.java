@@ -1,4 +1,6 @@
-package backend;
+package backend.SegregationSimulation;
+
+import backend.Cell;
 
 /**
  * This class is an extension of Cell. 
