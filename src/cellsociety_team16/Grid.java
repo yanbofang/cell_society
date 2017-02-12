@@ -30,20 +30,24 @@ public abstract class Grid {
 	private List<Integer> myInts;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
-	protected Shape myShape;
-	protected SimulationModel mySimulationModel;
-	protected List<Paint> myColors;
-	protected Simulation mySimulation;
-	protected int myGridRows, myGridColumns;
-	private boolean offsetHalf;
+	private SimulationModel mySimulationModel;
+	private List<Color> myColors;
+	private Simulation mySimulation;
+	private int myGridRows, myGridColumns;
+	private double myOffsetPercentage;
+	protected boolean myManipulatable;
+	protected int cellSize;
 
 	/**
 	 * Declares a grid object
 	 */
-	public Grid(SimulationModel simulationModel, Simulation simulation, boolean bool) {
+	public Grid(SimulationModel simulationModel, Simulation simulation, double translationPercentage, boolean bool) {
 		mySimulationModel = simulationModel;
 		mySimulation = simulation;
-		myColors = new ArrayList<Paint>();
+		myColors = new ArrayList<Color>();
+		myOffsetPercentage = translationPercentage;
+		myManipulatable = bool;
+
 		myColors.add(0, simulationModel.getEmptyColor());
 		myColors.add(1, simulationModel.getInactiveColor());
 		myColors.add(2, simulationModel.getActiveColor());
@@ -119,7 +123,8 @@ public abstract class Grid {
 	 * @return a new grid object to add to the scene
 	 */
 	public Node updateGrid(int gridExtents) {
-		int offset;
+		int onOffset;
+		int rotateAngle;
 		Group cells = new Group();
 		myGridRows = mySimulationModel.getRows();
 		myGridColumns = mySimulationModel.getCols();
@@ -129,18 +134,27 @@ public abstract class Grid {
 		int index = 0;
 		// int cellSize = Math.min(gridXSize / myGridRows, gridYSize /
 		// myGridColumns);
-		int cellSize = Math.min(gridExtents / myGridRows, gridExtents / myGridColumns);
+		cellSize = Math.min(gridExtents / myGridRows, gridExtents / myGridColumns);
 		// int sideSize = gridExtents / (Math.min(myGridRows, myGridColumns));
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
 			int rowLoc = row_iter * cellSize;
-			if (offsetHalf && rowLoc % 2 == 0) {
-				offset = cellSize / 2;
+			if (rowLoc % 2 == 0) {
+				onOffset = 1;
 			} else {
-				offset = 0;
+				onOffset = 0;
+			}
+		if(row_iter%2 == 0){
+				rotateAngle = 180;
+			} else {
+				rotateAngle = 0;
 			}
 			for (int col_iter = 0; col_iter < myGridColumns; col_iter++) {
-				Shape shapely = drawShape(col_iter * sideSize, rowLoc, sideSize, sideSize);
+				if(col_iter%2 == 1){
+					rotateAngle += 180;
+				} 
+				Shape shapely = drawShape(cellSize * (col_iter + myOffsetPercentage*onOffset), rowLoc, cellSize, rotateAngle);
+
 				// Set an id for each sell based on index, so that we can keep
 				// track of the changes of individual cell
 				shapely.setId(Integer.toString(index));
@@ -151,9 +165,12 @@ public abstract class Grid {
 					}
 				});
 				shapely.setFill(getColor(myInts.get(index)));
-				if (gridLines) {
+				if (!gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
 				}
+				if(col_iter%2 == 1){
+					rotateAngle -= 180;
+				} 
 				cells.getChildren().add(shapely);
 				index++;
 			}
@@ -181,8 +198,8 @@ public abstract class Grid {
 		return updateGrid(gridExtents);
 	}
 
-	protected void setHalfOffset(boolean bool) {
-		offsetHalf = bool;
+	protected void setOffset(double value) {
+		myOffsetPercentage = value;
 	}
 
 	/**
@@ -194,9 +211,11 @@ public abstract class Grid {
 	 *            corresponds to upper left hand side coordinate
 	 * @param cellSize
 	 *            corresponds to overall width of the cell
+	 * @param rotateXAngle
+	 *            sets rotation angle of shape
 	 * @return a shape determined by the grid subclass called
 	 */
-	abstract Shape drawShape(double xLoc, double yLoc, double cellSize);
+	abstract Shape drawShape(double xLoc, double yLoc, double cellSize, int rotateXAngle);
 
 	// abstract public List getCellPositions();
 
