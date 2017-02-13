@@ -87,7 +87,7 @@ public class XMLWriter {
 
 	private void addPercentages(Element root) {
 		Element activePercentage = doc.createElement("activePercentage");
-		activePercentage.appendChild(doc.createTextNode(Double.toString(mySimulationModel.getAcitivePercentage())));
+		activePercentage.appendChild(doc.createTextNode(Double.toString(mySimulationModel.getActivePercentage())));
 		root.appendChild(activePercentage);
 		Element inactivePercentage = doc.createElement("inactivePercentage");
 		inactivePercentage.appendChild(doc.createTextNode(Double.toString(mySimulationModel.getInactivePercentage())));
