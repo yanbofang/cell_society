@@ -213,7 +213,7 @@ public abstract class SimulationModel {
 	 * 
 	 * @return
 	 */
-	public double getAcitivePercentage() {
+	public double getActivePercentage() {
 		return this.activePercentage;
 	}
 
