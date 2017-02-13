@@ -18,10 +18,6 @@ import xml.XMLSimulation;
  */
 public abstract class SimulationModel {
 
-	// public static final Color ACTIVE_COLOR = Color.RED;
-	// public static final Color INACTIVE_COLOR = Color.GREEN;
-	// public static final Color EMPTY_COLOR = Color.WHITE;
-
 	private String name;
 	private int rows;
 	private int cols;
@@ -157,7 +153,38 @@ public abstract class SimulationModel {
 				myCounts.set(2, myCounts.get(2) + 1);
 			}
 		}
+		// Update the percentage
+		this.setEmptyPercentage(myCounts.get(0) / (rows * cols));
+		this.setInactivePercentage(myCounts.get(1) / (rows * cols));
+		this.setActivePercentage(myCounts.get(2) / (rows * cols));
 		return myCounts;
+	}
+
+	/**
+	 * Return the percentage of active cells in the current model
+	 * 
+	 * @return
+	 */
+	public double getAcitivePercentage() {
+		return this.activePercentage;
+	}
+
+	/**
+	 * Return the percentage of inactive cells in the current model
+	 * 
+	 * @return
+	 */
+	public double getInactivePercentage() {
+		return this.inactivePercentage;
+	}
+
+	/**
+	 * Return the percentage of empty cells in the current model
+	 * 
+	 * @return
+	 */
+	public double getEmptyPercentage() {
+		return this.emptyPercentage;
 	}
 
 	/**

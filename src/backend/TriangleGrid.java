@@ -5,6 +5,7 @@ public class TriangleGrid extends Grid{
 		super(n,m);
 		//System.out.println("neighborDefn="+neighborDefn);
 		this.setNeighborDefn(neighborDefn);
+		this.fillContainer();
 	}
 
 	public TriangleGrid(int n, int m, int neighborDefn, String boundary) {
@@ -12,6 +13,7 @@ public class TriangleGrid extends Grid{
 		//System.out.println("neighborDefn="+neighborDefn);
 		this.setNeighborDefn(neighborDefn);
 		this.setBoundary(boundary);
+		this.fillContainer();
 	}
 
 	

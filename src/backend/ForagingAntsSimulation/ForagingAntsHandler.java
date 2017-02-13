@@ -6,7 +6,6 @@ import backend.Container;
 import backend.EmptyCell;
 import backend.Grid;
 import backend.Handler;
-import backend.Home;
 
 public class ForagingAntsHandler extends Handler{
 	private int max=20;
@@ -51,91 +50,97 @@ public class ForagingAntsHandler extends Handler{
 		for (int i=0;i<curContainer.numCellContain();i++) {
 			if (!curContainer.getIthCell(i).is("Ant")) continue;
 			Ant curAnt=(Ant) curContainer.getIthCell(i);
-			int foodCnt=foodNearby(curContainer);
-			double foodRand=Math.random()*((double)foodCnt);
-			int homeCnt=homeNearby(curContainer);
-			double homeRand=Math.random()*((double)homeCnt);
-			ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
 			if (curAnt.isHasFood()) {
-				if (curContainer.contains("Home")) {
-					increaseHomeToMax(curContainer);
-					curAnt.setHasFood(false);
-					return;
-				}
-				int food=0;
-				for (Container curNeighbor:myNeighbor) {
-					if (curNeighbor.numCellContain()<=10) {
-						food+=curNeighbor.getFoodPheromone();
-						if (food>foodRand) {
-							this.increaseFoodToDesired(curContainer);
-							curContainer.getNext().addMyCell(curAnt);
-							break;
-						}
-					}
-				}
+				solveForAnt(curContainer, curAnt, "Home", "Food");
 			}else{
-				if (curContainer.contains("Food")) {
-					curAnt.setHasFood(true);
-					increaseHomeToMax(curContainer);
+				solveForAnt(curContainer, curAnt, "Food", "Home");
+			}
+		}
+	}
+	
+	private void solveForAnt(Container curContainer, Ant curAnt, String whatToFind, String whatToLeave) {
+		if (curContainer.contains(whatToLeave)) {
+			ArrayList<Container> myNeighbor=curContainer.getMyNeighbors();
+			int max=-1;
+			Container maxContainer = null;
+			for (Container curNeighbor: myNeighbor) {
+				if (curNeighbor.getPheromone(whatToFind)>max) {
+					max=curNeighbor.getPheromone(whatToFind);
+					maxContainer=curNeighbor;
+				}
+			}
+			this.increaseToMax(curContainer, whatToLeave);
+			maxContainer.getNext().addMyCell(curAnt);
+			return;
+		}
+		
+		ArrayList<Container> myNeighborInVision = (ArrayList<Container>) curContainer.getNeighborAtDirection(curAnt.getDirection());
+		ArrayList<Container> myNeighborNotInVision = new ArrayList<Container>();
+		for (int k=0;k<4;k++) { 
+			if (k!=curAnt.getDirection()) myNeighborNotInVision.addAll(curContainer.getNeighborAtDirection(k));
+		}
+		int pheromoneCnt=NearbyDirection(curContainer, curAnt.getDirection(), whatToFind);
+		double pheromoneRand=Math.random()*((double) pheromoneCnt)*1.5;
+		int pheromone=0;
+		for (Container curNeighbor:myNeighborInVision) {
+			if (curNeighbor.numCellContain()<=10) {
+				pheromone+=curNeighbor.getPheromone(whatToFind);
+				if (pheromone>pheromoneRand) {
+					this.increaseToDesired(curContainer, whatToLeave);
+					curNeighbor.getNext().addMyCell(curAnt);
+					if (curNeighbor.contains(whatToFind)) {
+						curAnt.setHasFood();
+						increaseToMax(curNeighbor, whatToFind);
+					}
 					return;
 				}
-				int home=0;
-				for (Container curNeighbor:myNeighbor) {
-					if (curNeighbor.numCellContain()<=10) {
-						home+=curNeighbor.getHomePheromone();
-						if (home>homeRand) {
-							this.increaseHomeToDesired(curContainer);
-							curContainer.getNext().addMyCell(curAnt);
-							break;
-						}
+			}
+		}
+		pheromoneCnt=-pheromoneCnt;
+		for (int k=0;k<4;k++) {
+			pheromoneCnt=NearbyDirection(curContainer, curAnt.getDirection(), whatToFind);
+		}
+		pheromoneRand=Math.random()*((double) pheromoneCnt);
+		pheromone=0;
+		for (Container curNeighbor:myNeighborInVision) {
+			if (curNeighbor.numCellContain()<=10) {
+				pheromone+=curNeighbor.getPheromone(whatToFind);
+				if (pheromone>pheromoneRand) {
+					this.increaseToDesired(curContainer, whatToLeave);
+					curNeighbor.getNext().addMyCell(curAnt);
+					if (curNeighbor.contains(whatToFind)) {
+						curAnt.setHasFood();
+						increaseToMax(curNeighbor, whatToFind);
 					}
+					return;
 				}
 			}
 		}
+
 	}
-	private void increaseFoodToDesired(Container curContainer) {
+	private void increaseToDesired(Container curContainer, String a) {
 		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
 		int max=0;
 		for (Container curNeighbor:myNeighbor) {
-			if (curNeighbor.getFoodPheromone()>max) max=curNeighbor.getFoodPheromone();
+			if (curNeighbor.getPheromone(a)>max) max=curNeighbor.getPheromone(a);
 		}
-		if (curContainer.getHomePheromone()<max-2) curContainer.setHomePheromone(max-2);
+		if (curContainer.getPheromone(a)<max-2) curContainer.setPheromone(a, max-2);
 	}
 
-	private void increaseHomeToDesired(Container curContainer) {
-		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
-		int max=0;
-		for (Container curNeighbor:myNeighbor) {
-			if (curNeighbor.getHomePheromone()>max) max=curNeighbor.getHomePheromone();
-		}
-		if (curContainer.getFoodPheromone()<max-2) curContainer.setHomePheromone(max-2);
-	}
-	private void increaseFoodToMax(Container curContainer) {
-		curContainer.setFoodPheromone(max);
-	}
-	private void increaseHomeToMax(Container curContainer) {
-		curContainer.setHomePheromone(max);
-	}
-	private int foodNearby(Container curContainer) {
-		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
-		int foodPheromone=0;
-		for (Container curNeighbor:myNeighbor) {
-			if (curNeighbor.numCellContain()<=10) {
-				foodPheromone+=curNeighbor.getFoodPheromone();
-			}
-		}
-		return foodPheromone;
+	private void increaseToMax(Container curContainer, String a) {
+		if (a.compareTo("Food")==0) curContainer.setPheromone(a, max);
+		if (a.compareTo("Home")==0) curContainer.setPheromone(a, max);
 	}
 
-	private int homeNearby(Container curContainer) {
-		ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
-		int homePheromone=0;
+	private int NearbyDirection(Container curContainer, int i, String a) {
+		ArrayList<Container> myNeighbor = (ArrayList<Container>) curContainer.getNeighborAtDirection(i);
+		int Pheromone=0;
 		for (Container curNeighbor:myNeighbor) {
 			if (curNeighbor.numCellContain()<=10) {
-				homePheromone+=curNeighbor.getHomePheromone();
+				Pheromone+=curNeighbor.getPheromone(a);
 			}
 		}
-		return homePheromone;
+		return Pheromone;
 	}
 
 }
