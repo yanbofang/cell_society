@@ -39,12 +39,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
 import simulation_models.SimulationModel;
 import xml.XMLManager;
-import xml.XMLSimulation;
+import xml.XMLWriter;
 
 /**
  * Loads the GUI for Cell Society interface
@@ -90,6 +92,7 @@ public class GUI {
 	private PopulationGraph myGraph;
 
 	// user input fields
+	private Button mySaveButton;
 	private Button myPlayButton;
 	private Button myStepButton;
 	private Button myResetButton;
@@ -179,6 +182,8 @@ public class GUI {
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
+		VBox simulationModifiers = new VBox();
+		simulationModifiers.setAlignment(Pos.CENTER);
 		// TODO just click to load a new file
 		// Click to save current settings
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
@@ -204,14 +209,21 @@ public class GUI {
 			}
 		});
 		mySimulationChooser.setValue(mySimulationType);
-		myResetButton = makeButton("ResetCommand",
+
+		mySaveButton = makeButton("SaveFileCommand", new Rectangle(SCREENWIDTH/10, SCREENHEIGHT/200), event -> saveFile());
+
+		simulationModifiers.getChildren().add(mySimulationChooser);
+		simulationModifiers.getChildren().add(mySaveButton);
+
+		Shape circleButton = new Circle(SCREENWIDTH / 10);
+		myResetButton = makeButton("ResetCommand", circleButton,
 				event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel)));
 		// creates the play/pause toggle button
-		myPlayButton = makeButton("PlayCommand", event -> play());
-		myStepButton = makeButton("StepCommand", event -> step());
+		myPlayButton = makeButton("PlayCommand", circleButton,event -> play());
+		myStepButton = makeButton("StepCommand", circleButton,event -> step());
 
 		Initializer init = new Initializer();
-		myNewSimulationButton = makeButton("NewSimulationCommand", event -> {
+		myNewSimulationButton = makeButton("NewSimulationCommand", circleButton,event -> {
 			try {
 				init.newSimulation();
 			} catch (Exception e) {
@@ -234,7 +246,7 @@ public class GUI {
 			}
 		});
 
-		buttonLine.getChildren().add(mySimulationChooser);
+		buttonLine.getChildren().add(simulationModifiers);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
 		buttonLine.getChildren().add(myStepButton);
@@ -260,7 +272,7 @@ public class GUI {
 	 * @author Edwin Ward
 	 * @author Robert C. Duvall
 	 */
-	private Button makeButton(String name, EventHandler<ActionEvent> handler) {
+	private Button makeButton(String name, Shape shape, EventHandler<ActionEvent> handler) {
 		final String IMAGEFILE_SUFFIXES = String.format("(.*)\\.(%s)",
 				String.join("|", ImageIO.getReaderFileSuffixes()));
 
@@ -280,7 +292,7 @@ public class GUI {
 			newButton.setWrapText(true);
 			newButton.setText(label);
 		}
-		newButton.setShape(new Circle(SCREENWIDTH / 10));
+		newButton.setShape(shape);
 		newButton.setPrefWidth(SCREENWIDTH / 5);
 		newButton.setPrefHeight(SCREENWIDTH / 10);
 		newButton.setOnAction(handler);
@@ -340,6 +352,11 @@ public class GUI {
 			timer.getKeyFrames().add(frame);
 			timer.play();
 		}
+	}
+
+	private void saveFile() {
+		XMLWriter writer = new XMLWriter();
+		writer.writeToXML(mySimulationModel);
 	}
 
 	/**
