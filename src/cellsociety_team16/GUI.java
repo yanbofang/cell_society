@@ -1,5 +1,6 @@
 package cellsociety_team16;
 
+import backend.GridInfo;
 import backend.Simulation;
 import java.util.ResourceBundle;
 
@@ -111,7 +112,7 @@ public class GUI {
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
 		// default is square grid
-		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
+		myGrid = new SquareGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid
@@ -308,9 +309,10 @@ public class GUI {
 	 * run calls
 	 */
 	private void step() {
-		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation().getType());
-		mySimulationModel.setAmounts(mySimulation.startNewRoundSimulation().getAmount());
-		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
+		GridInfo gridinfo=mySimulation.startNewRoundSimulation();
+		mySimulationModel.setPositions(gridinfo.getType());
+		mySimulationModel.setAmounts(gridinfo.getAmount());
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize, mySimulationModel));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 	}
 

@@ -52,6 +52,7 @@ public class Simulation {
 	private String shape;
 	private int n = 0;
 	private int m = 0;
+	private int neighborDefn=0;
 
 	private Handler myHandler;
 
@@ -63,13 +64,7 @@ public class Simulation {
 	 * @return List<Integer>
 	 */
 	public GridInfo startNewRoundSimulation() {
-		for (int i = 0; i < this.n; i++) {
-			for (int j = 0; j < this.m; j++) {
-				System.out.print(thisRoundGrid.getContainer(i * 5 + j).getMyCell());
-			}
-			System.out.println();
-		}
-		Grid nextRoundGrid = createNewGrid(shape, this.n, this.m, 4);
+		Grid nextRoundGrid = createNewGrid(shape, this.n, this.m, this.neighborDefn);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
@@ -88,6 +83,12 @@ public class Simulation {
 		for (int i = 0; i < thisRoundGrid.getSize(); i++) {
 			amount.add(thisRoundGrid.getContainer(i).numCellContain());
 		}
+		for (int i = 0; i < this.n; i++) {
+			for (int j = 0; j < this.m; j++) {
+				System.out.print(result.get(i * n + j));
+			}
+			System.out.println();
+		}
 		return new GridInfo(result, amount);
 	}
 
@@ -100,12 +101,13 @@ public class Simulation {
 	public void setInitialGrid(SimulationModel modelGeneral) {
 		this.myHandler = this.setupHandler(modelGeneral);
 		this.model = modelGeneral;
+		this.neighborDefn=modelGeneral.getNumOfNeighbors();
 		List<Integer> initialStatus = modelGeneral.getPositions();
 		List<Integer> initialAmount = modelGeneral.getAmounts();
 		this.n = modelGeneral.getRows();
 		this.m = modelGeneral.getCols();
 		this.shape = modelGeneral.getCellShape();
-		this.thisRoundGrid = createNewGrid(this.shape, this.n, this.m, 4);
+		this.thisRoundGrid = createNewGrid(this.shape, this.n, this.m, this.neighborDefn);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				int curPos = i * n + j;
@@ -235,7 +237,7 @@ public class Simulation {
 		if (modelName.compareTo(SEGREGATION) == 0) {
 			SegregationModel model = (SegregationModel) modelGeneral;
 			double percent = model.getSatisfactionRate();
-			return new SegregationHandler(percent);
+			return new SegregationHandler(percent, model.getNumOfNeighbors());
 		}
 
 		if (modelName.compareTo(SUGAR_SCAPE) == 0) {

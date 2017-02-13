@@ -43,7 +43,6 @@ public class Container {
 	 */
 	public void setNext(Cell a) {
 		this.getNext().addMyCell(a);
-		;
 		this.getNext().setLocked(true);
 	}
 

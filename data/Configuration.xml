@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="Simulation">
-    <cellShape>Triangle</cellShape>
+    <cellShape>Square</cellShape>
     <activeColor>Red</activeColor>
     <inactiveColor>Green</inactiveColor>
     <emptyColor>White</emptyColor>
     <cellSize>10</cellSize>
-    <numOfNeighbors>12</numOfNeighbors>
-    <gridLines>true</gridLines>
+    <numOfNeighbors>4</numOfNeighbors>
 </data>
