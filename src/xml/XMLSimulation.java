@@ -24,7 +24,7 @@ public class XMLSimulation {
 					"sharkBreed", "sugarMetabolism", "sugarGrowBackRate", "positions", "amounts" });
 
 	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(
-			new String[] { "cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize", "numOfNeighbors" });
+			new String[] { "cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize", "numOfNeighbors", "gridLines" });
 
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
@@ -152,6 +152,11 @@ public class XMLSimulation {
 
 	public int getNumOfNeighbors() {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(5)));
+	}
+	
+	public boolean getGridLines(){
+		return Boolean.parseBoolean(myDataValues.get(CONFIGURATION_FIELDS.get(6)));
+				
 	}
 
 	@Override
