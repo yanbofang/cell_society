@@ -32,8 +32,7 @@ public class Main extends Application{
 //			simTest.startNewRoundSimulation();
 //		}
 		
-		GUI gui = new GUI(mySimulationModel, "English");
-
+		GUI gui = new GUI(mySimulationModel, "Images");
 		gui.init(primaryStage);
 		
 	}

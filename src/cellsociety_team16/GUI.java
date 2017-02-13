@@ -6,7 +6,6 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 import javafx.animation.KeyFrame;
@@ -16,28 +15,27 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Slider;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
@@ -86,13 +84,10 @@ public class GUI {
 	private Button myResetButton;
 	private Slider mySpeedSlider;
 	private ComboBox<String> mySimulationChooser;
-	private ArrayList<ColorPicker> myColorPickers;
-	private ArrayList<Slider> myValueSliders;
-	private ComboBox<Object> myShapeChooser;
-	private CheckBox myGridLines;
+	private UserInputBar myLeftUI;
 
 	// get strings from resource file
-	private ResourceBundle myResources;
+	protected ResourceBundle myResources;
 
 	private boolean isPaused = true;
 	// default speed value is in the middle
@@ -135,7 +130,8 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myRoot.setLeft(setUpLeft());
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid);
+		myRoot.setLeft(myLeftUI.draw());
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
@@ -172,7 +168,7 @@ public class GUI {
 		// 4 is an arbitrary value for aethstetic purposes
 		mySimulationChooser.setVisibleRowCount(4);
 		// sets to display which simulation the user originally chose
-		mySimulationChooser.setValue(mySimulationType);
+
 		mySimulationChooser.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
@@ -182,12 +178,15 @@ public class GUI {
 				// setGrid which doesn't randomize new positions
 				// TODO make a reset fn to simplify
 				System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
+
 				myGrid.initialize(gridSideSize, mySimulationModel);
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
-				myRoot.setLeft(setUpLeft());
+				// TODO see if need to pass in mySimulationModel
+				myRoot.setLeft(myLeftUI.draw());
 				play();
 			}
 		});
+		mySimulationChooser.setValue(mySimulationType);
 		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
@@ -212,76 +211,9 @@ public class GUI {
 	}
 
 	/**
-	 * Sets up User input that modifies cells that appears on the left side Will
-	 * need to update each time the simulationModel changes
-	 * 
-	 * @return left node
+	 * Makes a slider accessible by any class in the front end
 	 */
-	// TODO throws NoGridException
-	private Node setUpLeft() {
-		VBox userInput = new VBox();
-		Group colorPickerGroup = new Group();
-		Group sliderGroup = new Group();
-		Random randomGenerator = new Random();
-		myColorPickers = new ArrayList<ColorPicker>();
-		// for (int i = 0; i < mySimulationModel.numberOfStates(); i++) {
-		// ColorPicker newPicker = makeColorPicker(myGrid.getColor(i), i);
-		// myColorPickers.add(i, newPicker);
-		// colorPickerGroup.getChildren().add(newPicker);
-		//
-		// // TODO figure out arraylist of varying values
-		// // myValueSliders.add(i, makeSlider(0, 100, ))
-		// }
-		ColorPicker emptyPicker = makeColorPicker(0);
-		// myColorPickers.add(i, newPicker);
-		// input.getChildren().add(newPicker);
-		userInput.getChildren().add(emptyPicker);
-		ColorPicker activePicker = makeColorPicker(1);
-		//Slider myEmptySlider = makeSlider(0,100,10,emptyPercentage);
-		
-	//	userInput.getChildren().add(myEmptySlider);
-		// myColorPickers.add(i, newPicker);
-		// colorPickerGroup.getChildren().add(newPicker);
-		userInput.getChildren().add(activePicker);
-		ColorPicker specialPicker = makeColorPicker(2);
-		// myColorPickers.add(i, newPicker);
-		// colorPickerGroup.getChildren().add(newPicker);
-		userInput.getChildren().add(specialPicker);
-		// userInput.getChildren().addAll(myColorPickers);
-
-		myGridLines = new CheckBox(myResources.getString("GridLinesCheckBox"));
-		myGridLines.selectedProperty().addListener(new ChangeListener<Boolean>() {
-			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-				myGrid.setGridLines(new_val);
-			}
-		});
-		
-		userInput.getChildren().add(myGridLines);
-		return userInput;
-	}
-/**
- * Creates a colorpicker with index of celltype that determine its color
- * @param index
- * @return ColorPicker
- */
-	private ColorPicker makeColorPicker(int index) {
-		ColorPicker newPicker = new ColorPicker();
-		newPicker.setValue(myGrid.getColor(index));
-		newPicker.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				// 0 gets base value, not lighter or darker
-				myGrid.setColor(index, newPicker.getValue(), 0);
-				
-				System.out.println(newPicker.getValue());
-			}
-		});
-		return newPicker;
-	}
-	/**
-	 * 
-	 */
-	private Slider makeSlider(double min, double max, double increment, double changingValue) {
+	protected Slider makeSlider(double min, double max, double increment, double changingValue) {
 		Slider newSlider = new Slider();
 		// slider is based on percentages, hence the 0 to 10 and default value
 		// which then multiplies by duration
@@ -313,13 +245,22 @@ public class GUI {
 	 * @author Robert C. Duvall
 	 */
 	private Button makeButton(String name, EventHandler<ActionEvent> handler) {
-		final String IMAGEFILE_SUFFIXES = String.format(".*\\.(%s)", String.join("|", ImageIO.getReaderFileSuffixes()));
+		final String IMAGEFILE_SUFFIXES = String.format("(.*)\\.(%s)",
+				String.join("|", ImageIO.getReaderFileSuffixes()));
 
 		Button newButton = new Button();
 		String label = myResources.getString(name);
 		if (label.matches(IMAGEFILE_SUFFIXES)) {
-			newButton.setGraphic(
-					new ImageView(new Image(getClass().getResourceAsStream(DEFAULT_RESOURCE_PACKAGE + label))));
+			System.out.println("HEY LOOK HERE" + DEFAULT_RESOURCE_PACKAGE + label);
+			try {
+				newButton.setGraphic(
+						// TODO DEFAULT_RESOURCE_PACKAGE +
+						new ImageView(new Image(getClass().getResourceAsStream(DEFAULT_RESOURCE_PACKAGE + label))));
+
+			} catch (NullPointerException e) {
+				newButton.setWrapText(true);
+				newButton.setText(label);
+			}
 		} else {
 			newButton.setWrapText(true);
 			newButton.setText(label);
@@ -328,8 +269,26 @@ public class GUI {
 		newButton.setPrefWidth(SCREENWIDTH / 5);
 		newButton.setPrefHeight(SCREENWIDTH / 10);
 		newButton.setOnAction(handler);
-
+		whenMouseOver(newButton);
 		return newButton;
+	}
+
+	protected void whenMouseOver(Control button) {
+		DropShadow shadow = new DropShadow();
+		// Adding the shadow when the mouse cursor is on
+		button.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				button.setEffect(shadow);
+			}
+		});
+		// Removing the shadow when the mouse cursor is off
+		button.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				button.setEffect(null);
+			}
+		});
 	}
 
 	/**
@@ -355,7 +314,7 @@ public class GUI {
 			timer.pause();
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED/2), e -> step());
+			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED / 2), e -> step());
 			timer.setCycleCount(Timeline.INDEFINITE);
 			timer.getKeyFrames().add(frame);
 			timer.play();
@@ -365,7 +324,7 @@ public class GUI {
 	/**
 	 * May or may not use to tell SimulationModel which simulation to run
 	 */
-	public String setSimulationType() {
+	public String getSimulationType() {
 		return mySimulationChooser.getValue();
 	}
 }

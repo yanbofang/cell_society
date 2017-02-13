@@ -6,11 +6,13 @@ import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
 
 public class TriangleGrid extends Grid {
+	public static final String myShape = "triangle";
 	private static double TRANSLATION = 0;
 	private static boolean MANIPULATED = true;
 
 	public TriangleGrid(SimulationModel simulationModel, Simulation simulation) {
 		super(simulationModel, simulation, TRANSLATION, MANIPULATED);
+
 	}
 	
 	@Override
