@@ -48,6 +48,7 @@ public abstract class Grid {
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
 
+		System.out.println(simulationModel.getName());
 		myColors.add(0, simulationModel.getEmptyColor());
 		myColors.add(1, simulationModel.getInactiveColor());
 		myColors.add(2, simulationModel.getActiveColor());
