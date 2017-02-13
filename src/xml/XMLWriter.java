@@ -64,6 +64,7 @@ public class XMLWriter {
 		this.writeContent();
 	}
 
+	
 	private void addName(Element root) {
 		Element name = doc.createElement("name");
 		name.appendChild(doc.createTextNode(mySimulationModel.getName()));

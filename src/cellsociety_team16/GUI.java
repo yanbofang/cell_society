@@ -147,7 +147,9 @@ public class GUI {
 		// TODO see if still true
 		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources);
 		myRoot.setLeft(myLeftUI.draw());
-		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
+		Scene myScene = new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND);
+        myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + "default.css");
+		primaryStage.setScene(myScene);
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
