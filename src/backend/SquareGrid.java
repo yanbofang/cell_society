@@ -2,6 +2,12 @@ package backend;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * A specific class in charge of Square Grid.
+ * 
+ * @author chenxingyu
+ *
+ */
 
 public class SquareGrid extends Grid {
 	private int n;
@@ -22,7 +28,9 @@ public class SquareGrid extends Grid {
 		this.setBoundary(boundary);
 		this.fillContainer();
 	}
-
+	/**
+	 * A method to return the specific positional array appropriate for Square.
+	 */
 	@Override
 	public LocInfo getNeighborArrayX(int x, int y) {
 		return new LocInfo(POSXSQUARE);

@@ -1,5 +1,12 @@
 package backend;
 
+/**
+ * A specific class in charge of Triangle Grid.
+ * 
+ * @author chenxingyu
+ *
+ */
+
 public class TriangleGrid extends Grid{
 	public TriangleGrid(int n, int m, int neighborDefn) {
 		super(n,m);
@@ -16,7 +23,9 @@ public class TriangleGrid extends Grid{
 		this.fillContainer();
 	}
 
-	
+	/**
+	 * A method to return the specific positional array appropriate for Triangle.
+	 */
 	@Override
 	public LocInfo getNeighborArrayX(int x, int y) {
 		if ((x+y) % 2==1) return new LocInfo(POSXTRIANGLE); else return new LocInfo(POSXTRIANGLEREVERSE);
