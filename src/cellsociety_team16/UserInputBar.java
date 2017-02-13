@@ -56,21 +56,22 @@ public class UserInputBar {
 		myResources = resources;
 		slidersAvailable = new Slider[3];
 		slidersAvailable[EMPTY_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getEmptyPercentage());
-//		 slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
-//		 ChangeListener<Number>() {
-//		 @Override
-//		 public void changed(ObservableValue<? extends Number> observed,
-//		 Number prevValue, Number newValue) {
-//		 mySimulationModel.setEmptyPercentage(newValue.doubleValue());
-//		 }
-//		 });
+		slidersAvailable[EMPTY_INDEX].setDisable(true);
+		// slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
+		// ChangeListener<Number>() {
+		// @Override
+		// public void changed(ObservableValue<? extends Number> observed,
+		// Number prevValue, Number newValue) {
+		// mySimulationModel.setEmptyPercentage(newValue.doubleValue());
+		// }
+		// });
 		slidersAvailable[ACTIVE_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getInactivePercentage());
 		slidersAvailable[ACTIVE_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySimulationModel.setInactivePercentage(newValue.doubleValue());
-				slidersAvailable[EMPTY_INDEX].setValue(100-newValue.doubleValue()-slidersAvailable[SPECIAL_INDEX].getValue());
-			
+				updateSliders(slidersAvailable[ACTIVE_INDEX], slidersAvailable[SPECIAL_INDEX],
+						slidersAvailable[EMPTY_INDEX], newValue.doubleValue());
 			}
 		});
 		slidersAvailable[SPECIAL_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getActivePercentage());
@@ -78,7 +79,8 @@ public class UserInputBar {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySimulationModel.setActivePercentage(newValue.doubleValue());
-				slidersAvailable[EMPTY_INDEX].setValue(100-newValue.doubleValue()-slidersAvailable[ACTIVE_INDEX].getValue());
+				updateSliders(slidersAvailable[SPECIAL_INDEX], slidersAvailable[ACTIVE_INDEX],
+						slidersAvailable[EMPTY_INDEX], newValue.doubleValue());
 			}
 		});
 	}
@@ -168,7 +170,9 @@ public class UserInputBar {
 	 *            is false if the simulation is playing
 	 */
 	public void pause(boolean isPaused) {
-
+		for (int i = 1; i < slidersAvailable.length; i++) {
+			slidersAvailable[i].setDisable(isPaused);
+		}
 	}
 
 	private double simulationValue(int i) {
@@ -199,13 +203,13 @@ public class UserInputBar {
 
 		newSlider.setBlockIncrement(increment);
 		// will snap to integers
-		 newSlider.setSnapToTicks(true);
+		newSlider.setSnapToTicks(true);
 		return newSlider;
 	}
-	
-	private void updateSliders(Slider thisSlider, Slider otherActiveSlider, Slider emptySlider, double newValue){
-		emptySlider.setValue(100-newValue-otherActiveSlider.getValue());
-		if(emptySlider.getValue() <= 0){
+
+	private void updateSliders(Slider thisSlider, Slider otherActiveSlider, Slider emptySlider, double newValue) {
+		emptySlider.setValue(100 - newValue - otherActiveSlider.getValue());
+		if (emptySlider.getValue() <= 0) {
 			otherActiveSlider.setValue(100 - newValue);
 		}
 	}
