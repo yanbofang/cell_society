@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="Simulation">
-    <cellShape>Triangle</cellShape>
+    <cellShape>Hexagon</cellShape>
     <activeColor>Red</activeColor>
     <inactiveColor>Green</inactiveColor>
     <emptyColor>White</emptyColor>

@@ -33,63 +33,137 @@ public class XMLSimulation {
 		myDataValues = dataValues;
 	}
 
-	// provide alternate ways to access data values if needed
+	/**
+	 * Get the name of the simulation
+	 * 
+	 * @return
+	 */
 	public String getName() {
 		return myDataValues.get(DATA_FIELDS.get(0));
 	}
 
+	/**
+	 * Get the authors
+	 * 
+	 * @return
+	 */
 	public String getAuthor() {
 		return myDataValues.get(DATA_FIELDS.get(1));
 	}
 
+	/**
+	 * Get the rows of the simulation
+	 * 
+	 * @return
+	 */
 	public int getRows() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(2)));
 	}
 
+	/**
+	 * Get the columns of the simulation
+	 * 
+	 * @return
+	 */
 	public int getCols() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(3)));
 	}
 
+	/**
+	 * Get the active cell percentage
+	 * 
+	 * @return
+	 */
 	public double getActivePercentage() {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(4)));
 	}
 
+	/**
+	 * Get the inactive cell percentage
+	 * 
+	 * @return
+	 */
 	public double getInactivePercentage() {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(5)));
 	}
 
+	/**
+	 * Get the empty cell percentage
+	 * 
+	 * @return
+	 */
 	public double getEmptyPercentage() {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(6)));
 	}
 
+	/**
+	 * Get the fire probability
+	 * 
+	 * @return
+	 */
 	public double getFireProbability() {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(7)));
 	}
 
+	/**
+	 * Get the tree probability
+	 * 
+	 * @return
+	 */
 	public double getTreeProbability() {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(8)));
 	}
 
+	/**
+	 * Get the satisfactionRate
+	 * 
+	 * @return
+	 */
 	public double getSatisfactionRate() {
 		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(9)));
 	}
 
+	/**
+	 * Get the fish breed
+	 * 
+	 * @return
+	 */
 	public int getFishBreed() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(10)));
 	}
 
+	/**
+	 * Get the shark breed
+	 * 
+	 * @return
+	 */
 	public int getSharkBreed() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
 	}
 
+	/**
+	 * Get the sugar metabolism
+	 * 
+	 * @return
+	 */
 	public int getSugarMetabolism() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(12)));
 	}
 
+	/**
+	 * Get the sugar grow back rate
+	 * 
+	 * @return
+	 */
 	public int getSugarGrowBackRate() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(13)));
 	}
 
+	/**
+	 * Get the positions list
+	 * 
+	 * @return
+	 */
 	public List<Integer> getPositions() {
 		String ints = myDataValues.get(DATA_FIELDS.get(14));
 		ArrayList<Integer> pos = new ArrayList<Integer>();
@@ -108,6 +182,11 @@ public class XMLSimulation {
 		return pos;
 	}
 
+	/**
+	 * Get the amounts list
+	 * 
+	 * @return
+	 */
 	public List<Integer> getAmounts() {
 		String ints = myDataValues.get(DATA_FIELDS.get(15));
 		if (ints == null || ints.isEmpty())
@@ -131,38 +210,83 @@ public class XMLSimulation {
 		return amounts;
 	}
 
+	/**
+	 * Get the concentration gate for slime molds
+	 * 
+	 * @return
+	 */
 	public int getConcentrationGate() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(16)));
 	}
 
+	/**
+	 * Get the concentration amount for slime molds
+	 * 
+	 * @return
+	 */
 	public int getConcentrationAmount() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(17)));
 	}
 
+	/**
+	 * Get the cell shape for the simulation
+	 * 
+	 * @return
+	 */
 	public String getCellShape() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(0));
 	}
 
+	/**
+	 * Get the color for the active cells
+	 * 
+	 * @return
+	 */
 	public String getActiveColor() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(1));
 	}
 
+	/**
+	 * Get the color for the inactive cells
+	 * 
+	 * @return
+	 */
 	public String getInactiveColor() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(2));
 	}
 
+	/**
+	 * Get the color for the empty cells
+	 * 
+	 * @return
+	 */
 	public String getEmptyColor() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(3));
 	}
 
+	/**
+	 * Get the size of the cell
+	 * 
+	 * @return
+	 */
 	public int getCellSize() {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(4)));
 	}
 
+	/**
+	 * Get the number of neighbors
+	 * 
+	 * @return
+	 */
 	public int getNumOfNeighbors() {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(5)));
 	}
 
+	/**
+	 * Get the boolean for whether show or not show the grid lines
+	 * 
+	 * @return
+	 */
 	public boolean getGridLines() {
 		return Boolean.parseBoolean(myDataValues.get(CONFIGURATION_FIELDS.get(6)));
 
