@@ -42,7 +42,9 @@ public class UserInputBar {
 	// buttons
 	ComboBox<Shape> myShapeChooser;
 	private ArrayList<ColorPicker> myColorPickers;
-	private ArrayList<Slider> myValueSliders;
+	private static double SLIDER_MAX = 1;
+	private static double SLIDER_MIN = 0;
+	private static double SLIDER_INCREMENT = .1;
 	private CheckBox myGridLines;
 	private Slider[] slidersAvailable;
 	private double[] changingValues;
@@ -59,7 +61,7 @@ public class UserInputBar {
 		myPadding = pads;
 		
 		slidersAvailable = new Slider[3];
-		slidersAvailable[EMPTY_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getEmptyPercentage());
+		slidersAvailable[EMPTY_INDEX] = makeSlider(SLIDER_MIN, SLIDER_MAX, SLIDER_INCREMENT, mySimulationModel.getEmptyPercentage());
 		 slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
 		 ChangeListener<Number>() {
 		 @Override
@@ -69,7 +71,7 @@ public class UserInputBar {
 						slidersAvailable[ACTIVE_INDEX]);
 		 }
 		 });
-		slidersAvailable[ACTIVE_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getInactivePercentage());
+		slidersAvailable[ACTIVE_INDEX] = makeSlider(SLIDER_MIN, SLIDER_MAX, SLIDER_INCREMENT, mySimulationModel.getInactivePercentage());
 		slidersAvailable[ACTIVE_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
@@ -78,7 +80,7 @@ public class UserInputBar {
 						slidersAvailable[SPECIAL_INDEX]);
 			}
 		});
-		slidersAvailable[SPECIAL_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getActivePercentage());
+		slidersAvailable[SPECIAL_INDEX] = makeSlider(SLIDER_MIN, SLIDER_MAX, SLIDER_INCREMENT, mySimulationModel.getActivePercentage());
 		slidersAvailable[SPECIAL_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
@@ -198,20 +200,19 @@ public class UserInputBar {
 		newSlider.setValue(defaultValue);
 
 		newSlider.setBlockIncrement(increment);
-		// will snap to integers
-		newSlider.setSnapToTicks(true);
+
 		return newSlider;
 	}
 /**
- * Updates the values of the other sliders so the percentages are never over 100% total
+ * Updates the values of the other sliders so the percentages are never over 100% the maximum slider value
  * @param controller is the slider currently being moved, the others will update over it
  * @param moveFirst is the slider who will be modified first in response to the controller
  * @param moveSecond is the slider that will be modified second in order to account for the controller's change
  */
 	private void updateSliders(Slider controller, Slider moveFirst, Slider moveSecond) {
-		moveFirst.setValue(100 - controller.getValue() - moveSecond.getValue());
-		if (moveFirst.getValue() <= 0) {
-			moveSecond.setValue(100 - controller.getValue());
+		moveFirst.setValue(SLIDER_MAX - controller.getValue() - moveSecond.getValue());
+		if (moveFirst.getValue() <= SLIDER_MIN) {
+			moveSecond.setValue(SLIDER_MAX - controller.getValue());
 		}
 	}
 }
