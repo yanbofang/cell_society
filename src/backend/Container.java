@@ -59,6 +59,7 @@ public class Container {
 	}
 
 	public Cell getMyCell() {
+		if (myCell.size()==0 || myCell==null) return null;
 		return myCell.get(0);
 	}
 	
@@ -103,6 +104,7 @@ public class Container {
 		this.posY = posY;
 	}
 	public boolean contains(String s) {
+		if (myCell.size()==0) return false;
 		for (Cell a:this.myCell) {
 			if (a.is(s)) return true;
 		}
@@ -149,6 +151,14 @@ public class Container {
 			temp.add(myGrid.getContainer(xx*n+yy));
 		}
 		return temp;
+	}
+
+	public Grid getMyGrid() {
+		return myGrid;
+	}
+
+	public void setMyGrid(Grid myGrid) {
+		this.myGrid = myGrid;
 	}
 
 }

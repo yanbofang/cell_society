@@ -7,8 +7,8 @@
     <activePercentage>0.2</activePercentage>
 	<inactivePercentage>0.4</inactivePercentage>
 	<emptyPercentage>0.4</emptyPercentage>
-	<sugarMetabolism>3</sugarMetabolism>
-	<sugarGrowBackRate>3</sugarGrowBackRate>
+	<sugarMetabolism>1</sugarMetabolism>
+	<sugarGrowBackRate>0</sugarGrowBackRate>
 	<positions>0 0 1 0 1 2 1 0 0 0 1 1 0 2 0 1 0 0 0 0 1 0 1 0 2 2 2 0 2 0 1 1 0 1 0 1 0 0 1 0 0 0 1 0 1 1 2 0 2 0 1 2 0 1 0 2 0 1 0 0 2 0 1 0 2 0 1 0 2 0 1 1 0 1 0 1 0 2 2 0 0 0 1 0 1 0 1 2 0 0 2 1 0 1 0 2 0 0 1 0</positions>
-	<amounts>1 1 1 1 1 5 1 1 1 1 1 1 1 7 1 1 1 1 1 1 1 1 1 1 14 8 8 1 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 10 1 9 1 1 5 1 1 1 18 1 1 1 1 12 1 1 1 9 1 1 1 11 1 1 1 1 1 1 1 1 9 6 1 1 1 1 1 1 1 1 7 1 1 6 1 1 1 1 15 1 1 1 1</amounts>
+	<amounts>1 1 1 1 1 100 1 1 1 1 1 1 1 7 1 1 1 1 1 1 1 1 1 1 14 8 8 1 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 10 1 9 1 1 5 1 1 1 18 1 1 1 1 12 1 1 1 9 1 1 1 11 1 1 1 1 1 1 1 1 9 6 1 1 1 1 1 1 1 1 7 1 1 6 1 1 1 1 15 1 1 1 1</amounts>
 </data>
