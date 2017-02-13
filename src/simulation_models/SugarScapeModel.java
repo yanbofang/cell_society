@@ -44,15 +44,6 @@ public class SugarScapeModel extends SimulationModel {
 	}
 
 	/**
-	 * Return a list of the amounts of items at corresponding indices.
-	 * 
-	 * @return
-	 */
-	public List<Integer> getAmounts() {
-		return this.myAmounts;
-	}
-
-	/**
 	 * Set the int value of sugar metabolism
 	 * @param meta
 	 */

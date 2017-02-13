@@ -16,7 +16,6 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
 		Initializer init = new Initializer();
 		init.initSimulation(primaryStage);
 	}
