@@ -255,10 +255,9 @@ public class GUI {
 		Button newButton = new Button();
 		String label = myResources.getString(name);
 		if (label.matches(IMAGEFILE_SUFFIXES)) {
-			System.out.println("HEY LOOK HERE" + DEFAULT_RESOURCE_PACKAGE + label);
 			try {
 				newButton.setGraphic(
-						// TODO DEFAULT_RESOURCE_PACKAGE +
+						// TODO figure out why this does not work
 						new ImageView(new Image(getClass().getResourceAsStream(DEFAULT_RESOURCE_PACKAGE + label))));
 
 			} catch (NullPointerException e) {
@@ -276,7 +275,10 @@ public class GUI {
 		whenMouseOver(newButton);
 		return newButton;
 	}
-
+/**
+ * Adds a nice drop shadow when mouse hovers over the active button
+ * @param button
+ */
 	protected void whenMouseOver(Control button) {
 		DropShadow shadow = new DropShadow();
 		// Adding the shadow when the mouse cursor is on

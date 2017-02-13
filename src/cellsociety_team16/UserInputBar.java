@@ -1,13 +1,19 @@
 package cellsociety_team16;
 
 import cellsociety_team16.SquareGrid;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -29,7 +35,7 @@ public class UserInputBar {
 	Grid myGrid;
 	ImageView mySquareIcon, myTriangleIcon, myHexagonIcon;
 	private ResourceBundle myResources;
-	//not directly linking to GUI.myResources in case it gets updated
+	// not directly linking to GUI.myResources in case it gets updated
 
 	// buttons
 	ComboBox<Shape> myShapeChooser;
@@ -37,12 +43,18 @@ public class UserInputBar {
 	private ArrayList<Slider> myValueSliders;
 	private CheckBox myGridLines;
 	private Slider[] slidersAvailable;
-	
+	private double[] changingValues;
+
 	public UserInputBar(SimulationModel model, XMLManager manager, Grid grid, ResourceBundle resources) {
 		mySimulationModel = model;
 		myXMLManager = manager;
 		myGrid = grid;
 		myResources = resources;
+		slidersAvailable[0] = makeSlider(0,100,10,mySimulationModel.getEmptyPercentage());
+		
+		changingValues[0] = mySimulationModel.getEmptyPercentage();
+		changingValues[1] = mySimulationModel.getInactivePercentage();
+		changingValues[2] = mySimulationModel.getActivePercentage();
 
 	}
 
@@ -59,43 +71,45 @@ public class UserInputBar {
 		Group colorPickerGroup = new Group();
 		Group sliderGroup = new Group();
 		Random randomGenerator = new Random();
-		
-//
+
+		//
 		myShapeChooser = new ComboBox<Shape>();
 		myShapeChooser.getItems().addAll(
-				
-				);
-//myShapeChooser.setValue(myGrid.getGridType());
-//		myShapeChooser.valueProperty().addListener(new ChangeListener<String>() {
-//			@Override
-//			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
-//				myGrid = new ;
-//			}
-//		});
-//		myShapeChooser.setValue(mySimulationModel.getCellShape());
-	myColorPickers = new ArrayList<ColorPicker>();
-		 for (int i = 0; i < mySimulationModel.numberOfStates(); i++) {
-			 //may use default value from sim
-		 ColorPicker newPicker = makeColorPicker(i);
-		 newPicker.setValue(myGrid.getColor(i));
-		 myColorPickers.add(i, newPicker);
-		 colorPickerGroup.getChildren().add(newPicker);
 
-		
-		 // TODO figure out arraylist of varying values
-		 // myValueSliders.add(i, makeSlider(0, 100, ))
-		 }
+		);
+		// myShapeChooser.setValue(myGrid.getGridType());
+		// myShapeChooser.valueProperty().addListener(new
+		// ChangeListener<String>() {
+		// @Override
+		// public void changed(ObservableValue<? extends String> observed,
+		// String prevValue, String newValue) {
+		// myGrid = new ;
+		// }
+		// });
+		// myShapeChooser.setValue(mySimulationModel.getCellShape());
+		myColorPickers = new ArrayList<ColorPicker>();
+		for (int i = 0; i < mySimulationModel.numberOfStates(); i++) {
+			// may use default value from sim
+			ColorPicker newPicker = makeColorPicker(i);
+			newPicker.setValue(myGrid.getColor(i));
+			myColorPickers.add(i, newPicker);
+			colorPickerGroup.getChildren().add(newPicker);
 
-		 userInput.getChildren().addAll(myColorPickers);
+			// TODO figure out arraylist of varying values
+			// myValueSliders.add(i, makeSlider(0, 100, 10, changingValue[i]))
+		}
+
+		userInput.getChildren().addAll(myColorPickers);
 
 		myGridLines = new CheckBox(myResources.getString("GridLinesCheckBox"));
 		myGridLines.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
-			myGrid.setGridLines(new_val);
+				myGrid.setGridLines(new_val);
 			}
-	});
+		});
 
 		userInput.getChildren().add(myGridLines);
+		Slider emptySlider = makeSlider(0,100,10,50,event -> mySimulationModel.setEmptyPercentage(newValue));
 		return userInput;
 	}
 
@@ -143,22 +157,34 @@ public class UserInputBar {
 	 *            maximum value of the slider
 	 * @param increment
 	 *            is what each tick mark would be set up to divide the slider
-	 * @param changingValue
+	 * @param defaultValue
 	 *            is the value that it defaults to initially
 	 * @return
 	 */
-	private Slider makeSlider(double min, double max, double increment, double changingValue) {
+	private Slider makeSlider(double min, double max, double increment, double defaultValue,  Method function) {
 		Slider newSlider = new Slider();
 		// slider is based on percentages, hence the 0 to 10 and default value
 		// which then multiplies by duration
 		newSlider.setMin(min);
 		newSlider.setMax(max);
 		// Sets default slider location
-		newSlider.setValue(changingValue);
+		newSlider.setValue(defaultValue);
 
 		newSlider.setBlockIncrement(increment);
 		// will snap to integers
 		// mySpeedSlider.setSnapToTicks(true);
+		newSlider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
+f
+				//				try {
+//					function.invoke(newValue.doubleValue());
+//				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+		}
+		});
 		return newSlider;
 	}
 }
