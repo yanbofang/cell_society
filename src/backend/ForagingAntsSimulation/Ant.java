@@ -1,14 +1,19 @@
 package backend.ForagingAntsSimulation;
 
 import backend.Cell;
-
+/**
+ * This class is an extension of Cell. 
+ * This class is used for ForagingAnts Simulation. Ant's priority is 0.
+ * @author chenxingyu
+ *
+ */
 public class Ant extends Cell{
 	private int headDirection=0;
 	private boolean hasFood=false;
 	private int direction=0;
 	
 	public Ant() {
-		this.setPriority(1);
+		this.setPriority(0);
 		this.setIdentity("Ant");
 	}
 

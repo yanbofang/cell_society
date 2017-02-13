@@ -111,7 +111,7 @@ public class GUI {
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
 		// default is square grid
-		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid
