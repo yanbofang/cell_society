@@ -56,22 +56,22 @@ public class UserInputBar {
 		myResources = resources;
 		slidersAvailable = new Slider[3];
 		slidersAvailable[EMPTY_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getEmptyPercentage());
-		slidersAvailable[EMPTY_INDEX].setDisable(true);
-		// slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
-		// ChangeListener<Number>() {
-		// @Override
-		// public void changed(ObservableValue<? extends Number> observed,
-		// Number prevValue, Number newValue) {
-		// mySimulationModel.setEmptyPercentage(newValue.doubleValue());
-		// }
-		// });
+		 slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
+		 ChangeListener<Number>() {
+		 @Override
+		 public void changed(ObservableValue<? extends Number> observed,
+		 Number prevValue, Number newValue) {
+			 updateSliders(slidersAvailable[EMPTY_INDEX], slidersAvailable[SPECIAL_INDEX],
+						slidersAvailable[ACTIVE_INDEX]);
+		 }
+		 });
 		slidersAvailable[ACTIVE_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getInactivePercentage());
 		slidersAvailable[ACTIVE_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySimulationModel.setInactivePercentage(newValue.doubleValue());
-				updateSliders(slidersAvailable[ACTIVE_INDEX], slidersAvailable[SPECIAL_INDEX],
-						slidersAvailable[EMPTY_INDEX], newValue.doubleValue());
+				updateSliders(slidersAvailable[ACTIVE_INDEX], slidersAvailable[EMPTY_INDEX],
+						slidersAvailable[SPECIAL_INDEX]);
 			}
 		});
 		slidersAvailable[SPECIAL_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getActivePercentage());
@@ -79,8 +79,8 @@ public class UserInputBar {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySimulationModel.setActivePercentage(newValue.doubleValue());
-				updateSliders(slidersAvailable[SPECIAL_INDEX], slidersAvailable[ACTIVE_INDEX],
-						slidersAvailable[EMPTY_INDEX], newValue.doubleValue());
+				updateSliders(slidersAvailable[SPECIAL_INDEX], slidersAvailable[EMPTY_INDEX],
+						slidersAvailable[ACTIVE_INDEX]);
 			}
 		});
 	}
@@ -101,18 +101,18 @@ public class UserInputBar {
 
 		//
 		myShapeChooser = new ComboBox<Shape>();
-		myShapeChooser.getItems().addAll(
-
-		);
-		// myShapeChooser.setValue(myGrid.getGridType());
-		// myShapeChooser.valueProperty().addListener(new
-		// ChangeListener<String>() {
-		// @Override
-		// public void changed(ObservableValue<? extends String> observed,
-		// String prevValue, String newValue) {
-		// myGrid = new ;
-		// }
-		// });
+//		myShapeChooser.getItems().addAll(
+//
+//		);
+//		 myShapeChooser.setValue(myGrid.getGridType());
+//		 myShapeChooser.valueProperty().addListener(new
+//		 ChangeListener<String>() {
+//		 @Override
+//		 public void changed(ObservableValue<? extends String> observed,
+//		 String prevValue, String newValue) {
+//		
+//		 }
+//		 });
 		// myShapeChooser.setValue(mySimulationModel.getCellShape());
 		myColorPickers = new ArrayList<ColorPicker>();
 		for (int i = 0; i < mySimulationModel.numberOfStates(); i++) {
@@ -170,13 +170,9 @@ public class UserInputBar {
 	 *            is false if the simulation is playing
 	 */
 	public void pause(boolean isPaused) {
-		for (int i = 1; i < slidersAvailable.length; i++) {
+		for (int i = 0; i < slidersAvailable.length; i++) {
 			slidersAvailable[i].setDisable(isPaused);
 		}
-	}
-
-	private double simulationValue(int i) {
-		return 0;
 	}
 
 	/**
@@ -206,11 +202,16 @@ public class UserInputBar {
 		newSlider.setSnapToTicks(true);
 		return newSlider;
 	}
-
-	private void updateSliders(Slider thisSlider, Slider otherActiveSlider, Slider emptySlider, double newValue) {
-		emptySlider.setValue(100 - newValue - otherActiveSlider.getValue());
-		if (emptySlider.getValue() <= 0) {
-			otherActiveSlider.setValue(100 - newValue);
+/**
+ * Updates the values of the other sliders so the percentages are never over 100% total
+ * @param controller is the slider currently being moved, the others will update over it
+ * @param moveFirst is the slider who will be modified first in response to the controller
+ * @param moveSecond is the slider that will be modified second in order to account for the controller's change
+ */
+	private void updateSliders(Slider controller, Slider moveFirst, Slider moveSecond) {
+		moveFirst.setValue(100 - controller.getValue() - moveSecond.getValue());
+		if (moveFirst.getValue() <= 0) {
+			moveSecond.setValue(100 - controller.getValue());
 		}
 	}
 }
