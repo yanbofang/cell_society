@@ -10,7 +10,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import simulation_models.SimulationModel;
 import xml.XMLSimulation;
@@ -262,8 +261,10 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid of the mySimulationType
 	 */
-	public Node resetGrid(int gridExtents) {
+	public Node resetGrid(int gridExtents, SimulationModel simmod) {
+		mySimulationModel = simmod;
 		mySimulationModel.setRandomPositions();
+		System.out.println("!!!!!!!!!"+ mySimulationModel.getPositions());
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
