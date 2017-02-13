@@ -59,6 +59,8 @@ public class SugarScapeModel extends SimulationModel {
 		this.sugarGrowBackRate = rate;
 	}
 
+
+	
 	@Override
 	/**
 	 * Return the number of states for this simulation

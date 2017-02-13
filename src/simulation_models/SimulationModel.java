@@ -299,15 +299,14 @@ public abstract class SimulationModel {
 	 * @return
 	 */
 	public List<Integer> setAmounts(List<Integer> amounts) {
-		//if amounts is empty, initialize the list to 1
+		// if amounts is empty, initialize the list to 1
 		if (amounts == null || amounts.isEmpty()) {
 			myAmounts = new ArrayList<Integer>();
-			for (int i = 0; i < rows*cols; i++)
+			for (int i = 0; i < rows * cols; i++)
 				myAmounts.add(1);
 		} else {
 			this.myAmounts = amounts;
 		}
-		System.out.println(myAmounts);
 		return myAmounts;
 	}
 

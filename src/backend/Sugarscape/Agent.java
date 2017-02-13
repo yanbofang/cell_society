@@ -11,13 +11,13 @@ public class Agent extends Cell {
 	public Agent() {
 		this.setSugarAmount(0);
 		this.sugarMetabolism=defaulSugarMetabolism;
-		this.setIdentity("Patch");
+		this.setIdentity("Agent");
 		this.setPriority(1);
 	}
 	
 	
 	public Agent(int sugarAmount, int sugarMetabolism) {
-		super();
+		this();
 		this.setSugarAmount(sugarAmount);
 		this.sugarMetabolism = sugarMetabolism;
 	}
@@ -38,5 +38,9 @@ public class Agent extends Cell {
 
 	public void setSugarAmount(int sugarAmount) {
 		this.sugarAmount = sugarAmount;
+	}
+	
+	public String toString() {
+		return "2";
 	}
 }
