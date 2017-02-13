@@ -287,8 +287,22 @@ public abstract class Grid {
 	 */
 	abstract Shape drawShape(double xLoc, double yLoc, double cellSize, int rotateXAngle);
 
-	public String getGridType() {
-		return myShape;
+	public void setGridType(String shapeName) {
+//		try {
+//		Class<?> gridType = Class.forName(shapeName + "Grid");
+//		gridType.getDeclaredConstructor(SimulationModel.class).newInstance(mySimulationModel);
+////		} catch (Exception e) {
+////			setGridType("Square");
+////		}
+	}
+
+	public void getGridType() {
+//	try{
+//		Class<?> gridType = Class.forName(mySimulationModel.getCellShape() + "Grid");
+//		return (Grid) gridType.getDeclaredConstructor(Grid.class).newInstance(mySimulationModel);
+//	} catch (Exception e) {
+//		return null;
+//	}
 	}
 	// abstract public List getCellPositions();
 	// public Grid setGridType(){
