@@ -58,8 +58,14 @@ public class XMLManager {
 			Class<?> model = Class.forName(MODEL_PACKAGE + xml.getName() + "Model");
 			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
 		} catch (Exception e) {
-			return null;
+			Class<?> model;
+			try {
+				model = Class.forName(MODEL_PACKAGE + xml.getName().substring(0, xml.getName().length() - 3) + "Model");
+			} catch (Exception ee) {
+				return null;
+			}
 		}
+		return null;
 	}
 
 	/**

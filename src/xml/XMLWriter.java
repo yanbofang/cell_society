@@ -46,25 +46,28 @@ public class XMLWriter {
 
 	/**
 	 * Write the info in the SimulationModel to a XML file
+	 * 
 	 * @param SimulationModel
 	 */
 	public void writeToXML(SimulationModel model) {
 		mySimulationModel = model;
 
 		Element root = doc.createElement("data");
-		Attr attrType = doc.createAttribute("Simulation");
+		Attr attrType = doc.createAttribute("type");
 		root.setAttributeNode(attrType);
+		attrType.setNodeValue("Simulation");
 		doc.appendChild(root);
 
 		this.addName(root);
 		this.addAuthor(root);
 		this.addRowsAndCols(root);
 		this.addPercentages(root);
+		this.addPositions(root);
+		this.addAmounts(root);
 
 		this.writeContent();
 	}
 
-	
 	private void addName(Element root) {
 		Element name = doc.createElement("name");
 		name.appendChild(doc.createTextNode(mySimulationModel.getName()));
@@ -94,8 +97,33 @@ public class XMLWriter {
 		inactivePercentage.appendChild(doc.createTextNode(Double.toString(mySimulationModel.getInactivePercentage())));
 		root.appendChild(inactivePercentage);
 		Element emptyPercentage = doc.createElement("emptyPercentage");
-		inactivePercentage.appendChild(doc.createTextNode(Double.toString(mySimulationModel.getEmptyPercentage())));
+		System.out.println(mySimulationModel.getEmptyPercentage());
+		emptyPercentage.appendChild(doc.createTextNode(Double.toString(mySimulationModel.getEmptyPercentage())));
 		root.appendChild(emptyPercentage);
+	}
+
+	private void addPositions(Element root) {
+		Element positions = doc.createElement("positions");
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < mySimulationModel.getPositions().size(); i++) {
+			sb.append(mySimulationModel.getPositions().get(i));
+			sb.append(" ");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		positions.appendChild(doc.createTextNode(sb.toString()));
+		root.appendChild(positions);
+	}
+
+	private void addAmounts(Element root) {
+		Element amounts = doc.createElement("amounts");
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < mySimulationModel.getAmounts().size(); i++) {
+			sb.append(mySimulationModel.getAmounts().get(i));
+			sb.append(" ");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		amounts.appendChild(doc.createTextNode(sb.toString()));
+		root.appendChild(amounts);
 	}
 
 	private void writeContent() {
@@ -104,7 +132,7 @@ public class XMLWriter {
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(doc);
 			StreamResult result = new StreamResult(
-					new File(XML_DIRECTORY + mySimulationModel.getName() + "UserCreated.xml"));
+					new File(XML_DIRECTORY + mySimulationModel.getName() + "NEW.xml"));
 			transformer.transform(source, result);
 
 			// Testing

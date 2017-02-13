@@ -10,6 +10,7 @@ import xml.XMLSimulation;
  */
 public class WaTorModel extends SimulationModel {
 
+	
 	private int fishBreed;
 	private int sharkBreed;
 	private int numberOfStates = 3;
