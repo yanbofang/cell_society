@@ -54,6 +54,7 @@ public abstract class Grid {
 		myColors.add(0, simulationModel.getEmptyColor());
 		myColors.add(1, simulationModel.getInactiveColor());
 		myColors.add(2, simulationModel.getActiveColor());
+		this.setGridLines(mySimulationModel.getGridLines());
 	}
 
 	/**
@@ -198,7 +199,7 @@ public abstract class Grid {
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
 			int rowLoc = row_iter * cellSize;
-			if (rowLoc % 2 == 0) {
+			if (row_iter % 2 == 0) {
 				onOffset = 1;
 			} else {
 				onOffset = 0;
