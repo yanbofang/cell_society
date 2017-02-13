@@ -16,6 +16,7 @@ import javafx.scene.transform.Rotate;
  *
  */
 public class HexagonGrid extends Grid {
+	public static final String myShape = "hexagon";
 	private int HEXAGON_ANGLE;
 	private int sideCount = 6;
 	private static double TRANSLATION = .5;

@@ -14,6 +14,7 @@ public class SquareGrid extends Grid {
 	 * @param simulationModel
 	 * @param simulation
 	 */
+	public static final String myShape = "square";
 	private static double TRANSLATION = 0;
 	private static boolean MANIPULATED;
 
@@ -21,7 +22,7 @@ public class SquareGrid extends Grid {
 	public SquareGrid(SimulationModel simulationModel, Simulation simulation) {
 		super(simulationModel, simulation, TRANSLATION, MANIPULATED);
 	}
-
+	@Override
 	Shape drawShape(double xLoc, double yLoc, double cellSize, int rotationAngle) {
 		// makes a square
 		// double sideSize = Math.min(xSize, ySize);
