@@ -18,13 +18,13 @@ public class XMLSimulation {
 	// field names expected to appear in data file holding values for this
 	// object
 	// simple way to create an immutable list
-	public static final List<String> DATA_FIELDS = Arrays
-			.asList(new String[] { "name", "author", "rows", "cols", "activePercentage", "inactivePercentage",
-					"emptyPercentage", "fireProbability", "treeProbability", "satisfactionRate", "fishBreed",
-					"sharkBreed", "sugarMetabolism", "sugarGrowBackRate", "positions", "amounts" });
+	public static final List<String> DATA_FIELDS = Arrays.asList(new String[] { "name", "author", "rows", "cols",
+			"activePercentage", "inactivePercentage", "emptyPercentage", "fireProbability", "treeProbability",
+			"satisfactionRate", "fishBreed", "sharkBreed", "sugarMetabolism", "sugarGrowBackRate", "positions",
+			"amounts", "concentrationGate", "concentrationAmount" });
 
-	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(
-			new String[] { "cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize", "numOfNeighbors", "gridLines" });
+	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[] { "cellShape", "activeColor",
+			"inactiveColor", "emptyColor", "cellSize", "numOfNeighbors", "gridLines" });
 
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
@@ -110,7 +110,8 @@ public class XMLSimulation {
 
 	public List<Integer> getAmounts() {
 		String ints = myDataValues.get(DATA_FIELDS.get(15));
-		if (ints == null || ints.isEmpty()) return new ArrayList<Integer>();
+		if (ints == null || ints.isEmpty())
+			return new ArrayList<Integer>();
 		ArrayList<Integer> amounts = new ArrayList<Integer>();
 		for (int i = 0; i < ints.length() - 1; i++) {
 			if (ints.substring(i, i + 1).equals(" "))
@@ -122,12 +123,20 @@ public class XMLSimulation {
 			}
 			amounts.add(Integer.parseInt(sb.toString()));
 		}
-		amounts.add(Integer.parseInt(ints.substring(ints.length()-1)));
+		amounts.add(Integer.parseInt(ints.substring(ints.length() - 1)));
 
 		if (amounts.size() > this.getCols() * this.getRows()) {
 			throw new XMLException("Cell locaations are outside the bounds of the grid's size");
 		}
 		return amounts;
+	}
+
+	public int getConcentrationGate() {
+		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(16)));
+	}
+
+	public int getConcentrationAmount() {
+		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(17)));
 	}
 
 	public String getCellShape() {
@@ -153,10 +162,10 @@ public class XMLSimulation {
 	public int getNumOfNeighbors() {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(5)));
 	}
-	
-	public boolean getGridLines(){
+
+	public boolean getGridLines() {
 		return Boolean.parseBoolean(myDataValues.get(CONFIGURATION_FIELDS.get(6)));
-				
+
 	}
 
 	@Override
