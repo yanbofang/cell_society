@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -48,12 +49,15 @@ public class UserInputBar {
 	private static int EMPTY_INDEX = 0;
 	private static int ACTIVE_INDEX = 1;
 	private static int SPECIAL_INDEX = 2;
+	private int myPadding;
 
-	public UserInputBar(SimulationModel model, XMLManager manager, Grid grid, ResourceBundle resources) {
+	public UserInputBar(SimulationModel model, XMLManager manager, Grid grid, ResourceBundle resources, int pads) {
 		mySimulationModel = model;
 		myXMLManager = manager;
 		myGrid = grid;
 		myResources = resources;
+		myPadding = pads;
+		
 		slidersAvailable = new Slider[3];
 		slidersAvailable[EMPTY_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getEmptyPercentage());
 		 slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
@@ -93,10 +97,9 @@ public class UserInputBar {
 	 */
 	// TODO throws NoGridException
 	protected Node draw() {
-
 		VBox userInput = new VBox();
-		Group colorPickerGroup = new Group();
-		Group sliderGroup = new Group();
+		
+
 		Random randomGenerator = new Random();
 
 		//

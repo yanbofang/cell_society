@@ -148,7 +148,7 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources);
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT/padding);
 		myRoot.setLeft(myLeftUI.draw());
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
@@ -179,6 +179,7 @@ public class GUI {
 	 */
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
+		buttonLine.setPadding(new Insets(100,100,100,100));
 		buttonLine.setAlignment(Pos.CENTER);
 		VBox simulationModifiers = new VBox();
 		simulationModifiers.setAlignment(Pos.CENTER);
