@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
+import simulation_models.SimulationModel;
 import xml.XMLManager;
 
 public class UserInputBar {

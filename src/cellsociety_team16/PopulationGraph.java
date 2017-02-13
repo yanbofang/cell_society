@@ -3,6 +3,7 @@ package cellsociety_team16;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import simulation_models.SimulationModel;
 
 /**
  * Class for the Graph of Populations

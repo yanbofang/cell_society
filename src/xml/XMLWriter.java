@@ -16,7 +16,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import cellsociety_team16.SimulationModel;
+import simulation_models.SimulationModel;
 
 /**
  * Class to write a XML file from the info in the SimulationModel
@@ -111,10 +111,8 @@ public class XMLWriter {
 			transformer.transform(source, consoleResult);
 
 		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
 			throw new XMLException("Configuration Error When Writing XML File");
 		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
 			throw new XMLException("Exception Occured During the Transformation Process of Writing XML File");
 		}
 

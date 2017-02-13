@@ -5,13 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 import backend.Simulation;
-import cellsociety_team16.SimulationModel;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import simulation_models.SimulationModel;
+import xml.XMLSimulation;
 
 /**
  * Abstract class that will create a new grid in the visualization window
@@ -48,6 +49,11 @@ public abstract class Grid {
 		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
+
+		System.out.println(simulationModel.getName());
+		myColors.add(0, simulationModel.getEmptyColor());
+		myColors.add(1, simulationModel.getInactiveColor());
+		myColors.add(2, simulationModel.getActiveColor());
 	}
 
 	/**
@@ -255,8 +261,10 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid of the mySimulationType
 	 */
-	public Node resetGrid(int gridExtents) {
+	public Node resetGrid(int gridExtents, SimulationModel simmod) {
+		mySimulationModel = simmod;
 		mySimulationModel.setRandomPositions();
+		System.out.println("!!!!!!!!!"+ mySimulationModel.getPositions());
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
