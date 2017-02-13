@@ -4,6 +4,7 @@ import backend.Simulation;
 import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
+import simulation_models.SimulationModel;
 
 public class TriangleGrid extends Grid {
 	public static final String myShape = "triangle";

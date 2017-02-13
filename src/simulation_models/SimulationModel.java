@@ -1,4 +1,4 @@
-package cellsociety_team16;
+package simulation_models;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public abstract class SimulationModel {
 	private List<String> availableColorsStrings = new ArrayList<String>();
 	private List<Color> myAvailableColors;
 	private List<Color> myColors;
+	private List<Integer> myAmounts;
 	private String cellShape;
 	private String activeColor;
 	private String inactiveColor;
@@ -59,6 +60,7 @@ public abstract class SimulationModel {
 		myAvailableColors = this.setColorsAvailable();
 		cellSize = simulation.getCellSize();
 		numOfNeighbors = simulation.getNumOfNeighbors();
+		myAmounts = this.setAmounts(simulation.getAmounts());
 		myColors = this.setColors();
 	}
 
@@ -79,15 +81,16 @@ public abstract class SimulationModel {
 	public int getRows() {
 		return this.rows;
 	}
-	
+
 	/**
 	 * Set the number of rows
+	 * 
 	 * @param rows
 	 */
-	public void setRows(int rows){
+	public void setRows(int rows) {
 		this.rows = rows;
 	}
-	
+
 	/**
 	 * Get the number of columns
 	 * 
@@ -96,25 +99,28 @@ public abstract class SimulationModel {
 	public int getCols() {
 		return this.cols;
 	}
-	
+
 	/**
 	 * Set the number of columns
+	 * 
 	 * @param cols
 	 */
-	public void setCols(int cols){
+	public void setCols(int cols) {
 		this.cols = cols;
 	}
 
 	/**
 	 * Get the shape of the cell
+	 * 
 	 * @return
 	 */
 	public String getCellShape() {
 		return this.cellShape;
 	}
-	
+
 	/**
 	 * Set the shape of the cell
+	 * 
 	 * @param shape
 	 */
 	public void setCellShape(String shape) {
@@ -150,37 +156,39 @@ public abstract class SimulationModel {
 
 	/**
 	 * Return the size of the cell
+	 * 
 	 * @return
 	 */
 	public int getCellSize() {
 		return this.cellSize;
 	}
-	
+
 	/**
 	 * Set the size of the cell
+	 * 
 	 * @param size
 	 */
-	public void setCellSize(int size){
+	public void setCellSize(int size) {
 		this.cellSize = size;
 	}
-	
 
 	/**
 	 * Return the number of neighbors for a cell
+	 * 
 	 * @return
 	 */
-	public int getNumOfNeighbors(){
+	public int getNumOfNeighbors() {
 		return this.numOfNeighbors;
 	}
-	
+
 	/**
 	 * Set how many neighbors a cell has
+	 * 
 	 * @param neighbors
 	 */
-	public void setNumOfNeighbors(int neighbors){
+	public void setNumOfNeighbors(int neighbors) {
 		this.numOfNeighbors = neighbors;
 	}
-	
 
 	/**
 	 * Return an arraylist of mymyCounts of 3 types of cells, index 0 is the
@@ -276,6 +284,31 @@ public abstract class SimulationModel {
 	}
 
 	/**
+	 * Return a list of the amounts of items at corresponding indices.
+	 * 
+	 * @return
+	 */
+	public List<Integer> getAmounts() {
+		return this.myAmounts;
+	}
+
+	/**
+	 * Set the amounts and return it
+	 * 
+	 * @param amounts
+	 * @return
+	 */
+	public List<Integer> setAmounts(List<Integer> amounts) {
+		if (amounts.isEmpty()) {
+			for (int i = 0; i < myPositions.size(); i++)
+				myAmounts.add(1);
+		} else {
+			this.myAmounts = amounts;
+		}
+		return amounts;
+	}
+
+	/**
 	 * Get the color of each cell in the grid
 	 * 
 	 * @return
@@ -328,7 +361,7 @@ public abstract class SimulationModel {
 			}
 		}
 	}
-	
+
 	private List<Color> setColorsAvailable() {
 		myAvailableColors = new ArrayList<Color>();
 		try {

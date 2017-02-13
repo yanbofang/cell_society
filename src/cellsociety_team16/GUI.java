@@ -42,6 +42,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
+import simulation_models.SimulationModel;
 import xml.XMLManager;
 
 /**

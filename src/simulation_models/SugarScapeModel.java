@@ -1,4 +1,4 @@
-package cellsociety_team16;
+package simulation_models;
 
 import java.util.List;
 
@@ -41,15 +41,6 @@ public class SugarScapeModel extends SimulationModel {
 	 */
 	public int getSugarGrowBackRate() {
 		return this.sugarGrowBackRate;
-	}
-
-	/**
-	 * Return a list of the amounts of items at corresponding indices.
-	 * 
-	 * @return
-	 */
-	public List<Integer> getAmounts() {
-		return this.myAmounts;
 	}
 
 	/**
