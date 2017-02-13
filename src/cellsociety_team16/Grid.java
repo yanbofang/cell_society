@@ -11,9 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
-import xml.XMLSimulation;
 
 /**
  * Abstract class that will create a new grid in the visualization window

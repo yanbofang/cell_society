@@ -57,6 +57,8 @@ public class GUI {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	public static final Color BACKGROUND = Color.ALICEBLUE;
 	public static final double MAX_SPEED = 1000; // in ms
+	public static final double MINIMUM_SPEED_MULTIPLIER = .1;
+	public static final double MAXIMUM_SPEED_MULTIPLIER = 2;
 
 	// files the user can load
 	// TODO lol need to change
@@ -71,7 +73,7 @@ public class GUI {
 	// current simulation type
 	private String mySimulationType;
 	// used for initializing and updating grid
-	private int gridSideSize, gridXSize, gridYSize;
+	private int gridSideSize;
 	private Grid myGrid;
 	// get information on cell
 	private Simulation mySimulation;
@@ -134,7 +136,7 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid);
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources);
 		myRoot.setLeft(myLeftUI.draw());
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
@@ -195,19 +197,23 @@ public class GUI {
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
-		
+
 		Initializer init = new Initializer();
 		myNewSimulationButton = makeButton("NewSimulationCommand", event -> {
 			try {
 				init.newSimulation();
 			} catch (Exception e) {
 				Alert a = new Alert(AlertType.ERROR);
-                a.setContentText(String.format("Couldn't start a new simulation"));
-                a.showAndWait();
+				a.setContentText(String.format("Couldn't start a new simulation"));
+				a.showAndWait();
 			}
 		});
 
-		mySpeedSlider = makeSlider(.1, 2, mySpeedMultiplier, .1);
+		mySpeedSlider = new Slider();
+		
+		mySpeedSlider.setMin(MINIMUM_SPEED_MULTIPLIER);
+		mySpeedSlider.setMax(MAXIMUM_SPEED_MULTIPLIER);
+		mySpeedSlider.setValue(mySpeedMultiplier);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
@@ -224,24 +230,6 @@ public class GUI {
 		buttonLine.getChildren().add(myNewSimulationButton);
 
 		return buttonLine;
-	}
-
-	/**
-	 * Makes a slider accessible by any class in the front end
-	 */
-	protected Slider makeSlider(double min, double max, double increment, double changingValue) {
-		Slider newSlider = new Slider();
-		// slider is based on percentages, hence the 0 to 10 and default value
-		// which then multiplies by duration
-		newSlider.setMin(min);
-		newSlider.setMax(max);
-		// Sets default slider location
-		newSlider.setValue(changingValue);
-
-		newSlider.setBlockIncrement(increment);
-		// will snap to integers
-		// mySpeedSlider.setSnapToTicks(true);
-		return newSlider;
 	}
 
 	/**
@@ -323,7 +311,7 @@ public class GUI {
 	private void play() {
 		myStepButton.setDisable(isPaused);
 		myResetButton.setDisable(isPaused);
-
+		myLeftUI.pause(isPaused);
 		isPaused = !isPaused;
 		if (isPaused) {
 			myPlayButton.setText(myResources.getString("PlayCommand"));
