@@ -289,20 +289,23 @@ public abstract class Grid {
 
 	public void setGridType(String shapeName) {
 //		try {
-//		Class<?> gridType = Class.forName(shapeName + "Grid");
-//		gridType.getDeclaredConstructor(SimulationModel.class).newInstance(mySimulationModel);
-////		} catch (Exception e) {
-////			setGridType("Square");
-////		}
+//			Class<?> gridType = Class.forName(GUI.GRID_PACKAGE + shapeName + "Grid");
+//			gridType.getDeclaredConstructor(SimulationModel.class, Simulation.class)
+//					.newInstance(mySimulationModel, mySimulation);
+//		} catch (Exception e) {
+//			setGridType("Square");
+//		}
 	}
 
 	public void getGridType() {
-//	try{
-//		Class<?> gridType = Class.forName(mySimulationModel.getCellShape() + "Grid");
-//		return (Grid) gridType.getDeclaredConstructor(Grid.class).newInstance(mySimulationModel);
-//	} catch (Exception e) {
-//		return null;
-//	}
+		// try{
+		// Class<?> gridType = Class.forName(mySimulationModel.getCellShape() +
+		// "Grid");
+		// return (Grid)
+		// gridType.getDeclaredConstructor(Grid.class).newInstance(mySimulationModel);
+		// } catch (Exception e) {
+		// return null;
+		// }
 	}
 	// abstract public List getCellPositions();
 	// public Grid setGridType(){

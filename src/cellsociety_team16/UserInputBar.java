@@ -112,6 +112,7 @@ public class UserInputBar {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				myGrid.setGridType(newValue);
+				//mySimulationModel.setCellShape(newValue);
 			}
 		});
 		myShapeChooser.setValue(mySimulationModel.getCellShape());

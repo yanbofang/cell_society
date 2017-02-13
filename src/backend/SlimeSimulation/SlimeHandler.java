@@ -47,12 +47,12 @@ public class SlimeHandler extends Handler {
 			if (curContainer != maxContainer) {
 				curContainer.setNext(new EmptyCell());
 				maxContainer.setNext(curContainer.getMyCell());
-				System.out.println(maxContainer.getPosX() + " " + maxContainer.getPosY() + " "
-						+ maxContainer.getNext().numCellContain());
+//				System.out.println(maxContainer.getPosX() + " " + maxContainer.getPosY() + " "
+//						+ maxContainer.getNext().numCellContain());
 			} else {
 				curContainer.setNext(curContainer.getMyCell());
-				System.out.println(maxContainer.getPosX() + " " + maxContainer.getPosY() + " "
-						+ maxContainer.getNext().numCellContain());
+//				System.out.println(maxContainer.getPosX() + " " + maxContainer.getPosY() + " "
+//						+ maxContainer.getNext().numCellContain());
 			}
 			if (curContainer.getPheromone(FOOD) > this.PheromoneDiffusionGate) {
 				ArrayList<Container> neighborAdd = (ArrayList<Container>) curContainer.getNeighborFromCloserToFurther();
