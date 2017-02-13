@@ -111,10 +111,8 @@ public class XMLWriter {
 			transformer.transform(source, consoleResult);
 
 		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
 			throw new XMLException("Configuration Error When Writing XML File");
 		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
 			throw new XMLException("Exception Occured During the Transformation Process of Writing XML File");
 		}
 

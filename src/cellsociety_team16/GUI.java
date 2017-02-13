@@ -64,10 +64,11 @@ public class GUI {
 	public static final String XML_SEGREGATION = "Segregation";
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
 	public static final String XML_WATOR_WORLD = "WaTor";
+	public static final String XML_SUGAR_SCAPE = "SugarScape";
 
 	// list of all of the xml files, user could potentially load new ones
 	private ObservableList<String> mySimulationTypes = FXCollections.observableArrayList(XML_GAME_OF_LIFE,
-			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD);
+			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD, XML_SUGAR_SCAPE);
 	// current simulation type
 	private String mySimulationType;
 	// used for initializing and updating grid

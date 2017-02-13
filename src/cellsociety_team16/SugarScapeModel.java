@@ -35,7 +35,7 @@ public class SugarScapeModel extends SimulationModel {
 	}
 
 	/**
-	 * Get the int value of surgar grow-back rate
+	 * Get the int value of sugar grow-back rate
 	 * 
 	 * @return
 	 */
@@ -52,9 +52,27 @@ public class SugarScapeModel extends SimulationModel {
 		return this.myAmounts;
 	}
 
+	/**
+	 * Set the int value of sugar metabolism
+	 * @param meta
+	 */
+	public void setSugarMetabolism(int meta){
+		this.sugarMetabolism = meta;
+	}
+	
+	/**
+	 * Set the sugar grow-back rate
+	 * @param rate
+	 */
+	public void setSugarGrowBackRate(int rate){
+		this.sugarGrowBackRate = rate;
+	}
+
 	@Override
+	/**
+	 * Return the number of states for this simulation
+	 */
 	public int numberOfStates() {
-		// TODO Auto-generated method stub
 		return this.numberOfStates;
 	}
 
