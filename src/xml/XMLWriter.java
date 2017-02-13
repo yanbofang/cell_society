@@ -16,7 +16,7 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import cellsociety_team16.SimulationModel;
+import simulation_models.SimulationModel;
 
 /**
  * Class to write a XML file from the info in the SimulationModel

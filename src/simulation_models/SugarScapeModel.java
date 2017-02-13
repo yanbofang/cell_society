@@ -1,4 +1,4 @@
-package cellsociety_team16;
+package simulation_models;
 
 import java.util.List;
 

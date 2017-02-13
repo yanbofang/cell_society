@@ -10,7 +10,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
-
+import simulation_models.SimulationModel;
 import cellsociety_team16.*;
 
 /**
@@ -27,6 +27,7 @@ public class XMLManager {
 	public static final String DATA_FILE_EXTENSION = "*.xml";
 	public static final String dir = System.getProperty("user.dir");
 	public static final File CONFIGURATION_FILE = new File(dir + "/data/Configuration.xml");
+	public static final String MODEL_PACKAGE = "simulation_models.";
 
 	private FileChooser myChooser = makeChooser(DATA_FILE_EXTENSION);
 	private File dataFile;
@@ -54,7 +55,7 @@ public class XMLManager {
 	public SimulationModel getSimulationModel() {
 		XMLSimulation xml = this.getSimulation();
 		try {
-			Class<?> model = Class.forName("cellsociety_team16." + xml.getName() + "Model");
+			Class<?> model = Class.forName(MODEL_PACKAGE + xml.getName() + "Model");
 			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
 		} catch (Exception e) {
 			return null;

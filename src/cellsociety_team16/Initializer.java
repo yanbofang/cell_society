@@ -1,6 +1,7 @@
 package cellsociety_team16;
 
 import javafx.stage.Stage;
+import simulation_models.SimulationModel;
 import xml.XMLManager;
 import xml.XMLWriter;
 

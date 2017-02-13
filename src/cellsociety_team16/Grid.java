@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import backend.Simulation;
-import cellsociety_team16.SimulationModel;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -13,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
+import simulation_models.SimulationModel;
 import xml.XMLSimulation;
 
 /**

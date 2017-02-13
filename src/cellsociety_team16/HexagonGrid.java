@@ -8,6 +8,7 @@ import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Shape;
 import javafx.scene.transform.Rotate;
+import simulation_models.SimulationModel;
 
 /**
  * Draws a grid of hexagons
