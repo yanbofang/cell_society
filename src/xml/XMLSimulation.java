@@ -15,6 +15,16 @@ public class XMLSimulation {
 	// name in data file that will indicate it represents data for this type of
 	// object
 	public static final String DATA_TYPE = "Simulation";
+
+	// DEFAULT VALUES IN CASE OF VALUES NOT GIVEN
+	public static final double DEFAULT_FIRE_PROBABILITY = 0.3;
+	public static final double DEFAULT_TREE_PROBABILITY = 0;
+	public static final double DEFAULT_SATISFACTION_RATE = 0.5;
+	public static final int DEFAULT_SUGAR_METABOLISM = 1;
+	public static final int DEFAULT_SUGAR_GROW_BACK_RATE = 1;
+	public static final int DEFAULT_FISH_BREED = 3;
+	public static final int DEFAULT_SHARK_BREED = 3;
+
 	// field names expected to appear in data file holding values for this
 	// object
 	// simple way to create an immutable list
@@ -102,7 +112,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public double getFireProbability() {
-		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(7)));
+		return myDataValues.get(DATA_FIELDS.get(7)).equals("") ? DEFAULT_FIRE_PROBABILITY
+				: Double.parseDouble(myDataValues.get(DATA_FIELDS.get(7)));
 	}
 
 	/**
@@ -111,7 +122,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public double getTreeProbability() {
-		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(8)));
+		return myDataValues.get(DATA_FIELDS.get(8)).equals("") ? DEFAULT_TREE_PROBABILITY
+				: Double.parseDouble(myDataValues.get(DATA_FIELDS.get(8)));
 	}
 
 	/**
@@ -120,7 +132,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public double getSatisfactionRate() {
-		return Double.parseDouble(myDataValues.get(DATA_FIELDS.get(9)));
+		return myDataValues.get(DATA_FIELDS.get(9)).equals("") ? DEFAULT_SATISFACTION_RATE
+				: Double.parseDouble(myDataValues.get(DATA_FIELDS.get(9)));
 	}
 
 	/**
@@ -129,7 +142,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public int getFishBreed() {
-		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(10)));
+		return myDataValues.get(DATA_FIELDS.get(10)).equals("") ? DEFAULT_FISH_BREED
+				: Integer.parseInt(myDataValues.get(DATA_FIELDS.get(10)));
 	}
 
 	/**
@@ -138,7 +152,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public int getSharkBreed() {
-		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
+		return myDataValues.get(DATA_FIELDS.get(11)).equals("") ? DEFAULT_SHARK_BREED
+				: Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
 	}
 
 	/**
@@ -147,7 +162,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public int getSugarMetabolism() {
-		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(12)));
+		return myDataValues.get(DATA_FIELDS.get(12)).equals("") ? DEFAULT_SUGAR_METABOLISM
+				: Integer.parseInt(myDataValues.get(DATA_FIELDS.get(12)));
 	}
 
 	/**
@@ -156,7 +172,8 @@ public class XMLSimulation {
 	 * @return
 	 */
 	public int getSugarGrowBackRate() {
-		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(13)));
+		return myDataValues.get(DATA_FIELDS.get(13)).equals("") ? DEFAULT_SUGAR_GROW_BACK_RATE
+				: Integer.parseInt(myDataValues.get(DATA_FIELDS.get(13)));
 	}
 
 	/**

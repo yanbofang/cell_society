@@ -151,7 +151,9 @@ public class GUI {
 		// TODO see if still true
 		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT/padding);
 		myRoot.setLeft(myLeftUI.draw());
-		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
+		Scene myScene = new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND);
+        myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + "default.css");
+		primaryStage.setScene(myScene);
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
 	}
@@ -198,7 +200,7 @@ public class GUI {
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
 				// TODO make a reset fn to simplify
-				System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
+				//System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
 
 				myGrid.initialize(gridSideSize, mySimulationModel);
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel));

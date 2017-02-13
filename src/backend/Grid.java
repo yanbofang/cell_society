@@ -97,7 +97,6 @@ public abstract class Grid {
 		LocInfo POSX = this.getNeighborArrayX(x, y);
 		LocInfo POSY = this.getNeighborArrayY(x, y);
 		for (int k = 0; k < this.getNeighborDefn(); k++) {
-			//System.out.println(this.neighborDefn);
 			int xx, yy;
 			xx = boundXHandle(x + POSX.get(k));
 			yy = boundYHandle(y + POSY.get(k));

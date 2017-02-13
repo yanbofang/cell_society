@@ -5,5 +5,5 @@
     <inactiveColor>Green</inactiveColor>
     <emptyColor>White</emptyColor>
     <cellSize>10</cellSize>
-    <numOfNeighbors>4</numOfNeighbors>
+    <numOfNeighbors>8</numOfNeighbors>
 </data>

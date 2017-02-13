@@ -18,9 +18,6 @@ public class Initializer {
 		xml.start(stage);
 
 		SimulationModel mySimulationModel = xml.getSimulationModel();
-		XMLWriter writer = new XMLWriter();
-		writer.writeToXML(mySimulationModel);
-
 		GUI gui = new GUI(mySimulationModel, "English");
 
 		gui.init(stage);

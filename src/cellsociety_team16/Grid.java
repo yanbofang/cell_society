@@ -50,8 +50,6 @@ public abstract class Grid {
 		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
-
-		System.out.println(simulationModel.getName());
 	}
 
 	/**
@@ -267,7 +265,7 @@ public abstract class Grid {
 		mySimulationModel = simmod;
 		mySimulationModel.setRandomPositions();
 		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridExtents,mySimulationModel);
+		return updateGrid(gridExtents, mySimulationModel);
 	}
 
 	protected void setOffset(double value) {
@@ -306,5 +304,15 @@ public abstract class Grid {
 //		return null;
 //	}
 	}
+	// abstract public List getCellPositions();
+	// public Grid setGridType(){
+	// try {
+	// Class<?> model = Class.forName(mySimulationModel.getName() + "Model");
+	// return (Grid)
+	// model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
+	// } catch (Exception e) {
+	// return null;
+	// }
+	// }
 
 }

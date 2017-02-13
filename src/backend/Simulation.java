@@ -68,7 +68,6 @@ public class Simulation {
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
-		System.out.println();
 		List<Integer> result = new ArrayList<Integer>();
 		for (int i = 0; i < thisRoundGrid.getSize(); i++) {
 			int max = 0;
@@ -81,13 +80,12 @@ public class Simulation {
 		}
 		List<Integer> amount = new ArrayList<Integer>();
 		for (int i = 0; i < thisRoundGrid.getSize(); i++) {
-			amount.add(thisRoundGrid.getContainer(i).numCellContain());
-		}
-		for (int i = 0; i < this.n; i++) {
-			for (int j = 0; j < this.m; j++) {
-				System.out.print(result.get(i * n + j));
+			if (model.getName().compareTo("SugarScape")==0 && thisRoundGrid.getContainer(i).getMyCell().getIdentity().compareTo("Patch")==0) {
+				amount.add(((Patch)thisRoundGrid.getContainer(i).getMyCell()).getSugarAmount());
+			} else {
+				amount.add(thisRoundGrid.getContainer(i).getPheromone("Food")+1);
+		
 			}
-			System.out.println();
 		}
 		return new GridInfo(result, amount);
 	}
@@ -189,7 +187,6 @@ public class Simulation {
 	 * @return
 	 */
 	private Grid createNewGrid(String gridType, int n, int m, int num) {
-		System.out.println(gridType);
 		if (gridType.compareTo(TRIANGLE) == 0) {
 			return new TriangleGrid(n, m, num);
 		}

@@ -36,7 +36,7 @@ public class XMLManager {
 		dataFile = myChooser.showOpenDialog(primaryStage);
 		if (dataFile != null) {
 			try {
-				System.out.println(new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE));
+				//System.out.println(new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE));
 			} catch (XMLException e) {
 				Alert a = new Alert(AlertType.ERROR);
 				a.setContentText(String.format("ERROR reading file %s", dataFile.getPath()));
@@ -58,8 +58,14 @@ public class XMLManager {
 			Class<?> model = Class.forName(MODEL_PACKAGE + xml.getName() + "Model");
 			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
 		} catch (Exception e) {
-			return null;
+			Class<?> model;
+			try {
+				model = Class.forName(MODEL_PACKAGE + xml.getName().substring(0, xml.getName().length() - 3) + "Model");
+			} catch (Exception ee) {
+				return null;
+			}
 		}
+		return null;
 	}
 
 	/**
