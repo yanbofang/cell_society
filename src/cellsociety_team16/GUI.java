@@ -117,7 +117,7 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		
+
 		Class<?> grid = Class.forName(GRID_PACKAGE + mySimulationModel.getCellShape() + "Grid");
 		myGrid = (Grid) grid.getDeclaredConstructor(SimulationModel.class, Simulation.class)
 				.newInstance(mySimulationModel, mySimulation);
@@ -126,6 +126,10 @@ public class GUI {
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid
 		gridSideSize = (int) Math.min(SCREENHEIGHT * .6, SCREENWIDTH * .75);
+
+		KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED / 2), e -> step());
+		timer.setCycleCount(Timeline.INDEFINITE);
+		timer.getKeyFrames().add(frame);
 	}
 
 	/**
@@ -149,10 +153,10 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT/padding);
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT / padding);
 		myRoot.setLeft(myLeftUI.draw());
 		Scene myScene = new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND);
-        myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + "default.css");
+		myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + "default.css");
 		primaryStage.setScene(myScene);
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
 		primaryStage.show();
@@ -200,7 +204,8 @@ public class GUI {
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
 				// TODO make a reset fn to simplify
-				//System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
+				// System.out.println("from setUpBottom:" +
+				// mySimulationModel.numberOfStates());
 
 				myGrid.initialize(gridSideSize, mySimulationModel);
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel));
@@ -211,7 +216,8 @@ public class GUI {
 		});
 		mySimulationChooser.setValue(mySimulationType);
 
-		mySaveButton = makeButton("SaveFileCommand", new Rectangle(SCREENWIDTH/10, SCREENHEIGHT/200), event -> saveFile());
+		mySaveButton = makeButton("SaveFileCommand", new Rectangle(SCREENWIDTH / 10, SCREENHEIGHT / 200),
+				event -> saveFile());
 
 		simulationModifiers.getChildren().add(mySimulationChooser);
 		simulationModifiers.getChildren().add(mySaveButton);
@@ -220,11 +226,11 @@ public class GUI {
 		myResetButton = makeButton("ResetCommand", circleButton,
 				event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel)));
 		// creates the play/pause toggle button
-		myPlayButton = makeButton("PlayCommand", circleButton,event -> play());
-		myStepButton = makeButton("StepCommand", circleButton,event -> step());
+		myPlayButton = makeButton("PlayCommand", circleButton, event -> play());
+		myStepButton = makeButton("StepCommand", circleButton, event -> step());
 
 		Initializer init = new Initializer();
-		myNewSimulationButton = makeButton("NewSimulationCommand", circleButton,event -> {
+		myNewSimulationButton = makeButton("NewSimulationCommand", circleButton, event -> {
 			try {
 				init.newSimulation();
 			} catch (Exception e) {
@@ -329,7 +335,7 @@ public class GUI {
 	 * run calls
 	 */
 	private void step() {
-		GridInfo gridinfo=mySimulation.startNewRoundSimulation();
+		GridInfo gridinfo = mySimulation.startNewRoundSimulation();
 		mySimulationModel.setPositions(gridinfo.getType());
 		mySimulationModel.setAmounts(gridinfo.getAmount());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize, mySimulationModel));
@@ -349,9 +355,6 @@ public class GUI {
 			timer.pause();
 		} else {
 			myPlayButton.setText(myResources.getString("PauseCommand"));
-			KeyFrame frame = new KeyFrame(Duration.millis(MAX_SPEED / 2), e -> step());
-			timer.setCycleCount(Timeline.INDEFINITE);
-			timer.getKeyFrames().add(frame);
 			timer.play();
 		}
 	}

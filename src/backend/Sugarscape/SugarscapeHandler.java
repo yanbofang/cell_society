@@ -67,7 +67,7 @@ public class SugarscapeHandler extends Handler {
 				if (maxPatch != null)
 					maxPatch.beingEaten();
 				curAgent.subtractMetabolism();
-				System.out.println(curAgent.getSugarAmount());
+//				System.out.println(curAgent.getSugarAmount());
 				if (curAgent.getSugarAmount() < 0) {
 					curContainer.getNext().addMyCell(new EmptyCell());
 					return;

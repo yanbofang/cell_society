@@ -351,7 +351,7 @@ public abstract class SimulationModel {
 	public abstract int numberOfStates();
 
 	/**
-	 * Set a list of random positions of cells
+	 * Set a random list with the value at a specific index being the state of the cell - 0 is empty, 1 is inactive and 2 is active
 	 * 
 	 * @return
 	 */
@@ -393,7 +393,6 @@ public abstract class SimulationModel {
 			}
 			return myAvailableColors;
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}
