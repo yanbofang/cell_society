@@ -80,7 +80,12 @@ public class Simulation {
 		}
 		List<Integer> amount = new ArrayList<Integer>();
 		for (int i = 0; i < thisRoundGrid.getSize(); i++) {
-			amount.add(thisRoundGrid.getContainer(i).numCellContain());
+			if (model.getName().compareTo("SugarScape")==0 && thisRoundGrid.getContainer(i).getMyCell().getIdentity().compareTo("Patch")==0) {
+				amount.add(((Patch)thisRoundGrid.getContainer(i).getMyCell()).getSugarAmount());
+			} else {
+				amount.add(thisRoundGrid.getContainer(i).getPheromone("Food")+1);
+		
+			}
 		}
 		return new GridInfo(result, amount);
 	}
@@ -182,7 +187,6 @@ public class Simulation {
 	 * @return
 	 */
 	private Grid createNewGrid(String gridType, int n, int m, int num) {
-		System.out.println(gridType);
 		if (gridType.compareTo(TRIANGLE) == 0) {
 			return new TriangleGrid(n, m, num);
 		}

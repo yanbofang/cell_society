@@ -17,8 +17,8 @@ public class XMLSimulation {
 	public static final String DATA_TYPE = "Simulation";
 
 	// DEFAULT VALUES IN CASE OF VALUES NOT GIVEN
-	public static final double DEFAULT_FIRE_PROBABILITY = 1.0;
-	public static final double DEFAULT_TREE_PROBABILITY = 0.1;
+	public static final double DEFAULT_FIRE_PROBABILITY = 0.3;
+	public static final double DEFAULT_TREE_PROBABILITY = 0;
 	public static final double DEFAULT_SATISFACTION_RATE = 0.5;
 	public static final int DEFAULT_SUGAR_METABOLISM = 1;
 	public static final int DEFAULT_SUGAR_GROW_BACK_RATE = 1;

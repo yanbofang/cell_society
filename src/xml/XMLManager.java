@@ -36,7 +36,7 @@ public class XMLManager {
 		dataFile = myChooser.showOpenDialog(primaryStage);
 		if (dataFile != null) {
 			try {
-				System.out.println(new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE));
+				//System.out.println(new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE));
 			} catch (XMLException e) {
 				Alert a = new Alert(AlertType.ERROR);
 				a.setContentText(String.format("ERROR reading file %s", dataFile.getPath()));

@@ -200,7 +200,7 @@ public class GUI {
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
 				// TODO make a reset fn to simplify
-				System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
+				//System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
 
 				myGrid.initialize(gridSideSize, mySimulationModel);
 				myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel));
