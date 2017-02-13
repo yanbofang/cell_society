@@ -7,6 +7,8 @@ import backend.GameOfLifeSimulation.GameOfLifeHandler;
 import backend.GameOfLifeSimulation.Life;
 import backend.SegregationSimulation.People;
 import backend.SegregationSimulation.SegregationHandler;
+import backend.SlimeSimulation.Slime;
+import backend.SlimeSimulation.SlimeHandler;
 import backend.SpreadingFireSimulation.Fire;
 import backend.SpreadingFireSimulation.SpreadingFireHandler;
 import backend.SpreadingFireSimulation.Tree;
@@ -36,6 +38,7 @@ import simulation_models.SugarScapeModel;
  */
 
 public class Simulation {
+	private static final String SLIME_MOLDS = "SlimeMolds";
 	private static final String SUGAR_SCAPE = "SugarScape";
 	private static final String HEXAGON = "Hexagon";
 	private static final String SQUARE = "Square";
@@ -108,9 +111,11 @@ public class Simulation {
 				int curPos = i * n + j;
 				int curPosStats = initialStatus.get(curPos);
 				int curAmount = initialAmount.get(curPos);
-				System.out.print(curPosStats + " " + curAmount);
-				thisRoundGrid.getContainer(curPos)
-						.setMyCell(this.createNewCell(modelGeneral.getName(), curPosStats, curAmount));
+				Container curContainer = thisRoundGrid.getContainer(curPos);
+				if (model.getName().compareTo(SLIME_MOLDS) == 0 && curPosStats == 0) {
+					curContainer.setPheromone("Food", curAmount);
+				}
+				curContainer.setMyCell(this.createNewCell(modelGeneral.getName(), curPosStats, curAmount));
 			}
 		}
 	}
@@ -162,6 +167,11 @@ public class Simulation {
 				return new Patch(curAmount, ((SugarScapeModel) model).getSugarGrowBackRate());
 			if (curPosStats == 2)
 				return new Agent(curAmount, ((SugarScapeModel) model).getSugarMetabolism());
+		}
+
+		if (modelName.compareTo(SLIME_MOLDS) == 0) {
+			if (curPosStats == 1)
+				return new Slime();
 		}
 		return null;
 	}
@@ -230,6 +240,11 @@ public class Simulation {
 
 		if (modelName.compareTo(SUGAR_SCAPE) == 0) {
 			return new SugarscapeHandler();
+		}
+
+		if (modelName.compareTo(SLIME_MOLDS) == 0) {
+			// SlimeMoldsModel model=(SlimeMoldsModel) modelGeneral;
+			return new SlimeHandler();
 		}
 		return null;
 	}
