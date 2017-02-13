@@ -22,6 +22,7 @@ import simulation_models.SegregationModel;
 import simulation_models.SimulationModel;
 import simulation_models.SpreadingFireModel;
 import simulation_models.WaTorModel;
+import simulation_models.SugarScapeModel;
 /**
  * This class is in charge of the simulation and the connection with the front end.
  * After set up with the initial grid, the class will call Handler to handle the next
@@ -91,7 +92,7 @@ public class Simulation {
 		this.myHandler = this.setupHandler(modelGeneral);
 		this.model=modelGeneral;
 		List<Integer> initialStatus=modelGeneral.getPositions();
-		List<Integer> initialAmount=((SugarScapeModel)modelGeneral).getAmounts();
+		List<Integer> initialAmount=modelGeneral.getAmounts();
 		this.n=modelGeneral.getRows();
 		this.m=modelGeneral.getCols();
 		this.shape=modelGeneral.getCellShape();

@@ -315,9 +315,7 @@ public class GUI {
 	 */
 	private void step() {
 		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation().getType());
-		if(mySimulationModel instanceof SugarScapeModel){
-			((SugarScapeModel) mySimulationModel).setAmounts(mySimulation.startNewRoundSimulation().getAmount());
-		}
+		mySimulationModel.setAmounts(mySimulation.startNewRoundSimulation().getAmount());
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 	}

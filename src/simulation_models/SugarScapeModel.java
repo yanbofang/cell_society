@@ -59,9 +59,7 @@ public class SugarScapeModel extends SimulationModel {
 		this.sugarGrowBackRate = rate;
 	}
 
-	public void setAmounts(List<Integer> amounts){
-		this.myAmounts = amounts;
-	}
+
 	
 	@Override
 	/**

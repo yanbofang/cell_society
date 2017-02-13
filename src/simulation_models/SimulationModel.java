@@ -299,13 +299,13 @@ public abstract class SimulationModel {
 	 * @return
 	 */
 	public List<Integer> setAmounts(List<Integer> amounts) {
-		if (amounts.isEmpty()) {
+		if (amounts.isEmpty()||amounts==null) {
 			for (int i = 0; i < myPositions.size(); i++)
 				myAmounts.add(1);
 		} else {
 			this.myAmounts = amounts;
 		}
-		return amounts;
+		return myAmounts;
 	}
 
 	/**
