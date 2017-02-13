@@ -68,10 +68,11 @@ public class GUI {
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
 	public static final String XML_WATOR_WORLD = "WaTor";
 	public static final String XML_SUGAR_SCAPE = "SugarScape";
+	public static final String XML_SLIME_MOLDS = "SlimeMolds";
 
 	// list of all of the xml files, user could potentially load new ones
 	private ObservableList<String> mySimulationTypes = FXCollections.observableArrayList(XML_GAME_OF_LIFE,
-			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD, XML_SUGAR_SCAPE);
+			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD, XML_SUGAR_SCAPE, XML_SLIME_MOLDS);
 	// current simulation type
 	private String mySimulationType;
 	// used for initializing and updating grid
@@ -195,7 +196,8 @@ public class GUI {
 			}
 		});
 		mySimulationChooser.setValue(mySimulationType);
-		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel)));
+		myResetButton = makeButton("ResetCommand",
+				event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
@@ -212,7 +214,7 @@ public class GUI {
 		});
 
 		mySpeedSlider = new Slider();
-		
+
 		mySpeedSlider.setMin(MINIMUM_SPEED_MULTIPLIER);
 		mySpeedSlider.setMax(MAXIMUM_SPEED_MULTIPLIER);
 		mySpeedSlider.setValue(mySpeedMultiplier);
@@ -277,10 +279,12 @@ public class GUI {
 		whenMouseOver(newButton);
 		return newButton;
 	}
-/**
- * Adds a nice drop shadow when mouse hovers over the active button
- * @param button
- */
+
+	/**
+	 * Adds a nice drop shadow when mouse hovers over the active button
+	 * 
+	 * @param button
+	 */
 	protected void whenMouseOver(Control button) {
 		DropShadow shadow = new DropShadow();
 		// Adding the shadow when the mouse cursor is on

@@ -36,6 +36,7 @@ public abstract class SimulationModel {
 	private String emptyColor;
 	private int cellSize;
 	private int numOfNeighbors;
+	private boolean myGridLines;
 
 	/**
 	 * Constructor for SimulationModel
@@ -62,6 +63,7 @@ public abstract class SimulationModel {
 		numOfNeighbors = simulation.getNumOfNeighbors();
 		myAmounts = this.setAmounts(simulation.getAmounts());
 		myColors = this.setColors();
+		myGridLines = simulation.getGridLines();
 	}
 
 	/**
@@ -201,10 +203,10 @@ public abstract class SimulationModel {
 		for (Integer i : myPositions) {
 			myCounts.set(i, myCounts.get(i) + 1);
 		}
-//		// Update the percentage
-//		this.setEmptyPercentage((double) myCounts.get(0) / (rows * cols));
-//		this.setInactivePercentage((double) myCounts.get(1) / (rows * cols));
-//		this.setActivePercentage((double) myCounts.get(2) / (rows * cols));
+		// // Update the percentage
+		// this.setEmptyPercentage((double) myCounts.get(0) / (rows * cols));
+		// this.setInactivePercentage((double) myCounts.get(1) / (rows * cols));
+		// this.setActivePercentage((double) myCounts.get(2) / (rows * cols));
 		return myCounts;
 	}
 
@@ -260,6 +262,24 @@ public abstract class SimulationModel {
 	 */
 	public void setEmptyPercentage(double percentage) {
 		this.emptyPercentage = percentage;
+	}
+
+	/**
+	 * Return a boolean value of whether to show the grid lines
+	 * 
+	 * @return
+	 */
+	public boolean getGridLines() {
+		return this.myGridLines;
+	}
+
+	/**
+	 * Set whether to show the grid lines
+	 * 
+	 * @param gridLines
+	 */
+	public void setGridLines(boolean gridLines) {
+		this.myGridLines = gridLines;
 	}
 
 	/**

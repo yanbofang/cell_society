@@ -6,4 +6,5 @@
     <emptyColor>White</emptyColor>
     <cellSize>10</cellSize>
     <numOfNeighbors>12</numOfNeighbors>
+    <gridLines>true</gridLines>
 </data>
