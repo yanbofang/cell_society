@@ -98,11 +98,7 @@ public class UserInputBar {
 	// TODO throws NoGridException
 	protected Node draw() {
 		VBox userInput = new VBox();
-		
 
-		Random randomGenerator = new Random();
-
-		//
 		myShapeChooser = new ComboBox<Shape>();
 //		myShapeChooser.getItems().addAll(
 //

@@ -179,7 +179,6 @@ public class GUI {
 	 */
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
-		buttonLine.setPadding(new Insets(100,100,100,100));
 		buttonLine.setAlignment(Pos.CENTER);
 		VBox simulationModifiers = new VBox();
 		simulationModifiers.setAlignment(Pos.CENTER);
