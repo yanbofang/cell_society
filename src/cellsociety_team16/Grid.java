@@ -12,7 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import simulation_models.SimulationModel;
-import xml.XMLSimulation;
 
 /**
  * Abstract class that will create a new grid in the visualization window
@@ -25,9 +24,10 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private Color GRIDLINE_COLOR = Color.BLACK;
-	// private Color EMPTY_COLOR = Color.WHITE;
-	// private Color ACTIVE_COLOR = Color.GREEN;
-	// private Color SPECIAL_COLOR = Color.RED;
+private static int EMPTY_INDEX = 0;
+private static int ACTIVE_INDEX = 1;
+private static int SPECIAL_INDEX = 2;
+
 	private List<Integer> myInts;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
@@ -49,12 +49,8 @@ public abstract class Grid {
 		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
-
+		
 		System.out.println(simulationModel.getName());
-		myColors.add(0, simulationModel.getEmptyColor());
-		myColors.add(1, simulationModel.getInactiveColor());
-		myColors.add(2, simulationModel.getActiveColor());
-		this.setGridLines(mySimulationModel.getGridLines());
 	}
 
 	/**
@@ -67,9 +63,11 @@ public abstract class Grid {
 	public Node initialize(int gridExtents, SimulationModel simmod) {
 		mySimulationModel = simmod;
 
-		setBaseColor(0, mySimulationModel.getEmptyColor());
-		setBaseColor(1, mySimulationModel.getInactiveColor());
-		setBaseColor(2, mySimulationModel.getActiveColor());
+		gridLines = mySimulationModel.getGridLines();
+		
+		setBaseColor(EMPTY_INDEX, mySimulationModel.getEmptyColor());
+		setBaseColor(ACTIVE_INDEX, mySimulationModel.getInactiveColor());
+		setBaseColor(SPECIAL_INDEX, mySimulationModel.getActiveColor());
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
 		// cellExtents = mySimulationModel.getcellSize();
