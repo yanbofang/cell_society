@@ -4,5 +4,5 @@
     <activeColor>Red</activeColor>
     <inactiveColor>Green</inactiveColor>
     <emptyColor>White</emptyColor>
-    <cellSize>4</cellSize>
+    <cellSize>10</cellSize>
 </data>

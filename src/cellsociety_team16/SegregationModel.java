@@ -42,6 +42,9 @@ public class SegregationModel extends SimulationModel {
 	}
 
 	@Override
+	/**
+	 * Return the number of states for this simulation
+	 */
 	public int numberOfStates() {
 		return this.numberOfStates;
 	}
