@@ -201,10 +201,10 @@ public abstract class SimulationModel {
 		for (Integer i : myPositions) {
 			myCounts.set(i, myCounts.get(i) + 1);
 		}
-		// Update the percentage
-		this.setEmptyPercentage(myCounts.get(0) / (rows * cols));
-		this.setInactivePercentage(myCounts.get(1) / (rows * cols));
-		this.setActivePercentage(myCounts.get(2) / (rows * cols));
+//		// Update the percentage
+//		this.setEmptyPercentage((double) myCounts.get(0) / (rows * cols));
+//		this.setInactivePercentage((double) myCounts.get(1) / (rows * cols));
+//		this.setActivePercentage((double) myCounts.get(2) / (rows * cols));
 		return myCounts;
 	}
 

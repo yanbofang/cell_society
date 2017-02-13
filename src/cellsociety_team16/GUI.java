@@ -186,14 +186,14 @@ public class GUI {
 				System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
 
 				myGrid.initialize(gridSideSize, mySimulationModel);
-				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
+				myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel));
 				// TODO see if need to pass in mySimulationModel
 				myRoot.setLeft(myLeftUI.draw());
 				play();
 			}
 		});
 		mySimulationChooser.setValue(mySimulationType);
-		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
+		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel)));
 		// creates the play/pause toggle button
 		myPlayButton = makeButton("PlayCommand", event -> play());
 		myStepButton = makeButton("StepCommand", event -> step());
