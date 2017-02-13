@@ -1,4 +1,4 @@
-package backend.GameOfLifeSimulation;
+package backend.SlimeSimulation;
 
 import java.util.ArrayList;
 

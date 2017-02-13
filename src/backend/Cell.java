@@ -10,9 +10,9 @@ import java.util.ArrayList;
  *
  */
 public abstract class Cell {
-	private String identity;
-	private Container myContainer;
-	private int priority = 0;
+	private String identity;//Identity is the identity of the cell.
+	private Container myContainer;//myContainer is the container associated with each cell
+	private int priority = 0;//Priority is the order we process each type of cell
 
 	public int getPriority() {
 		return priority;
