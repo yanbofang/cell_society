@@ -44,18 +44,37 @@ public class UserInputBar {
 	private CheckBox myGridLines;
 	private Slider[] slidersAvailable;
 	private double[] changingValues;
+	private static int EMPTY_INDEX = 0;
+	private static int ACTIVE_INDEX = 1;
+	private static int SPECIAL_INDEX = 2;
 
 	public UserInputBar(SimulationModel model, XMLManager manager, Grid grid, ResourceBundle resources) {
 		mySimulationModel = model;
 		myXMLManager = manager;
 		myGrid = grid;
 		myResources = resources;
-		slidersAvailable[0] = makeSlider(0,100,10,mySimulationModel.getEmptyPercentage());
-		
-		changingValues[0] = mySimulationModel.getEmptyPercentage();
-		changingValues[1] = mySimulationModel.getInactivePercentage();
-		changingValues[2] = mySimulationModel.getActivePercentage();
-
+		slidersAvailable = new Slider[3];
+		slidersAvailable[EMPTY_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getEmptyPercentage());
+		slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
+				mySimulationModel.setEmptyPercentage(newValue.doubleValue());
+			}
+		});
+		slidersAvailable[ACTIVE_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getInactivePercentage());
+		slidersAvailable[ACTIVE_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
+				mySimulationModel.setInactivePercentage(newValue.doubleValue());
+			}
+		});
+		slidersAvailable[SPECIAL_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getActivePercentage());
+		slidersAvailable[SPECIAL_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
+				mySimulationModel.setActivePercentage(newValue.doubleValue());
+			}
+		});
 	}
 
 	/**
@@ -93,13 +112,14 @@ public class UserInputBar {
 			ColorPicker newPicker = makeColorPicker(i);
 			newPicker.setValue(myGrid.getColor(i));
 			myColorPickers.add(i, newPicker);
-			colorPickerGroup.getChildren().add(newPicker);
-
+			userInput.getChildren().add(newPicker);
+			userInput.getChildren().add(slidersAvailable[i]);
 			// TODO figure out arraylist of varying values
 			// myValueSliders.add(i, makeSlider(0, 100, 10, changingValue[i]))
 		}
 
-		userInput.getChildren().addAll(myColorPickers);
+//		userInput.getChildren().addAll(myColorPickers);
+//		userInput.getChildren().addAll(sliderGroup);
 
 		myGridLines = new CheckBox(myResources.getString("GridLinesCheckBox"));
 		myGridLines.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -109,7 +129,8 @@ public class UserInputBar {
 		});
 
 		userInput.getChildren().add(myGridLines);
-		Slider emptySlider = makeSlider(0,100,10,50,event -> mySimulationModel.setEmptyPercentage(newValue));
+		// Slider emptySlider = makeSlider(0,100,10,50,event ->
+		// mySimulationModel.setEmptyPercentage(newValue));
 		return userInput;
 	}
 
@@ -161,7 +182,7 @@ public class UserInputBar {
 	 *            is the value that it defaults to initially
 	 * @return
 	 */
-	private Slider makeSlider(double min, double max, double increment, double defaultValue,  Method function) {
+	private Slider makeSlider(double min, double max, double increment, double defaultValue) {
 		Slider newSlider = new Slider();
 		// slider is based on percentages, hence the 0 to 10 and default value
 		// which then multiplies by duration
@@ -173,18 +194,6 @@ public class UserInputBar {
 		newSlider.setBlockIncrement(increment);
 		// will snap to integers
 		// mySpeedSlider.setSnapToTicks(true);
-		newSlider.valueProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
-f
-				//				try {
-//					function.invoke(newValue.doubleValue());
-//				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-		}
-		});
 		return newSlider;
 	}
 }
