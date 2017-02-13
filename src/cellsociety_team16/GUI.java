@@ -176,6 +176,7 @@ public class GUI {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
 		VBox simulationModifiers = new VBox();
+		simulationModifiers.setAlignment(Pos.CENTER);
 		// TODO just click to load a new file
 		// Click to save current settings
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
@@ -202,7 +203,7 @@ public class GUI {
 		});
 		mySimulationChooser.setValue(mySimulationType);
 
-		mySaveButton = makeButton("SaveFileCommand", new Rectangle(SCREENWIDTH/10, SCREENHEIGHT/100), event -> saveFile());
+		mySaveButton = makeButton("SaveFileCommand", new Rectangle(SCREENWIDTH/10, SCREENHEIGHT/200), event -> saveFile());
 
 		simulationModifiers.getChildren().add(mySimulationChooser);
 		simulationModifiers.getChildren().add(mySaveButton);
