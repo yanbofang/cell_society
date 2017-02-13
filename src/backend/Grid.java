@@ -48,6 +48,7 @@ public abstract class Grid {
 	public void fillContainer() {
 		for (int i=0;i<size;i++) {
 			Container tempContainer = new Container();
+			tempContainer.setMyGrid(this);
 			this.containerlist.add(tempContainer);
 		}
 		for (int i=0;i<size;i++) {
@@ -80,10 +81,10 @@ public abstract class Grid {
 			xx=boundXHandle(x+POSX.get(k));
 			yy=boundYHandle(y+POSY.get(k));
 			if (xx>=n || xx<0 || yy<0 || yy>=m) continue;
-			System.out.print(xx+" "+yy+"-");
+			//System.out.print(xx+" "+yy+"-");
 			result.add(xx*n+yy);
 		}
-		System.out.println(this.getNeighborDefn());
+		//System.out.println(this.getNeighborDefn());
 		return result;
 	}
 	
@@ -124,7 +125,7 @@ public abstract class Grid {
 			int Food = this.getContainer(i).getPheromone("Food");
 			this.next.getContainer(i).setPheromone("Food", Food);
 			int Home = this.getContainer(i).getPheromone("Home");
-			this.next.getContainer(i).setPheromone("Home", Food);
+			this.next.getContainer(i).setPheromone("Home", Home);
 		}
 	}
 	

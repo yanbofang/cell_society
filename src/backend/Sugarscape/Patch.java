@@ -17,7 +17,7 @@ public class Patch extends Cell{
 	}
 
 	public Patch(int sugarAmount, int sugarGrowBackRate) {
-		super();
+		this();
 		this.setSugarAmount(sugarAmount);
 		this.sugarGrowBackRate = sugarGrowBackRate;
 	}
@@ -36,5 +36,9 @@ public class Patch extends Cell{
 
 	public void setSugarAmount(int sugarAmount) {
 		this.sugarAmount = sugarAmount;
+	}
+	
+	public String toString() {
+		return "1";
 	}
 }

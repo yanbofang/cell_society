@@ -106,7 +106,7 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
+		myGrid = new SquareGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid
@@ -307,7 +307,10 @@ public class GUI {
 	 * run calls
 	 */
 	private void step() {
-		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation());
+		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation().getType());
+		if(mySimulationModel instanceof SugarScapeModel){
+			((SugarScapeModel) mySimulationModel).setAmounts(mySimulation.startNewRoundSimulation().getAmount());
+		}
 		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 

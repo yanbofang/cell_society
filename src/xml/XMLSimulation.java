@@ -107,7 +107,7 @@ public class XMLSimulation {
 	}
 	
 	public List<Integer> getAmounts(){
-		String ints = myDataValues.get(DATA_FIELDS.get(14));
+		String ints = myDataValues.get(DATA_FIELDS.get(15));
 		ArrayList<Integer> amounts = new ArrayList<Integer>();
 		for (int i = 0; i < ints.length(); i++) {
 			Integer amount = Integer.parseInt(ints.substring(i, i + 1));

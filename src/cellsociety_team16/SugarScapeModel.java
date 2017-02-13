@@ -52,6 +52,10 @@ public class SugarScapeModel extends SimulationModel {
 		return this.myAmounts;
 	}
 
+	public void setAmounts(List<Integer> amounts){
+		this.myAmounts = amounts;
+	}
+	
 	@Override
 	public int numberOfStates() {
 		// TODO Auto-generated method stub

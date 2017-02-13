@@ -10,6 +10,9 @@ import backend.SegregationSimulation.SegregationHandler;
 import backend.SpreadingFireSimulation.Fire;
 import backend.SpreadingFireSimulation.SpreadingFireHandler;
 import backend.SpreadingFireSimulation.Tree;
+import backend.Sugarscape.Agent;
+import backend.Sugarscape.Patch;
+import backend.Sugarscape.SugarscapeHandler;
 import backend.WaTorSimulation.Fish;
 import backend.WaTorSimulation.Shark;
 import backend.WaTorSimulation.WaTorHandler;
@@ -34,6 +37,7 @@ public class Simulation {
 	private static final String SEGREGATION = "Segregation";
 	private static final String WA_TOR = "WaTor";
 	private static final String SPREADING_FIRE = "SpreadingFire";
+	private SimulationModel model;
 	private Grid thisRoundGrid;
 	private String shape;
 	private int n=0;
@@ -47,23 +51,33 @@ public class Simulation {
 	 * represents the status of the cell.
 	 * @return List<Integer>
 	 */
-	public List<Integer> startNewRoundSimulation() {
+	public GridInfo startNewRoundSimulation() {
 		for (int i=0;i<this.n;i++) {
 			for (int j=0;j<this.m;j++) {
 				System.out.print(thisRoundGrid.getContainer(i*5+j).getMyCell());
 			}
 			System.out.println();
 		}
-		Grid nextRoundGrid = createNewGrid(shape, this.n,this.m, 12);
+		Grid nextRoundGrid = createNewGrid(shape, this.n,this.m, 4);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
 		System.out.println();
 		List<Integer> result = new ArrayList<Integer>();
 		for (int i=0;i<thisRoundGrid.getSize();i++) {
-			result.add(Integer.parseInt(thisRoundGrid.getContainer(i).getMyCell().toString()));
+			int max=0;
+			for (int k=0;k<thisRoundGrid.getContainer(i).numCellContain();k++){
+				if (Integer.parseInt(thisRoundGrid.getContainer(i).getIthCell(k).toString())>max){
+					max=Integer.parseInt(thisRoundGrid.getContainer(i).getIthCell(k).toString());
+				}
+			}
+			result.add(max);
 		}
-		return result;
+		List<Integer> amount = new ArrayList<Integer>();
+		for (int i=0;i<thisRoundGrid.getSize();i++) {
+			amount.add(thisRoundGrid.getContainer(i).numCellContain());
+		}
+		return new GridInfo(result,amount);
 	}
 	/**
 	 * This function is the interface with the GUI. At the start of each simulation, the 
@@ -71,16 +85,20 @@ public class Simulation {
 	 */
 	public void setInitialGrid(SimulationModel modelGeneral) {
 		this.myHandler = this.setupHandler(modelGeneral);
+		this.model=modelGeneral;
 		List<Integer> initialStatus=modelGeneral.getPositions();
+		List<Integer> initialAmount=((SugarScapeModel)modelGeneral).getAmounts();
 		this.n=modelGeneral.getRows();
 		this.m=modelGeneral.getCols();
 		this.shape=modelGeneral.getCellShape();
-		this.thisRoundGrid = createNewGrid(this.shape, this.n,this.m, 12);
+		this.thisRoundGrid = createNewGrid(this.shape, this.n,this.m, 4);
 		for (int i=0;i<n;i++) {
 			for (int j=0;j<m;j++) {
 				int curPos=i*n+j;
 				int curPosStats=initialStatus.get(curPos);
-				thisRoundGrid.getContainer(curPos).setMyCell(this.createNewCell(modelGeneral.getName(),curPosStats));
+				int curAmount=initialAmount.get(curPos);
+				System.out.print(curPosStats+" "+curAmount);
+				thisRoundGrid.getContainer(curPos).setMyCell(this.createNewCell(modelGeneral.getName(),curPosStats,curAmount));
 			}
 		}
 	}
@@ -94,7 +112,7 @@ public class Simulation {
 	 * @param curPosStats
 	 * @return Cell according to the current simulation we are supposed to run
 	 */
-	private Cell createNewCell(String modelName, int curPosStats) {
+	private Cell createNewCell(String modelName, int curPosStats, int curAmount) {
 		if (curPosStats==0) return new EmptyCell();
 		
 		if (modelName.compareTo(GAME_OF_LIFE)==0) {
@@ -115,6 +133,11 @@ public class Simulation {
 		if (modelName.compareTo(WA_TOR)==0) {
 			if (curPosStats==1) return new Fish();
 			if (curPosStats==2) return new Shark();			
+		}
+		
+		if (modelName.compareTo("SugarScape")==0) {
+			if (curPosStats==1) return new Patch(curAmount, ((SugarScapeModel)model).getSugarGrowBackRate());
+			if (curPosStats==2) return new Agent(curAmount, ((SugarScapeModel)model).getSugarMetabolism());
 		}
 		return null;
 	}
@@ -166,6 +189,10 @@ public class Simulation {
 			SegregationModel model = (SegregationModel) modelGeneral;
 			double percent = model.getSatisfactionRate();
 			return new SegregationHandler(percent);
+		}
+		
+		if (modelName.compareTo("SugarScape")==0) {
+			return new SugarscapeHandler();
 		}
 		return null;
 	}
