@@ -1,5 +1,6 @@
 package cellsociety_team16;
 
+import backend.GridInfo;
 import backend.Simulation;
 import java.util.ResourceBundle;
 
@@ -39,15 +40,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 import javafx.util.Duration;
 import simulation_models.SimulationModel;
 import xml.XMLManager;
+import xml.XMLWriter;
 
 /**
  * Loads the GUI for Cell Society interface
  * 
+ * @author Yanbo Fang
  * @author Kris Elbert
  *
  */
@@ -56,8 +61,11 @@ public class GUI {
 	public static final int SCREENWIDTH = 700;
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
+	public static final String GRID_PACKAGE = "cellsociety_team16.";
 	public static final Color BACKGROUND = Color.ALICEBLUE;
 	public static final double MAX_SPEED = 1000; // in ms
+	public static final double MINIMUM_SPEED_MULTIPLIER = .1;
+	public static final double MAXIMUM_SPEED_MULTIPLIER = 2;
 
 	// files the user can load
 	// TODO lol need to change
@@ -66,14 +74,15 @@ public class GUI {
 	public static final String XML_SPREADING_FIRE = "SpreadingFire";
 	public static final String XML_WATOR_WORLD = "WaTor";
 	public static final String XML_SUGAR_SCAPE = "SugarScape";
+	public static final String XML_SLIME_MOLDS = "SlimeMolds";
 
 	// list of all of the xml files, user could potentially load new ones
 	private ObservableList<String> mySimulationTypes = FXCollections.observableArrayList(XML_GAME_OF_LIFE,
-			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD, XML_SUGAR_SCAPE);
+			XML_SEGREGATION, XML_SPREADING_FIRE, XML_WATOR_WORLD, XML_SUGAR_SCAPE, XML_SLIME_MOLDS);
 	// current simulation type
 	private String mySimulationType;
 	// used for initializing and updating grid
-	private int gridSideSize, gridXSize, gridYSize;
+	private int gridSideSize;
 	private Grid myGrid;
 	// get information on cell
 	private Simulation mySimulation;
@@ -84,6 +93,7 @@ public class GUI {
 	private PopulationGraph myGraph;
 
 	// user input fields
+	private Button mySaveButton;
 	private Button myPlayButton;
 	private Button myStepButton;
 	private Button myResetButton;
@@ -101,17 +111,22 @@ public class GUI {
 	private Timeline timer;
 	private BorderPane myRoot;
 
-	public GUI(SimulationModel simulation, String language) {
+	public GUI(SimulationModel simulation, String language) throws Exception {
 		mySimulationModel = simulation;
 		mySimulation = new Simulation();
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
 <<<<<<< HEAD
-=======
 		// default is square grid
->>>>>>> 0c39034159cd9bd5d307d7b46652474bda9c605f
 		myGrid = new SquareGrid(mySimulationModel, mySimulation);
+=======
+		
+		Class<?> grid = Class.forName(GRID_PACKAGE + mySimulationModel.getCellShape() + "Grid");
+		myGrid = (Grid) grid.getDeclaredConstructor(SimulationModel.class, Simulation.class)
+				.newInstance(mySimulationModel, mySimulation);
+
+>>>>>>> 72b2d76729553c9330824aa93734fc7af1e92f5f
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid
@@ -139,7 +154,7 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid);
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT/padding);
 		myRoot.setLeft(myLeftUI.draw());
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
@@ -171,6 +186,8 @@ public class GUI {
 	private Node setUpBottom() {
 		HBox buttonLine = new HBox();
 		buttonLine.setAlignment(Pos.CENTER);
+		VBox simulationModifiers = new VBox();
+		simulationModifiers.setAlignment(Pos.CENTER);
 		// TODO just click to load a new file
 		// Click to save current settings
 		mySimulationChooser = new ComboBox<String>(mySimulationTypes);
@@ -189,30 +206,42 @@ public class GUI {
 				System.out.println("from setUpBottom:" + mySimulationModel.numberOfStates());
 
 				myGrid.initialize(gridSideSize, mySimulationModel);
-				myRoot.setCenter(myGrid.resetGrid(gridSideSize));
+				myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel));
 				// TODO see if need to pass in mySimulationModel
 				myRoot.setLeft(myLeftUI.draw());
 				play();
 			}
 		});
 		mySimulationChooser.setValue(mySimulationType);
-		myResetButton = makeButton("ResetCommand", event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize)));
+
+		mySaveButton = makeButton("SaveFileCommand", new Rectangle(SCREENWIDTH/10, SCREENHEIGHT/200), event -> saveFile());
+
+		simulationModifiers.getChildren().add(mySimulationChooser);
+		simulationModifiers.getChildren().add(mySaveButton);
+
+		Shape circleButton = new Circle(SCREENWIDTH / 10);
+		myResetButton = makeButton("ResetCommand", circleButton,
+				event -> myRoot.setCenter(myGrid.resetGrid(gridSideSize, mySimulationModel)));
 		// creates the play/pause toggle button
-		myPlayButton = makeButton("PlayCommand", event -> play());
-		myStepButton = makeButton("StepCommand", event -> step());
-		
+		myPlayButton = makeButton("PlayCommand", circleButton,event -> play());
+		myStepButton = makeButton("StepCommand", circleButton,event -> step());
+
 		Initializer init = new Initializer();
-		myNewSimulationButton = makeButton("NewSimulationCommand", event -> {
+		myNewSimulationButton = makeButton("NewSimulationCommand", circleButton,event -> {
 			try {
 				init.newSimulation();
 			} catch (Exception e) {
 				Alert a = new Alert(AlertType.ERROR);
-                a.setContentText(String.format("Couldn't start a new simulation"));
-                a.showAndWait();
+				a.setContentText(String.format("Couldn't start a new simulation"));
+				a.showAndWait();
 			}
 		});
 
-		mySpeedSlider = makeSlider(.1, 2, mySpeedMultiplier, .1);
+		mySpeedSlider = new Slider();
+
+		mySpeedSlider.setMin(MINIMUM_SPEED_MULTIPLIER);
+		mySpeedSlider.setMax(MAXIMUM_SPEED_MULTIPLIER);
+		mySpeedSlider.setValue(mySpeedMultiplier);
 		mySpeedSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
@@ -221,7 +250,7 @@ public class GUI {
 			}
 		});
 
-		buttonLine.getChildren().add(mySimulationChooser);
+		buttonLine.getChildren().add(simulationModifiers);
 		buttonLine.getChildren().add(myResetButton);
 		buttonLine.getChildren().add(myPlayButton);
 		buttonLine.getChildren().add(myStepButton);
@@ -229,24 +258,6 @@ public class GUI {
 		buttonLine.getChildren().add(myNewSimulationButton);
 
 		return buttonLine;
-	}
-
-	/**
-	 * Makes a slider accessible by any class in the front end
-	 */
-	protected Slider makeSlider(double min, double max, double increment, double changingValue) {
-		Slider newSlider = new Slider();
-		// slider is based on percentages, hence the 0 to 10 and default value
-		// which then multiplies by duration
-		newSlider.setMin(min);
-		newSlider.setMax(max);
-		// Sets default slider location
-		newSlider.setValue(changingValue);
-
-		newSlider.setBlockIncrement(increment);
-		// will snap to integers
-		// mySpeedSlider.setSnapToTicks(true);
-		return newSlider;
 	}
 
 	/**
@@ -265,17 +276,16 @@ public class GUI {
 	 * @author Edwin Ward
 	 * @author Robert C. Duvall
 	 */
-	private Button makeButton(String name, EventHandler<ActionEvent> handler) {
+	private Button makeButton(String name, Shape shape, EventHandler<ActionEvent> handler) {
 		final String IMAGEFILE_SUFFIXES = String.format("(.*)\\.(%s)",
 				String.join("|", ImageIO.getReaderFileSuffixes()));
 
 		Button newButton = new Button();
 		String label = myResources.getString(name);
 		if (label.matches(IMAGEFILE_SUFFIXES)) {
-			System.out.println("HEY LOOK HERE" + DEFAULT_RESOURCE_PACKAGE + label);
 			try {
 				newButton.setGraphic(
-						// TODO DEFAULT_RESOURCE_PACKAGE +
+						// TODO figure out why this does not work
 						new ImageView(new Image(getClass().getResourceAsStream(DEFAULT_RESOURCE_PACKAGE + label))));
 
 			} catch (NullPointerException e) {
@@ -286,7 +296,7 @@ public class GUI {
 			newButton.setWrapText(true);
 			newButton.setText(label);
 		}
-		newButton.setShape(new Circle(SCREENWIDTH / 10));
+		newButton.setShape(shape);
 		newButton.setPrefWidth(SCREENWIDTH / 5);
 		newButton.setPrefHeight(SCREENWIDTH / 10);
 		newButton.setOnAction(handler);
@@ -294,6 +304,11 @@ public class GUI {
 		return newButton;
 	}
 
+	/**
+	 * Adds a nice drop shadow when mouse hovers over the active button
+	 * 
+	 * @param button
+	 */
 	protected void whenMouseOver(Control button) {
 		DropShadow shadow = new DropShadow();
 		// Adding the shadow when the mouse cursor is on
@@ -317,11 +332,10 @@ public class GUI {
 	 * run calls
 	 */
 	private void step() {
-		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation().getType());
-		if(mySimulationModel instanceof SugarScapeModel){
-			((SugarScapeModel) mySimulationModel).setAmounts(mySimulation.startNewRoundSimulation().getAmount());
-		}
-		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
+		GridInfo gridinfo=mySimulation.startNewRoundSimulation();
+		mySimulationModel.setPositions(gridinfo.getType());
+		mySimulationModel.setAmounts(gridinfo.getAmount());
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize, mySimulationModel));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 	}
 
@@ -331,7 +345,7 @@ public class GUI {
 	private void play() {
 		myStepButton.setDisable(isPaused);
 		myResetButton.setDisable(isPaused);
-
+		myLeftUI.pause(isPaused);
 		isPaused = !isPaused;
 		if (isPaused) {
 			myPlayButton.setText(myResources.getString("PlayCommand"));
@@ -343,6 +357,11 @@ public class GUI {
 			timer.getKeyFrames().add(frame);
 			timer.play();
 		}
+	}
+
+	private void saveFile() {
+		XMLWriter writer = new XMLWriter();
+		writer.writeToXML(mySimulationModel);
 	}
 
 	/**

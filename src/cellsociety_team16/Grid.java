@@ -25,9 +25,10 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private Color GRIDLINE_COLOR = Color.BLACK;
-	// private Color EMPTY_COLOR = Color.WHITE;
-	// private Color ACTIVE_COLOR = Color.GREEN;
-	// private Color SPECIAL_COLOR = Color.RED;
+private static int EMPTY_INDEX = 0;
+private static int ACTIVE_INDEX = 1;
+private static int SPECIAL_INDEX = 2;
+
 	private List<Integer> myInts;
 	private boolean gridSizeStatic;
 	private boolean gridLines;
@@ -49,11 +50,8 @@ public abstract class Grid {
 		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
-
+		
 		System.out.println(simulationModel.getName());
-		myColors.add(0, simulationModel.getEmptyColor());
-		myColors.add(1, simulationModel.getInactiveColor());
-		myColors.add(2, simulationModel.getActiveColor());
 	}
 
 	/**
@@ -66,9 +64,11 @@ public abstract class Grid {
 	public Node initialize(int gridExtents, SimulationModel simmod) {
 		mySimulationModel = simmod;
 
-		setBaseColor(0, mySimulationModel.getEmptyColor());
-		setBaseColor(1, mySimulationModel.getInactiveColor());
-		setBaseColor(2, mySimulationModel.getActiveColor());
+		gridLines = mySimulationModel.getGridLines();
+		
+		setBaseColor(EMPTY_INDEX, mySimulationModel.getEmptyColor());
+		setBaseColor(ACTIVE_INDEX, mySimulationModel.getInactiveColor());
+		setBaseColor(SPECIAL_INDEX, mySimulationModel.getActiveColor());
 		// If the simulationModel contains initial positions, use setGrid which
 		// doesn't randomize new positions
 		// cellExtents = mySimulationModel.getcellSize();
@@ -199,7 +199,7 @@ public abstract class Grid {
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
 			int rowLoc = row_iter * cellSize;
-			if (rowLoc % 2 == 0) {
+			if (row_iter % 2 == 0) {
 				onOffset = 1;
 			} else {
 				onOffset = 0;
@@ -225,8 +225,8 @@ public abstract class Grid {
 						changeCellState(shapely);
 					}
 				});
-				// gets darkness or lightness of the square
-				int capacity = 0;
+				// gets darkness or lightness of the square depending on how many things are in it
+				int capacity = mySimulationModel.getAmounts().get(index)-1;
 				shapely.setFill(getColor(myInts.get(index), capacity));
 				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
@@ -292,8 +292,13 @@ public abstract class Grid {
 		return myShape;
 	}
 	// abstract public List getCellPositions();
-	// public Grid setGridType(){
-	// model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml)
-	// }
+//	 public Grid setGridType(){
+//		  try {
+//				Class<?> model = Class.forName(mySimulationModel.getName() + "Model");
+//				return (Grid) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
+//			} catch (Exception e) {
+//				return null;
+//			}
+//	 }
 
 }
