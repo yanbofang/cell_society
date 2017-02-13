@@ -130,6 +130,7 @@ public class UserInputBar {
 		// userInput.getChildren().addAll(sliderGroup);
 
 		myGridLines = new CheckBox(myResources.getString("GridLinesCheckBox"));
+		myGridLines.setSelected(mySimulationModel.getGridLines());
 		myGridLines.selectedProperty().addListener(new ChangeListener<Boolean>() {
 			public void changed(ObservableValue<? extends Boolean> ov, Boolean old_val, Boolean new_val) {
 				myGrid.setGridLines(new_val);

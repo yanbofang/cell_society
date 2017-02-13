@@ -197,7 +197,7 @@ private static int SPECIAL_INDEX = 2;
 		for (int row_iter = 0; row_iter < myGridRows; row_iter++) {
 			// determines place on the screen
 			int rowLoc = row_iter * cellSize;
-			if (rowLoc % 2 == 0) {
+			if (row_iter % 2 == 0) {
 				onOffset = 1;
 			} else {
 				onOffset = 0;

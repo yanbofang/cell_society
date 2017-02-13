@@ -51,6 +51,7 @@ import xml.XMLWriter;
 /**
  * Loads the GUI for Cell Society interface
  * 
+ * @author Yanbo Fang
  * @author Kris Elbert
  *
  */
@@ -59,6 +60,7 @@ public class GUI {
 	public static final int SCREENWIDTH = 700;
 	public static final int SCREENHEIGHT = 700;
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
+	public static final String GRID_PACKAGE = "cellsociety_team16.";
 	public static final Color BACKGROUND = Color.ALICEBLUE;
 	public static final double MAX_SPEED = 1000; // in ms
 	public static final double MINIMUM_SPEED_MULTIPLIER = .1;
@@ -108,14 +110,17 @@ public class GUI {
 	private Timeline timer;
 	private BorderPane myRoot;
 
-	public GUI(SimulationModel simulation, String language) {
+	public GUI(SimulationModel simulation, String language) throws Exception {
 		mySimulationModel = simulation;
 		mySimulation = new Simulation();
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
-		// default is square grid
-		myGrid = new TriangleGrid(mySimulationModel, mySimulation);
+		
+		Class<?> grid = Class.forName(GRID_PACKAGE + mySimulationModel.getCellShape() + "Grid");
+		myGrid = (Grid) grid.getDeclaredConstructor(SimulationModel.class, Simulation.class)
+				.newInstance(mySimulationModel, mySimulation);
+
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes
 		// makes a square grid

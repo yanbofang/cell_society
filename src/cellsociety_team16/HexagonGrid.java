@@ -20,7 +20,7 @@ public class HexagonGrid extends Grid {
 	public static final String myShape = "hexagon";
 	private int HEXAGON_ANGLE;
 	private int sideCount = 6;
-	private static double TRANSLATION = .5;
+	private static double TRANSLATION = 0.5;
 	private static boolean MANIPULATABLE = false;
 	public HexagonGrid(SimulationModel simulationModel, Simulation simulation) {
 		super(simulationModel, simulation, TRANSLATION, MANIPULATABLE);
