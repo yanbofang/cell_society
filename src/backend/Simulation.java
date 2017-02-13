@@ -16,8 +16,12 @@ import backend.Sugarscape.SugarscapeHandler;
 import backend.WaTorSimulation.Fish;
 import backend.WaTorSimulation.Shark;
 import backend.WaTorSimulation.WaTorHandler;
-import cellsociety_team16.SimulationModel;
 import cellsociety_team16.*;
+import simulation_models.GameOfLifeModel;
+import simulation_models.SegregationModel;
+import simulation_models.SimulationModel;
+import simulation_models.SpreadingFireModel;
+import simulation_models.WaTorModel;
 /**
  * This class is in charge of the simulation and the connection with the front end.
  * After set up with the initial grid, the class will call Handler to handle the next

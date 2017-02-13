@@ -22,7 +22,7 @@ public class XMLSimulation {
 			"activePercentage", "inactivePercentage", "emptyPercentage", "fireProbability", "treeProbability",
 			"satisfactionRate", "fishBreed", "sharkBreed", "sugarMetabolism","sugarGrowBackRate", "positions", "amounts" });
 
-	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[]{"cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize"});
+	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[]{"cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize", "numOfNeighbors"});
 	
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
@@ -141,6 +141,9 @@ public class XMLSimulation {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(4)));
 	}
 	
+	public int getNumOfNeighbors(){
+		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(5)));
+	}
 	
 	
 	@Override

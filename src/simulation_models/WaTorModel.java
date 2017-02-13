@@ -1,4 +1,4 @@
-package cellsociety_team16;
+package simulation_models;
 
 import xml.XMLSimulation;
 
@@ -62,6 +62,9 @@ public class WaTorModel extends SimulationModel {
 	}
 
 	@Override
+	/**
+	 * Return the number of states for this simulation
+	 */
 	public int numberOfStates() {
 		return this.numberOfStates;
 	}

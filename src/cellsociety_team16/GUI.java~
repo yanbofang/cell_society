@@ -107,7 +107,10 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
+<<<<<<< HEAD
+=======
 		// default is square grid
+>>>>>>> 0c39034159cd9bd5d307d7b46652474bda9c605f
 		myGrid = new SquareGrid(mySimulationModel, mySimulation);
 		// set grid extents to a of whichever is smaller, width or height
 		// .75 is arbitrary value for aesthetic purposes

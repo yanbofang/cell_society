@@ -1,4 +1,4 @@
-package cellsociety_team16;
+package simulation_models;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -18,10 +18,6 @@ import xml.XMLSimulation;
  */
 public abstract class SimulationModel {
 
-	// public static final Color ACTIVE_COLOR = Color.RED;
-	// public static final Color INACTIVE_COLOR = Color.GREEN;
-	// public static final Color EMPTY_COLOR = Color.WHITE;
-
 	private String name;
 	private int rows;
 	private int cols;
@@ -33,11 +29,13 @@ public abstract class SimulationModel {
 	private List<String> availableColorsStrings = new ArrayList<String>();
 	private List<Color> myAvailableColors;
 	private List<Color> myColors;
+	private List<Integer> myAmounts;
 	private String cellShape;
 	private String activeColor;
 	private String inactiveColor;
 	private String emptyColor;
 	private int cellSize;
+	private int numOfNeighbors;
 
 	/**
 	 * Constructor for SimulationModel
@@ -61,6 +59,8 @@ public abstract class SimulationModel {
 		availableColorsStrings.add(activeColor);
 		myAvailableColors = this.setColorsAvailable();
 		cellSize = simulation.getCellSize();
+		numOfNeighbors = simulation.getNumOfNeighbors();
+		myAmounts = this.setAmounts(simulation.getAmounts());
 		myColors = this.setColors();
 	}
 
@@ -83,6 +83,15 @@ public abstract class SimulationModel {
 	}
 
 	/**
+	 * Set the number of rows
+	 * 
+	 * @param rows
+	 */
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	/**
 	 * Get the number of columns
 	 * 
 	 * @return
@@ -91,22 +100,31 @@ public abstract class SimulationModel {
 		return this.cols;
 	}
 
+	/**
+	 * Set the number of columns
+	 * 
+	 * @param cols
+	 */
+	public void setCols(int cols) {
+		this.cols = cols;
+	}
+
+	/**
+	 * Get the shape of the cell
+	 * 
+	 * @return
+	 */
 	public String getCellShape() {
 		return this.cellShape;
 	}
 
-	private List<Color> setColorsAvailable() {
-		myAvailableColors = new ArrayList<Color>();
-		try {
-			for (String s : availableColorsStrings) {
-				Color c = (Color) Class.forName("javafx.scene.paint.Color").getField(s.toUpperCase()).get(null);
-				myAvailableColors.add(c);
-			}
-			return myAvailableColors;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
+	/**
+	 * Set the shape of the cell
+	 * 
+	 * @param shape
+	 */
+	public void setCellShape(String shape) {
+		this.cellShape = shape;
 	}
 
 	/**
@@ -136,8 +154,40 @@ public abstract class SimulationModel {
 		return this.myAvailableColors.get(2);
 	}
 
+	/**
+	 * Return the size of the cell
+	 * 
+	 * @return
+	 */
 	public int getCellSize() {
 		return this.cellSize;
+	}
+
+	/**
+	 * Set the size of the cell
+	 * 
+	 * @param size
+	 */
+	public void setCellSize(int size) {
+		this.cellSize = size;
+	}
+
+	/**
+	 * Return the number of neighbors for a cell
+	 * 
+	 * @return
+	 */
+	public int getNumOfNeighbors() {
+		return this.numOfNeighbors;
+	}
+
+	/**
+	 * Set how many neighbors a cell has
+	 * 
+	 * @param neighbors
+	 */
+	public void setNumOfNeighbors(int neighbors) {
+		this.numOfNeighbors = neighbors;
 	}
 
 	/**
@@ -149,15 +199,40 @@ public abstract class SimulationModel {
 	public List<Integer> getCounts() {
 		myCounts = new ArrayList<Integer>(Arrays.asList(0, 0, 0));
 		for (Integer i : myPositions) {
-			if (i == 0) {
-				myCounts.set(0, myCounts.get(0) + 1);
-			} else if (i == 1) {
-				myCounts.set(1, myCounts.get(1) + 1);
-			} else if (i == 2) {
-				myCounts.set(2, myCounts.get(2) + 1);
-			}
+			myCounts.set(i, myCounts.get(i) + 1);
 		}
+		// Update the percentage
+		this.setEmptyPercentage(myCounts.get(0) / (rows * cols));
+		this.setInactivePercentage(myCounts.get(1) / (rows * cols));
+		this.setActivePercentage(myCounts.get(2) / (rows * cols));
 		return myCounts;
+	}
+
+	/**
+	 * Return the percentage of active cells in the current model
+	 * 
+	 * @return
+	 */
+	public double getAcitivePercentage() {
+		return this.activePercentage;
+	}
+
+	/**
+	 * Return the percentage of inactive cells in the current model
+	 * 
+	 * @return
+	 */
+	public double getInactivePercentage() {
+		return this.inactivePercentage;
+	}
+
+	/**
+	 * Return the percentage of empty cells in the current model
+	 * 
+	 * @return
+	 */
+	public double getEmptyPercentage() {
+		return this.emptyPercentage;
 	}
 
 	/**
@@ -206,6 +281,31 @@ public abstract class SimulationModel {
 	public void setPositions(List<Integer> lst) {
 		this.myPositions = lst;
 		this.setColors();
+	}
+
+	/**
+	 * Return a list of the amounts of items at corresponding indices.
+	 * 
+	 * @return
+	 */
+	public List<Integer> getAmounts() {
+		return this.myAmounts;
+	}
+
+	/**
+	 * Set the amounts and return it
+	 * 
+	 * @param amounts
+	 * @return
+	 */
+	public List<Integer> setAmounts(List<Integer> amounts) {
+		if (amounts.isEmpty()) {
+			for (int i = 0; i < myPositions.size(); i++)
+				myAmounts.add(1);
+		} else {
+			this.myAmounts = amounts;
+		}
+		return amounts;
 	}
 
 	/**
@@ -261,4 +361,19 @@ public abstract class SimulationModel {
 			}
 		}
 	}
+
+	private List<Color> setColorsAvailable() {
+		myAvailableColors = new ArrayList<Color>();
+		try {
+			for (String s : availableColorsStrings) {
+				Color c = (Color) Class.forName("javafx.scene.paint.Color").getField(s.toUpperCase()).get(null);
+				myAvailableColors.add(c);
+			}
+			return myAvailableColors;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 }
