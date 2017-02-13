@@ -79,7 +79,7 @@ private static int SPECIAL_INDEX = 2;
 			mySimulationModel.setRandomPositions();
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridExtents);
+		return updateGrid(gridExtents, mySimulationModel);
 	}
 
 	/**
@@ -180,7 +180,8 @@ private static int SPECIAL_INDEX = 2;
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	public Node updateGrid(int gridExtents) {
+	public Node updateGrid(int gridExtents, SimulationModel simmod) {
+		mySimulationModel = simmod;
 		int onOffset;
 		int rotateAngle;
 		Group cells = new Group();
@@ -265,7 +266,7 @@ private static int SPECIAL_INDEX = 2;
 		mySimulationModel = simmod;
 		mySimulationModel.setRandomPositions();
 		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridExtents);
+		return updateGrid(gridExtents,mySimulationModel);
 	}
 
 	protected void setOffset(double value) {

@@ -1,5 +1,6 @@
 package cellsociety_team16;
 
+import backend.GridInfo;
 import backend.Simulation;
 import java.util.ResourceBundle;
 
@@ -326,9 +327,10 @@ public class GUI {
 	 * run calls
 	 */
 	private void step() {
-		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation().getType());
-		mySimulationModel.setAmounts(mySimulation.startNewRoundSimulation().getAmount());
-		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
+		GridInfo gridinfo=mySimulation.startNewRoundSimulation();
+		mySimulationModel.setPositions(gridinfo.getType());
+		mySimulationModel.setAmounts(gridinfo.getAmount());
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize, mySimulationModel));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 	}
 

@@ -43,9 +43,11 @@ public abstract class Handler {
 			for (int i = 0; i < thisRoundGrid.getSize(); i++) {
 				Container curContainer = thisRoundGrid.getContainer(i);
 				if (!curContainer.getNext().isLocked() && curContainer.getMyCell().getPriority() == priority) {
+					System.out.print(curContainer.getMyCell().getIdentity()+curContainer.getMyCell());
 					this.solve(curContainer);
 				}
 			}
+			System.out.println();
 		}
 		for (int i = 0; i < this.nextRoundGrid.getSize(); i++) {
 			if (this.nextRoundGrid.getContainer(i).getMyCell() == null) {

@@ -15,31 +15,56 @@ import backend.Handler;
  */
 
 public class SlimeHandler extends Handler {
+	private static final String FOOD = "Food";
+	private static final String EMPTY_CELL = "EmptyCell";
 	private int PheromoneDiffusionGate = 4;
 	private int PheromoneDiffusionAmount = 2;
 
+	/**
+	 * The required method to determine the future status of the current grid.
+	 * 
+	 * @param curContainer-the
+	 *            Container we are going to look at
+	 */
 	@Override
 	public void solve(Container curContainer) {
 		// TODO Auto-generated method stub
-		if (curContainer.contains("Slime")) {
-			ArrayList<Container> myNeighbor = curContainer.getMyNeighbors();
-			int max = curContainer.getPheromone("Food");
-			Container maxContainer = curContainer;
+		if (curContainer.getMyCell().is("Slime")) {
+			ArrayList<Container> myNeighbor = (ArrayList<Container>) curContainer.getNeighborFromCloserToFurther();
+			int max = -1;
+			Container maxContainer = null;
+			if (!curContainer.getNext().isLocked()) {
+				max = curContainer.getPheromone(FOOD);
+				maxContainer = curContainer;
+			}
 			for (Container curNeighbor : myNeighbor) {
-				if (curNeighbor.getPheromone("Food") > max) {
-					max = curNeighbor.getPheromone("Food");
+				if (!curNeighbor.getNext().isLocked() && curNeighbor.getPheromone(FOOD) > max) {
+					max = curNeighbor.getPheromone(FOOD);
 					maxContainer = curNeighbor;
 				}
 			}
-			curContainer.setNext(new EmptyCell());
-			maxContainer.setNext(curContainer.getMyCell());
-			if (curContainer.getPheromone("Food") > this.PheromoneDiffusionGate) {
+
+			if (curContainer != maxContainer) {
+				curContainer.setNext(new EmptyCell());
+				maxContainer.setNext(curContainer.getMyCell());
+				System.out.println(maxContainer.getPosX() + " " + maxContainer.getPosY() + " "
+						+ maxContainer.getNext().numCellContain());
+			} else {
+				curContainer.setNext(curContainer.getMyCell());
+				System.out.println(maxContainer.getPosX() + " " + maxContainer.getPosY() + " "
+						+ maxContainer.getNext().numCellContain());
+			}
+			if (curContainer.getPheromone(FOOD) > this.PheromoneDiffusionGate) {
 				ArrayList<Container> neighborAdd = (ArrayList<Container>) curContainer.getNeighborFromCloserToFurther();
 				for (int i = 0; i < neighborAdd.size(); i++) {
 					Container curNeighbor = neighborAdd.get(i);
-					curNeighbor.setPheromone("Food", curNeighbor.getPheromone("Food") + this.PheromoneDiffusionAmount);
+					curNeighbor.getNext().setPheromone(FOOD,
+							curNeighbor.getPheromone(FOOD) + this.PheromoneDiffusionAmount);
 				}
 			}
+		}
+		if (curContainer.getMyCell().is(EMPTY_CELL)) {
+			curContainer.setNext(new EmptyCell());
 		}
 	}
 
