@@ -56,17 +56,21 @@ public class UserInputBar {
 		myResources = resources;
 		slidersAvailable = new Slider[3];
 		slidersAvailable[EMPTY_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getEmptyPercentage());
-		slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
-				mySimulationModel.setEmptyPercentage(newValue.doubleValue());
-			}
-		});
+//		 slidersAvailable[EMPTY_INDEX].valueProperty().addListener(new
+//		 ChangeListener<Number>() {
+//		 @Override
+//		 public void changed(ObservableValue<? extends Number> observed,
+//		 Number prevValue, Number newValue) {
+//		 mySimulationModel.setEmptyPercentage(newValue.doubleValue());
+//		 }
+//		 });
 		slidersAvailable[ACTIVE_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getInactivePercentage());
 		slidersAvailable[ACTIVE_INDEX].valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySimulationModel.setInactivePercentage(newValue.doubleValue());
+				slidersAvailable[EMPTY_INDEX].setValue(100-newValue.doubleValue()-slidersAvailable[SPECIAL_INDEX].getValue());
+			
 			}
 		});
 		slidersAvailable[SPECIAL_INDEX] = makeSlider(0, 100, 10, mySimulationModel.getActivePercentage());
@@ -74,6 +78,7 @@ public class UserInputBar {
 			@Override
 			public void changed(ObservableValue<? extends Number> observed, Number prevValue, Number newValue) {
 				mySimulationModel.setActivePercentage(newValue.doubleValue());
+				slidersAvailable[EMPTY_INDEX].setValue(100-newValue.doubleValue()-slidersAvailable[ACTIVE_INDEX].getValue());
 			}
 		});
 	}
@@ -119,8 +124,8 @@ public class UserInputBar {
 			// myValueSliders.add(i, makeSlider(0, 100, 10, changingValue[i]))
 		}
 
-//		userInput.getChildren().addAll(myColorPickers);
-//		userInput.getChildren().addAll(sliderGroup);
+		// userInput.getChildren().addAll(myColorPickers);
+		// userInput.getChildren().addAll(sliderGroup);
 
 		myGridLines = new CheckBox(myResources.getString("GridLinesCheckBox"));
 		myGridLines.selectedProperty().addListener(new ChangeListener<Boolean>() {
@@ -194,7 +199,14 @@ public class UserInputBar {
 
 		newSlider.setBlockIncrement(increment);
 		// will snap to integers
-		// mySpeedSlider.setSnapToTicks(true);
+		 newSlider.setSnapToTicks(true);
 		return newSlider;
+	}
+	
+	private void updateSliders(Slider thisSlider, Slider otherActiveSlider, Slider emptySlider, double newValue){
+		emptySlider.setValue(100-newValue-otherActiveSlider.getValue());
+		if(emptySlider.getValue() <= 0){
+			otherActiveSlider.setValue(100 - newValue);
+		}
 	}
 }
