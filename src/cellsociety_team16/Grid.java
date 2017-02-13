@@ -54,6 +54,7 @@ public abstract class Grid {
 		myColors.add(0, simulationModel.getEmptyColor());
 		myColors.add(1, simulationModel.getInactiveColor());
 		myColors.add(2, simulationModel.getActiveColor());
+		this.setGridLines(mySimulationModel.getGridLines());
 	}
 
 	/**
