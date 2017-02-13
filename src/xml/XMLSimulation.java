@@ -18,12 +18,14 @@ public class XMLSimulation {
 	// field names expected to appear in data file holding values for this
 	// object
 	// simple way to create an immutable list
-	public static final List<String> DATA_FIELDS = Arrays.asList(new String[] { "name", "author", "rows", "cols",
-			"activePercentage", "inactivePercentage", "emptyPercentage", "fireProbability", "treeProbability",
-			"satisfactionRate", "fishBreed", "sharkBreed", "sugarMetabolism","sugarGrowBackRate", "positions", "amounts" });
+	public static final List<String> DATA_FIELDS = Arrays
+			.asList(new String[] { "name", "author", "rows", "cols", "activePercentage", "inactivePercentage",
+					"emptyPercentage", "fireProbability", "treeProbability", "satisfactionRate", "fishBreed",
+					"sharkBreed", "sugarMetabolism", "sugarGrowBackRate", "positions", "amounts" });
 
-	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[]{"cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize", "numOfNeighbors"});
-	
+	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(
+			new String[] { "cellShape", "activeColor", "inactiveColor", "emptyColor", "cellSize", "numOfNeighbors" });
+
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
 
@@ -80,14 +82,14 @@ public class XMLSimulation {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(11)));
 	}
 
-	public int getSugarMetabolism(){
+	public int getSugarMetabolism() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(12)));
 	}
-	
-	public int getSugarGrowBackRate(){
+
+	public int getSugarGrowBackRate() {
 		return Integer.parseInt(myDataValues.get(DATA_FIELDS.get(13)));
 	}
-	
+
 	public List<Integer> getPositions() {
 		String ints = myDataValues.get(DATA_FIELDS.get(14));
 		ArrayList<Integer> pos = new ArrayList<Integer>();
@@ -97,7 +99,7 @@ public class XMLSimulation {
 				throw new XMLException("Invalid cell state value at index %d", i / 2);
 			}
 			pos.add(cellState);
-			//Skip the space
+			// Skip the space
 			i++;
 		}
 		if (pos.size() > this.getCols() * this.getRows()) {
@@ -105,47 +107,52 @@ public class XMLSimulation {
 		}
 		return pos;
 	}
-	
-	public List<Integer> getAmounts(){
+
+	public List<Integer> getAmounts() {
 		String ints = myDataValues.get(DATA_FIELDS.get(15));
+
 		ArrayList<Integer> amounts = new ArrayList<Integer>();
-		for (int i = 0; i < ints.length(); i++) {
-			Integer amount = Integer.parseInt(ints.substring(i, i + 1));
-			amounts.add(amount);
-			i++;
+		for (int i = 0; i < ints.length() - 1; i++) {
+			if (ints.substring(i, i + 1).equals(" "))
+				continue;
+			StringBuilder sb = new StringBuilder();
+			while (!ints.substring(i, i + 1).equals(" ")) {
+				sb.append(ints.substring(i, i + 1));
+				i++;
+			}
+			amounts.add(Integer.parseInt(sb.toString()));
 		}
+		amounts.add(Integer.parseInt(ints.substring(ints.length()-1)));
 		if (amounts.size() > this.getCols() * this.getRows()) {
 			throw new XMLException("Cell locaations are outside the bounds of the grid's size");
 		}
 		return amounts;
 	}
-	
 
-	public String getCellShape(){
+	public String getCellShape() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(0));
 	}
-	
-	public String getActiveColor(){
+
+	public String getActiveColor() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(1));
 	}
-	
-	public String getInactiveColor(){
+
+	public String getInactiveColor() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(2));
 	}
-	
-	public String getEmptyColor(){
+
+	public String getEmptyColor() {
 		return myDataValues.get(CONFIGURATION_FIELDS.get(3));
 	}
-	
-	public int getCellSize(){
+
+	public int getCellSize() {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(4)));
 	}
-	
-	public int getNumOfNeighbors(){
+
+	public int getNumOfNeighbors() {
 		return Integer.parseInt(myDataValues.get(CONFIGURATION_FIELDS.get(5)));
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		StringBuilder result = new StringBuilder();
