@@ -110,7 +110,7 @@ public class XMLSimulation {
 
 	public List<Integer> getAmounts() {
 		String ints = myDataValues.get(DATA_FIELDS.get(15));
-
+		if (ints == null || ints.isEmpty()) return new ArrayList<Integer>();
 		ArrayList<Integer> amounts = new ArrayList<Integer>();
 		for (int i = 0; i < ints.length() - 1; i++) {
 			if (ints.substring(i, i + 1).equals(" "))
@@ -123,6 +123,7 @@ public class XMLSimulation {
 			amounts.add(Integer.parseInt(sb.toString()));
 		}
 		amounts.add(Integer.parseInt(ints.substring(ints.length()-1)));
+
 		if (amounts.size() > this.getCols() * this.getRows()) {
 			throw new XMLException("Cell locaations are outside the bounds of the grid's size");
 		}

@@ -307,6 +307,7 @@ public abstract class SimulationModel {
 		} else {
 			this.myAmounts = amounts;
 		}
+		System.out.println(myAmounts);
 		return myAmounts;
 	}
 
