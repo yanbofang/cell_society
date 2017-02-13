@@ -25,9 +25,9 @@ public abstract class Grid {
 	public static final String DEFAULT_RESOURCE_PACKAGE = "resources/";
 	// Integers correspond to cell types and colors
 	private Color GRIDLINE_COLOR = Color.BLACK;
-private static int EMPTY_INDEX = 0;
-private static int ACTIVE_INDEX = 1;
-private static int SPECIAL_INDEX = 2;
+	private static int EMPTY_INDEX = 0;
+	private static int ACTIVE_INDEX = 1;
+	private static int SPECIAL_INDEX = 2;
 
 	private List<Integer> myInts;
 	private boolean gridSizeStatic;
@@ -50,7 +50,7 @@ private static int SPECIAL_INDEX = 2;
 		myColors = new ArrayList<Color>();
 		myOffsetPercentage = translationPercentage;
 		myManipulatable = bool;
-		
+
 		System.out.println(simulationModel.getName());
 	}
 
@@ -65,7 +65,7 @@ private static int SPECIAL_INDEX = 2;
 		mySimulationModel = simmod;
 
 		gridLines = mySimulationModel.getGridLines();
-		
+
 		setBaseColor(EMPTY_INDEX, mySimulationModel.getEmptyColor());
 		setBaseColor(ACTIVE_INDEX, mySimulationModel.getInactiveColor());
 		setBaseColor(SPECIAL_INDEX, mySimulationModel.getActiveColor());
@@ -224,8 +224,9 @@ private static int SPECIAL_INDEX = 2;
 						changeCellState(shapely);
 					}
 				});
-				// gets darkness or lightness of the square depending on how many things are in it
-				int capacity = mySimulationModel.getAmounts().get(index)-1;
+				// gets darkness or lightness of the square depending on how
+				// many things are in it
+				int capacity = mySimulationModel.getAmounts().get(index) - 1;
 				shapely.setFill(getColor(myInts.get(index), capacity));
 				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
@@ -287,17 +288,22 @@ private static int SPECIAL_INDEX = 2;
 	 */
 	abstract Shape drawShape(double xLoc, double yLoc, double cellSize, int rotateXAngle);
 
-	public String getGridType() {
-		return myShape;
+	public void setGridType(String shapeName) {
+//		try {
+//		Class<?> gridType = Class.forName(shapeName + "Grid");
+//		gridType.getDeclaredConstructor(SimulationModel.class).newInstance(mySimulationModel);
+////		} catch (Exception e) {
+////			setGridType("Square");
+////		}
 	}
-	// abstract public List getCellPositions();
-//	 public Grid setGridType(){
-//		  try {
-//				Class<?> model = Class.forName(mySimulationModel.getName() + "Model");
-//				return (Grid) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
-//			} catch (Exception e) {
-//				return null;
-//			}
-//	 }
+
+	public void getGridType() {
+//	try{
+//		Class<?> gridType = Class.forName(mySimulationModel.getCellShape() + "Grid");
+//		return (Grid) gridType.getDeclaredConstructor(Grid.class).newInstance(mySimulationModel);
+//	} catch (Exception e) {
+//		return null;
+//	}
+	}
 
 }
