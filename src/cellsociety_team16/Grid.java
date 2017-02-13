@@ -262,8 +262,10 @@ public abstract class Grid {
 	 * 
 	 * @return a new grid of the mySimulationType
 	 */
-	public Node resetGrid(int gridExtents) {
+	public Node resetGrid(int gridExtents, SimulationModel simmod) {
+		mySimulationModel = simmod;
 		mySimulationModel.setRandomPositions();
+		System.out.println("!!!!!!!!!"+ mySimulationModel.getPositions());
 		mySimulation.setInitialGrid(mySimulationModel);
 		return updateGrid(gridExtents);
 	}
