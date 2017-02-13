@@ -12,12 +12,16 @@ import java.util.List;
  *
  */
 public abstract class Grid {
+	private static final String HOME2 = "Home";
+	private static final String FOOD2 = "Food";
+	private static final String TOROIDAL = "TOROIDAL";
+	private static final String FINITE = "FINITE";
 	private ArrayList<Container> containerlist = new ArrayList<Container>();
 	private int n = 0;
 	private int m = 0;
 	private Grid next;
 	private int size;
-	private String boundary = "FINITE";
+	private String boundary = FINITE;
 
 	public static final int[] POSXSQUARE = { -1, 0, 1, 0, -1, 1, -1, 1 };
 	public static final int[] POSYSQUARE = { 0, -1, 0, 1, -1, -1, 1, 1 };
@@ -111,10 +115,10 @@ public abstract class Grid {
 	 * @return
 	 */
 	public int boundXHandle(int x) {
-		if (this.boundaryIs("FINITE")) {
+		if (this.boundaryIs(FINITE)) {
 			return x;
 		}
-		if (this.boundaryIs("TOROIDAL")) {
+		if (this.boundaryIs(TOROIDAL)) {
 			if (x >= n)
 				return (x - n);
 			else
@@ -131,10 +135,10 @@ public abstract class Grid {
 	 * @return
 	 */
 	public int boundYHandle(int y) {
-		if (this.boundaryIs("FINITE")) {
+		if (this.boundaryIs(FINITE)) {
 			return y;
 		}
-		if (this.boundaryIs("TOROIDAL")) {
+		if (this.boundaryIs(TOROIDAL)) {
 			if (y >= m)
 				return (y - m);
 			else
@@ -167,10 +171,10 @@ public abstract class Grid {
 		this.next = nextRoundGrid;
 		for (int i = 0; i < size; i++) {
 			this.getContainer(i).setNext(this.next.getContainer(i));
-			int Food = this.getContainer(i).getPheromone("Food");
-			this.next.getContainer(i).setPheromone("Food", Food);
-			int Home = this.getContainer(i).getPheromone("Home");
-			this.next.getContainer(i).setPheromone("Home", Home);
+			int Food = this.getContainer(i).getPheromone(FOOD2);
+			this.next.getContainer(i).setPheromone(FOOD2, Food);
+			int Home = this.getContainer(i).getPheromone(HOME2);
+			this.next.getContainer(i).setPheromone(HOME2, Home);
 		}
 	}
 

@@ -1,5 +1,6 @@
 package cellsociety_team16;
 
+import backend.GridInfo;
 import backend.Simulation;
 import java.util.ResourceBundle;
 
@@ -148,7 +149,7 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources);
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT/padding);
 		myRoot.setLeft(myLeftUI.draw());
 		Scene myScene = new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND);
         myScene.getStylesheets().add(DEFAULT_RESOURCE_PACKAGE + "default.css");
@@ -328,9 +329,10 @@ public class GUI {
 	 * run calls
 	 */
 	private void step() {
-		mySimulationModel.setPositions(mySimulation.startNewRoundSimulation().getType());
-		mySimulationModel.setAmounts(mySimulation.startNewRoundSimulation().getAmount());
-		myRoot.setCenter(myGrid.updateGrid(gridSideSize));
+		GridInfo gridinfo=mySimulation.startNewRoundSimulation();
+		mySimulationModel.setPositions(gridinfo.getType());
+		mySimulationModel.setAmounts(gridinfo.getAmount());
+		myRoot.setCenter(myGrid.updateGrid(gridSideSize, mySimulationModel));
 		myGraph.updateGraph(mySimulationModel, myGraph.getCurrentX() + 0.1);
 	}
 

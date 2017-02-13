@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data type="Simulation">
+<<<<<<< HEAD
     <cellShape>Square</cellShape>
+=======
+    <cellShape>Hexagon</cellShape>
+>>>>>>> 72b2d76729553c9330824aa93734fc7af1e92f5f
     <activeColor>Red</activeColor>
     <inactiveColor>Green</inactiveColor>
     <emptyColor>White</emptyColor>

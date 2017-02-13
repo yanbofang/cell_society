@@ -12,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import simulation_models.SimulationModel;
+import xml.XMLSimulation;
 
 /**
  * Abstract class that will create a new grid in the visualization window
@@ -78,7 +79,7 @@ private static int SPECIAL_INDEX = 2;
 			mySimulationModel.setRandomPositions();
 		}
 		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridExtents);
+		return updateGrid(gridExtents, mySimulationModel);
 	}
 
 	/**
@@ -179,7 +180,8 @@ private static int SPECIAL_INDEX = 2;
 	 * 
 	 * @return a new grid object to add to the scene
 	 */
-	public Node updateGrid(int gridExtents) {
+	public Node updateGrid(int gridExtents, SimulationModel simmod) {
+		mySimulationModel = simmod;
 		int onOffset;
 		int rotateAngle;
 		Group cells = new Group();
@@ -223,8 +225,8 @@ private static int SPECIAL_INDEX = 2;
 						changeCellState(shapely);
 					}
 				});
-				// gets darkness or lightness of the square
-				int capacity = 0;
+				// gets darkness or lightness of the square depending on how many things are in it
+				int capacity = mySimulationModel.getAmounts().get(index)-1;
 				shapely.setFill(getColor(myInts.get(index), capacity));
 				if (gridLines) {
 					shapely.setStroke(GRIDLINE_COLOR);
@@ -264,7 +266,7 @@ private static int SPECIAL_INDEX = 2;
 		mySimulationModel = simmod;
 		mySimulationModel.setRandomPositions();
 		mySimulation.setInitialGrid(mySimulationModel);
-		return updateGrid(gridExtents);
+		return updateGrid(gridExtents,mySimulationModel);
 	}
 
 	protected void setOffset(double value) {
@@ -290,8 +292,13 @@ private static int SPECIAL_INDEX = 2;
 		return myShape;
 	}
 	// abstract public List getCellPositions();
-	// public Grid setGridType(){
-	// model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml)
-	// }
+//	 public Grid setGridType(){
+//		  try {
+//				Class<?> model = Class.forName(mySimulationModel.getName() + "Model");
+//				return (Grid) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
+//			} catch (Exception e) {
+//				return null;
+//			}
+//	 }
 
 }

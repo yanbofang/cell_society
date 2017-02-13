@@ -14,13 +14,15 @@ import backend.Handler;
  */
 public class SegregationHandler extends Handler {
 	private double percent=0.3;
+	private double neighborTot=4;
 	/**
 	 * The constructor to construct a handler for the segregation model with [percent] satisfactory rate
 	 * 
 	 * @param percent
 	 */
-	public SegregationHandler(double percent) {
+	public SegregationHandler(double percent, double neighborTot) {
 		this.percent=percent;
+		this.neighborTot=neighborTot;
 	}
 	
 	/**
@@ -34,7 +36,7 @@ public class SegregationHandler extends Handler {
 			Predicate<String> function = s-> s.compareTo("People")==0;
 			int cnt = this.numberLiveNeighbor(myNeighbor, function);
 
-			if (((double)cnt)/8>=percent) {
+			if (((double)cnt)/this.neighborTot>=percent) {
 				curContainer.setNext(curContainer.getMyCell());
 			} else {
 				curContainer.setNext(new EmptyCell());

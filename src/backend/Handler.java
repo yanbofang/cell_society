@@ -35,7 +35,6 @@ public abstract class Handler {
 	 * @param numPriority
 	 */
 	public void startNewRoundSimulation(Grid thisRoundGrid, Grid nextRoundGrid, int numPriority) {
-		// System.out.println("I'm Here");
 		this.thisRoundGrid = thisRoundGrid;
 		this.nextRoundGrid = nextRoundGrid;
 
