@@ -1,13 +1,8 @@
 package cellsociety_team16;
 
-import java.util.ArrayList;
-
 import backend.Simulation;
-import javafx.scene.Node;
 import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Shape;
-import javafx.scene.transform.Rotate;
 import simulation_models.SimulationModel;
 
 /**

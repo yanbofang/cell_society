@@ -148,7 +148,7 @@ public class GUI {
 		myRoot.setTop(setUpTop());
 		// must do before initiate the grid so can get colors
 		// TODO see if still true
-		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources);
+		myLeftUI = new UserInputBar(mySimulationModel, myXMLManager, myGrid, myResources, SCREENHEIGHT/padding);
 		myRoot.setLeft(myLeftUI.draw());
 		primaryStage.setScene(new Scene(myRoot, SCREENWIDTH, SCREENHEIGHT, BACKGROUND));
 		primaryStage.setTitle(myResources.getString("WindowTitle"));
