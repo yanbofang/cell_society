@@ -11,8 +11,22 @@ import javafx.scene.paint.Color;
 import xml.XMLSimulation;
 
 /**
- * // This entire file is part of my masterpiece.
-
+ * // This entire file is part of my masterpiece. This is an abstract class of
+ * Simulation Model, it initialize with the data in the XML and then is used to
+ * communicate between the frontend and the backend. I chose this part as my
+ * masterpiece be cause this signifies my improved understanding of inheritance
+ * hierarchy. Unlike the first assignment, where I also used inheritance
+ * hierarchy for the Brick component. As my TA pointed out, "There seems to be
+ * no functional difference between any of the Brick types." This time, however,
+ * each specific subclass has fields and methods that are unique to their own
+ * simulation. For instance, the SegregationModel has the satisfactionRate
+ * variable, while the SlimeMoldsModel has concentrationGate and
+ * concentrationAmount. In addition, they all need to implement the
+ * numberOfStates method, which return the number of states for the current
+ * simulation. Meanwhile, the subclass also share lots of common fields and
+ * methods such as number of rows and cols, which are implemented in the
+ * abstract class.
+ * 
  * Simulation Model
  * 
  * @author Yanbo Fang

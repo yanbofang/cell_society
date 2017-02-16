@@ -3,8 +3,11 @@ package simulation_models;
 import xml.XMLSimulation;
 
 /**
- * // This entire file is part of my masterpiece.
-
+ * // This entire file is part of my masterpiece. This is a concrete subclass
+ * for the abstract SimulationModel. This example is for the spreading fire
+ * simulation and is an example of my inheritance hierarchy.
+ * 
+ * 
  * Simulation Model for the Spreading Fire Simulation
  * 
  * @author Yanbo Fang
