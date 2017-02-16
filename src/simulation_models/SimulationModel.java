@@ -11,6 +11,8 @@ import javafx.scene.paint.Color;
 import xml.XMLSimulation;
 
 /**
+ * // This entire file is part of my masterpiece.
+
  * Simulation Model
  * 
  * @author Yanbo Fang

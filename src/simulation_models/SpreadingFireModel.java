@@ -3,6 +3,8 @@ package simulation_models;
 import xml.XMLSimulation;
 
 /**
+ * // This entire file is part of my masterpiece.
+
  * Simulation Model for the Spreading Fire Simulation
  * 
  * @author Yanbo Fang

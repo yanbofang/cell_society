@@ -56,6 +56,9 @@ public class SlimeMoldsModel extends SimulationModel {
 		this.concentrationAmount = amount;
 	}
 
+	/**
+	 * Return the number of states for this simulation
+	 */
 	@Override
 	public int numberOfStates() {
 		return SLIME_MOLDS_NUMBER_OF_STATES;
