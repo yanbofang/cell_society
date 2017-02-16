@@ -46,6 +46,7 @@ import javafx.stage.Stage;
 
 import javafx.util.Duration;
 import simulation_models.SimulationModel;
+import simulation_models.SimulationModelFactory;
 import xml.XMLManager;
 import xml.XMLWriter;
 
@@ -88,6 +89,7 @@ public class GUI {
 	private Simulation mySimulation;
 	private XMLManager myXMLManager;
 	private SimulationModel mySimulationModel;
+	private SimulationModelFactory mySimulationModelFactory;
 
 	// graph
 	private PopulationGraph myGraph;
@@ -117,6 +119,7 @@ public class GUI {
 		myResources = ResourceBundle.getBundle(DEFAULT_RESOURCE_PACKAGE + language);
 		timer = new Timeline();
 		myXMLManager = new XMLManager();
+		mySimulationModelFactory = new SimulationModelFactory();
 
 		Class<?> grid = Class.forName(GRID_PACKAGE + mySimulationModel.getCellShape() + "Grid");
 		myGrid = (Grid) grid.getDeclaredConstructor(SimulationModel.class, Simulation.class)
@@ -200,7 +203,8 @@ public class GUI {
 			@Override
 			public void changed(ObservableValue<? extends String> observed, String prevValue, String newValue) {
 				// resets the simulation type that will be displayed
-				mySimulationModel = myXMLManager.getSimulationModel(newValue);
+				mySimulationModel = mySimulationModelFactory
+						.createSimulationModel(myXMLManager.getSimulation(newValue));
 				// If the simulationModel contains initial positions, use
 				// setGrid which doesn't randomize new positions
 				// TODO make a reset fn to simplify

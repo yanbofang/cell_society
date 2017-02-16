@@ -26,7 +26,7 @@ public abstract class SimulationModel {
 	private double emptyPercentage;
 	private List<Integer> myPositions;
 	private List<Integer> myCounts;
-	private List<String> availableColorsStrings = new ArrayList<String>();
+	private List<String> availableColorsStrings;
 	private List<Color> myAvailableColors;
 	private List<Color> myColors;
 	private List<Integer> myAmounts;
@@ -34,6 +34,7 @@ public abstract class SimulationModel {
 	private String activeColor;
 	private String inactiveColor;
 	private String emptyColor;
+	private String edgeType;
 	private int cellSize;
 	private int numOfNeighbors;
 	private boolean myGridLines;
@@ -55,6 +56,7 @@ public abstract class SimulationModel {
 		activeColor = simulation.getActiveColor();
 		inactiveColor = simulation.getInactiveColor();
 		emptyColor = simulation.getEmptyColor();
+		availableColorsStrings = new ArrayList<String>();
 		availableColorsStrings.add(emptyColor);
 		availableColorsStrings.add(inactiveColor);
 		availableColorsStrings.add(activeColor);
@@ -64,6 +66,7 @@ public abstract class SimulationModel {
 		myAmounts = this.setAmounts(simulation.getAmounts());
 		myColors = this.setColors();
 		myGridLines = simulation.getGridLines();
+		edgeType = simulation.getEdgeType();
 	}
 
 	/**
@@ -282,6 +285,10 @@ public abstract class SimulationModel {
 		this.myGridLines = gridLines;
 	}
 
+	public String getEdgeType() {
+		return this.edgeType;
+	}
+
 	/**
 	 * Get the state of each cell in the grid, the value at a specific index
 	 * signifies the state of that cell: 0 is empty, 1 is inactive, and 2 is
@@ -348,10 +355,17 @@ public abstract class SimulationModel {
 		return Arrays.asList(arry);
 	}
 
+	/**
+	 * Abstract method, get the number of states for specific simulation. e.g. 2
+	 * meaning there are 2 type of cells,
+	 * 
+	 * @return
+	 */
 	public abstract int numberOfStates();
 
 	/**
-	 * Set a random list with the value at a specific index being the state of the cell - 0 is empty, 1 is inactive and 2 is active
+	 * Set a random list with the value at a specific index being the state of
+	 * the cell - 0 is empty, 1 is inactive and 2 is active
 	 * 
 	 * @return
 	 */
@@ -359,12 +373,12 @@ public abstract class SimulationModel {
 		Integer[] arry = new Integer[rows * cols];
 		Arrays.fill(arry, -1);
 		myPositions = Arrays.asList(arry);
-		randomize(activePercentage, 2, myPositions);
-		randomize(inactivePercentage, 1, myPositions);
-		randomize(emptyPercentage, 0, myPositions);
+		randomize(activePercentage, 2);
+		randomize(inactivePercentage, 1);
+		randomize(emptyPercentage, 0);
 	}
 
-	private void randomize(double percentage, int value, List<Integer> lst) {
+	private void randomize(double percentage, int value) {
 		int numofCells = rows * cols;
 		Integer[] arry = new Integer[numofCells];
 		Arrays.fill(arry, -1);
@@ -379,7 +393,7 @@ public abstract class SimulationModel {
 		}
 		for (int i = 0; i < numofCells; i++) {
 			if (arry[i] != -1) {
-				lst.set(i, arry[i]);
+				myPositions.set(i, arry[i]);
 			}
 		}
 	}

@@ -9,10 +9,10 @@ import xml.XMLSimulation;
  *
  */
 public class SlimeMoldsModel extends SimulationModel {
-
+	
+	private static final int SLIME_MOLDS_NUMBER_OF_STATES = 2;
 	private int concentrationGate;
 	private int concentrationAmount;
-	private int numberOfStates = 2;
 
 	public SlimeMoldsModel(XMLSimulation simulation) {
 		super(simulation);
@@ -58,7 +58,7 @@ public class SlimeMoldsModel extends SimulationModel {
 
 	@Override
 	public int numberOfStates() {
-		return 2;
+		return SLIME_MOLDS_NUMBER_OF_STATES;
 	}
 
 }

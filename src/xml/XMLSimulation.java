@@ -34,7 +34,7 @@ public class XMLSimulation {
 			"amounts", "concentrationGate", "concentrationAmount" });
 
 	public static final List<String> CONFIGURATION_FIELDS = Arrays.asList(new String[] { "cellShape", "activeColor",
-			"inactiveColor", "emptyColor", "cellSize", "numOfNeighbors", "gridLines" });
+			"inactiveColor", "emptyColor", "cellSize", "numOfNeighbors", "gridLines", "edgeType" });
 
 	// specific data values for this instance
 	private Map<String, String> myDataValues;
@@ -307,6 +307,14 @@ public class XMLSimulation {
 	public boolean getGridLines() {
 		return Boolean.parseBoolean(myDataValues.get(CONFIGURATION_FIELDS.get(6)));
 
+	}
+	
+	/**
+	 * Get the edgeType, "Finite" or "Toroidal"
+	 * @return
+	 */
+	public String getEdgeType(){
+		return myDataValues.get(CONFIGURATION_FIELDS.get(7));
 	}
 
 	@Override

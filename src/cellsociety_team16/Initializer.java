@@ -2,6 +2,7 @@ package cellsociety_team16;
 
 import javafx.stage.Stage;
 import simulation_models.SimulationModel;
+import simulation_models.SimulationModelFactory;
 import xml.XMLManager;
 import xml.XMLWriter;
 
@@ -16,8 +17,8 @@ public class Initializer {
 	public void initSimulation(Stage stage) throws Exception {
 		XMLManager xml = new XMLManager();
 		xml.start(stage);
-
-		SimulationModel mySimulationModel = xml.getSimulationModel();
+		SimulationModelFactory factory = new SimulationModelFactory();
+		SimulationModel mySimulationModel = factory.createSimulationModel(xml.getSimulation());
 		GUI gui = new GUI(mySimulationModel, "English");
 
 		gui.init(stage);

@@ -10,11 +10,11 @@ import xml.XMLSimulation;
  */
 public class WaTorModel extends SimulationModel {
 
-	
+	private static final int WATOR_NUMBER_OF_STATES = 3;
+
 	private int fishBreed;
 	private int sharkBreed;
-	private int numberOfStates = 3;
-
+	
 	/**
 	 * Constructor for WaTorModel
 	 * 
@@ -67,7 +67,7 @@ public class WaTorModel extends SimulationModel {
 	 * Return the number of states for this simulation
 	 */
 	public int numberOfStates() {
-		return this.numberOfStates;
+		return WATOR_NUMBER_OF_STATES;
 	}
 
 }

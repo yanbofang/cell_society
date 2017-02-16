@@ -9,7 +9,7 @@ import xml.XMLSimulation;
  */
 public class GameOfLifeModel extends SimulationModel {
 
-	private int numberOfStates = 2;
+	private static final int GAME_OF_LIFE_NUMBER_OF_STATES = 2;
 	
 	/**
 	 * Constructor for GameOfLifeModel
@@ -25,7 +25,7 @@ public class GameOfLifeModel extends SimulationModel {
 	 * Return the number of states for this simulation
 	 */
 	public int numberOfStates() {
-		return this.numberOfStates;
+		return GAME_OF_LIFE_NUMBER_OF_STATES;
 	}
 
 }

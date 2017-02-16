@@ -6,4 +6,5 @@
     <emptyColor>White</emptyColor>
     <cellSize>10</cellSize>
     <numOfNeighbors>8</numOfNeighbors>
+    <edgeType>Toroidal</edgeType>
 </data>

@@ -27,7 +27,7 @@ import simulation_models.SimulationModel;
 public class XMLWriter {
 
 	public static final String XML_DIRECTORY = System.getProperty("user.dir") + "/data/";
-	public static final String AUTHOR = "XingyuChen, Kris Elber, Yanbo Fang";
+	public static final String AUTHOR = "XingyuChen, Kris Elbert, Yanbo Fang";
 
 	private DocumentBuilderFactory docFactory;
 	private DocumentBuilder docBuilder;
@@ -135,9 +135,9 @@ public class XMLWriter {
 					new File(XML_DIRECTORY + mySimulationModel.getName() + "NEW.xml"));
 			transformer.transform(source, result);
 
-			// Testing
-			StreamResult consoleResult = new StreamResult(System.out);
-			transformer.transform(source, consoleResult);
+//			// Testing
+//			StreamResult consoleResult = new StreamResult(System.out);
+//			transformer.transform(source, consoleResult);
 
 		} catch (TransformerConfigurationException e) {
 			throw new XMLException("Configuration Error When Writing XML File");
