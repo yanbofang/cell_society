@@ -14,8 +14,8 @@ import java.util.List;
 public abstract class Grid {
 	private static final String HOME2 = "Home";
 	private static final String FOOD2 = "Food";
-	private static final String TOROIDAL = "TOROIDAL";
-	private static final String FINITE = "FINITE";
+	private static final String TOROIDAL = "Toroidal";
+	private static final String FINITE = "Finite";
 	private ArrayList<Container> containerlist = new ArrayList<Container>();
 	private int n = 0;
 	private int m = 0;

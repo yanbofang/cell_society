@@ -53,7 +53,7 @@ public class Simulation {
 	private int n = 0;
 	private int m = 0;
 	private int neighborDefn=0;
-
+	private String boundary;
 	private Handler myHandler;
 
 	/**
@@ -64,7 +64,7 @@ public class Simulation {
 	 * @return List<Integer>
 	 */
 	public GridInfo startNewRoundSimulation() {
-		Grid nextRoundGrid = createNewGrid(shape, this.n, this.m, this.neighborDefn);
+		Grid nextRoundGrid = createNewGrid(shape, this.n, this.m, this.neighborDefn, this.boundary);
 		thisRoundGrid.connectWith(nextRoundGrid);
 		myHandler.startNewRoundSimulation(thisRoundGrid, nextRoundGrid, 3);
 		thisRoundGrid = nextRoundGrid;
@@ -105,7 +105,8 @@ public class Simulation {
 		this.n = modelGeneral.getRows();
 		this.m = modelGeneral.getCols();
 		this.shape = modelGeneral.getCellShape();
-		this.thisRoundGrid = createNewGrid(this.shape, this.n, this.m, this.neighborDefn);
+		this.boundary=modelGeneral.getEdgeType();
+		this.thisRoundGrid = createNewGrid(this.shape, this.n, this.m, this.neighborDefn, this.boundary);
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < m; j++) {
 				int curPos = i * n + j;
@@ -186,17 +187,17 @@ public class Simulation {
 	 * @param num
 	 * @return
 	 */
-	private Grid createNewGrid(String gridType, int n, int m, int num) {
+	private Grid createNewGrid(String gridType, int n, int m, int num, String boundary) {
 		if (gridType.compareTo(TRIANGLE) == 0) {
-			return new TriangleGrid(n, m, num);
+			return new TriangleGrid(n, m, num, boundary);
 		}
 
 		if (gridType.compareTo(SQUARE) == 0) {
-			return new SquareGrid(n, m, num);
+			return new SquareGrid(n, m, num, boundary);
 		}
 
 		if (gridType.compareTo(HEXAGON) == 0) {
-			return new HexagonGrid(n, m, num);
+			return new HexagonGrid(n, m, num, boundary);
 		}
 		return null;
 	}
