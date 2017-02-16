@@ -10,8 +10,8 @@ import xml.XMLSimulation;
  */
 public class SegregationModel extends SimulationModel {
 
+	private static final int SEGREGATION_NUMBER_OF_STATES = 2;
 	private double satisfactionRate;
-	private int numberOfStates = 2;
 
 	/**
 	 * Constructor for SegregationModel
@@ -46,7 +46,7 @@ public class SegregationModel extends SimulationModel {
 	 * Return the number of states for this simulation
 	 */
 	public int numberOfStates() {
-		return this.numberOfStates;
+		return SEGREGATION_NUMBER_OF_STATES;
 	}
 
 }

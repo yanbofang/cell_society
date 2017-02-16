@@ -10,9 +10,9 @@ import xml.XMLSimulation;
  */
 public class SpreadingFireModel extends SimulationModel {
 
+	private static final int SPREADING_FIRE_NUMBER_OF_STATES = 3;
 	private double fireProbability;
 	private double treeProbability;
-	private int numberOfStates = 3;
 
 	/**
 	 * Constructor for SpreadingFireModel
@@ -66,7 +66,7 @@ public class SpreadingFireModel extends SimulationModel {
 	 * Return the number of states for this simulation
 	 */
 	public int numberOfStates() {
-		return this.numberOfStates;
+		return SPREADING_FIRE_NUMBER_OF_STATES;
 	}
 
 }

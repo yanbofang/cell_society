@@ -27,7 +27,7 @@ public class XMLManager {
 	public static final String DATA_FILE_EXTENSION = "*.xml";
 	public static final String dir = System.getProperty("user.dir");
 	public static final File CONFIGURATION_FILE = new File(dir + "/data/Configuration.xml");
-	public static final String MODEL_PACKAGE = "simulation_models.";
+//	public static final String MODEL_PACKAGE = "simulation_models.";
 
 	private FileChooser myChooser = makeChooser(DATA_FILE_EXTENSION);
 	private File dataFile;
@@ -52,31 +52,31 @@ public class XMLManager {
 		return new XMLParser().getSimulation(dataFile, CONFIGURATION_FILE);
 	}
 
-	public SimulationModel getSimulationModel() {
-		XMLSimulation xml = this.getSimulation();
-		try {
-			Class<?> model = Class.forName(MODEL_PACKAGE + xml.getName() + "Model");
-			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
-		} catch (Exception e) {
-			Class<?> model;
-			try {
-				model = Class.forName(MODEL_PACKAGE + xml.getName().substring(0, xml.getName().length() - 3) + "Model");
-			} catch (Exception ee) {
-				return null;
-			}
-		}
-		return null;
-	}
+//	public SimulationModel getSimulationModel() {
+//		XMLSimulation xml = this.getSimulation();
+//		try {
+//			Class<?> model = Class.forName(MODEL_PACKAGE + xml.getName() + "Model");
+//			return (SimulationModel) model.getDeclaredConstructor(XMLSimulation.class).newInstance(xml);
+//		} catch (Exception e) {
+//			Class<?> model;
+//			try {
+//				model = Class.forName(MODEL_PACKAGE + xml.getName().substring(0, xml.getName().length() - 3) + "Model");
+//			} catch (Exception ee) {
+//				return null;
+//			}
+//		}
+//		return null;
+//	}
 
 	/**
-	 * Get a new SimulationModel based on the input String String
+	 * Get a XMLSimulation based on the input String String
 	 * 
 	 * @param newSimulation
 	 * @return
 	 */
-	public SimulationModel getSimulationModel(String newSimulation) {
+	public XMLSimulation getSimulation(String newSimulation) {
 		dataFile = new File(dir + "/data/" + newSimulation + ".xml");
-		return this.getSimulationModel();
+		return this.getSimulation();
 	}
 
 	// set some sensible defaults when the FileChooser is created

@@ -12,7 +12,7 @@ import xml.XMLSimulation;
  */
 public class SugarScapeModel extends SimulationModel {
 
-	private int numberOfStates = 3;
+	private static final int SUGAR_SCAPE_NUMBER_OF_STATES = 3;
 	private int sugarMetabolism;
 	private int sugarGrowBackRate;
 	private List<Integer> myAmounts;
@@ -66,7 +66,7 @@ public class SugarScapeModel extends SimulationModel {
 	 * Return the number of states for this simulation
 	 */
 	public int numberOfStates() {
-		return this.numberOfStates;
+		return SUGAR_SCAPE_NUMBER_OF_STATES;
 	}
 
 }
