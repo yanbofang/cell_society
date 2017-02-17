@@ -1,9 +1,9 @@
 # cellsociety 
 
-Put any written documents related to your project here, including lab discussions.
+![CellSocietyUI](images/CellSocietyUI.png)
 
 #### Project Purpose
-- This project provides us with a tool to visualize the general phenomenons by asking each individual follow some rules. The simulation is based on various models that consists of a regular grid of cells, each in one of a finite number of states (such as on and off). By varying rules and parameters slightly, we can notice the huge difference of the behavior of these individuals as the group.
+- A Java program that animates more than six 2D grid Cellular Automata simulations. This project provides us with a tool to visualize the general phenomenons by asking each individual cell to follow some rules. The simulation is based on various models that consists of a regular grid of cells, each in one of a finite number of states (such as on and off). By varying rules and parameters slightly, we can notice the huge difference of the behavior of these individuals as the group.
 
 #### How to Run the program
 - Run Main.java
