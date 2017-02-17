@@ -1,12 +1,18 @@
 package backend;
 
 import java.util.ArrayList;
-
+/**
+ * This class is an abstract class which contains the basic function of a cell.
+ * Including: Finding the container it's currently in, understand its own identity, finding
+ * the priority of its identity.
+ * 
+ * @author chenxingyu
+ *
+ */
 public abstract class Cell {
-	private int lifeSpan=0;
-	private String identity;
-	private Container myContainer;
-	private int priority = 0;
+	private String identity;//Identity is the identity of the cell.
+	private Container myContainer;//myContainer is the container associated with each cell
+	private int priority = 0;//Priority is the order we process each type of cell
 
 	public int getPriority() {
 		return priority;
@@ -30,14 +36,4 @@ public abstract class Cell {
 	public boolean is(String a) {
 		return this.getIdentity().compareTo(a)==0;
 	}
-	public int getLifeSpan() {
-		return lifeSpan;
-	}
-	public void setLifeSpan(int lifeSpan) {
-		this.lifeSpan = lifeSpan;
-	}
-	public void increaseLifeSpan() {
-		this.lifeSpan++;
-	}
-	
 }

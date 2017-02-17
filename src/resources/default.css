@@ -1,0 +1,27 @@
+.root{
+-fx-font-family: Tahoma, Geneva, sans-serif;    
+-fx-background: rgb(200, 230, 200);
+}
+
+.label {
+-fx-color: #333333;
+-fx-font-family: Tahoma, Geneva, sans-serif;
+-fx-text-fill: black;
+}
+
+.text-field {
+-fx-color: #333333;
+-fx-font-family: Tahoma, Geneva, sans-serif;
+-fx-text-fill: black;
+}
+
+.check-box:focused {
+    -fx-color: -fx-focused-base;
+}
+
+.button{
+    -fx-text-fill: black;
+    -fx-background-color: #99b3ff;
+    -fx-opacity: 0.5;
+    -fx-padding: 5;
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="Simulation">
+    <name>Segregation</name>
+    <author>Xingyu Chen, Kris Elbert, Yanbo Fang</author>
+    <rows>10</rows>
+    <cols>10</cols>
+    <activePercentage>0</activePercentage>
+	<inactivePercentage>0.4</inactivePercentage>
+	<emptyPercentage>0.6</emptyPercentage>
+	<satisfactionRate>0.5</satisfactionRate>
+	<positions>0 0 1 0 1 1 1 0 0 0 1 1 0 1 0 1 0 0 0 0 1 0 1 0 1 1 1 0 0 0 1 1 0 1 0 1 0 0 1 0 0 0 1 0 1 1 1 0 0 0 1 1 0 1 0 1 0 1 0 0 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 1 0 0 0 0 1 0 1 0 1 0 0 0 1 1 0 1 0 1 0 0 1 0</positions>
+</data>

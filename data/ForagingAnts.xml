@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="Simulation">
+    <name>Segregation</name>
+    <author>Xingyu Chen, Kris Elbert, Yanbo Fang</author>
+    <rows>10</rows>
+    <cols>10</cols>
+    <activePercentage>0.2</activePercentage>
+	<inactivePercentage>0.4</inactivePercentage>
+	<emptyPercentage>0.4</emptyPercentage>
+	<evaporationRate>1</evaporationRate>
+	<maximumFoodPheromone>100</maximumFoodPheromone>
+	<maximumHoomPheromone>100</maximumHoomPheromone>
+	<positions>0 0 1 0 1 2 1 0 0 0 1 1 0 2 0 1 0 0 0 0 1 0 1 0 2 2 2 0 2 0 1 1 0 1 0 1 0 0 1 0 0 0 1 0 1 1 2 0 2 0 1 2 0 1 0 2 0 1 0 0 2 0 1 0 2 0 1 0 2 0 1 1 0 1 0 1 0 2 2 0 0 0 1 0 1 0 1 2 0 0 2 1 0 1 0 2 0 0 1 0</positions>
+	<amounts>1 1 1 1 1 5 1 1 1 1 1 1 1 7 1 1 1 1 1 1 1 1 1 1 14 8 8 1 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 10 1 9 1 1 5 1 1 1 18 1 1 1 1 12 1 1 1 9 1 1 1 11 1 1 1 1 1 1 1 1 9 6 1 1 1 1 1 1 1 1 7 1 1 6 1 1 1 1 15 1 1 1 1</amounts>
+</data>

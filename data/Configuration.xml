@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<data type="Simulation">
+    <cellShape>Hexagon</cellShape>
+    <activeColor>Red</activeColor>
+    <inactiveColor>Green</inactiveColor>
+    <emptyColor>White</emptyColor>
+    <cellSize>10</cellSize>
+    <numOfNeighbors>4</numOfNeighbors>
+    <edgeType>Finite</edgeType>
+</data>
